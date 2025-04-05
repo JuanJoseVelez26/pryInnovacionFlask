@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+<!-- DataTables -->
+<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock head %}
+
+{% block content %}
+<!-- Título de la Página -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4>Lista de Ideas</h4>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">
+                    Ideas
+                    <a class="btn btn-success float-right" href="{% url 'ideas:create' %}">Crear Nueva Idea</a>
+                </h4>
+
+                <!-- Filtros -->
+                <form method="get" action="{% url 'ideas:list' %}">
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <label for="tipo_innovacion">Tipo de Innovación</label>
+                            <select id="tipo_innovacion" name="tipo_innovacion" class="form-control">
+                                <option value="">-- Todos --</option>
+                                {% for tipo in tipos %}
+                                    <option value="{{ tipo.id_tipo_innovacion }}" 
+                                        {% if tipo.id_tipo_innovacion == selected_tipo %}selected{% endif %}>
+                                        {{ tipo.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="foco_innovacion">Foco de Innovación</label>
+                            <select id="foco_innovacion" name="foco_innovacion" class="form-control">
+                                <option value="">-- Todos --</option>
+                                {% for foco in focos %}
+                                    <option value="{{ foco.id_foco_innovacion }}" 
+                                        {% if foco.id_foco_innovacion == selected_foco %}selected{% endif %}>
+                                        {{ foco.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="estado">Estado</label>
+                            <select id="estado" name="estado" class="form-control">
+                                <option value="">-- Todos --</option>
+                                <option value="True" {% if selected_estado == 'True' %}selected{% endif %}>Aprobada</option>
+                                <option value="False" {% if selected_estado == 'False' %}selected{% endif %}>Pendiente</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Tabla de Ideas -->
+                <div class="table-responsive">
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Palabras clave</th>
+                                <th>Tipo de Innovación</th>
+                                <th>Foco de Innovación</th>
+                                <th>Fecha de Creación</th>
+                                <th>Creado por</th>
+                                <th>Estado</th>  <!-- Columna de Estado -->
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if ideas %}
+                                {% for idea in ideas %}
+                                <tr {% if idea.estado %} class="table-success" {% endif %}>
+                                    <td>
+                                        <a href="{% url 'ideas:detail' idea.codigo_idea %}">{{ idea.titulo }}</a>
+                                    </td>
+                                    <td>{{ idea.descripcion }}</td>
+                                    <td>{{ idea.palabras_claves }}</td>
+                                    <td>{{ idea.tipo_innovacion_nombre }}</td>
+                                    <td>{{ idea.foco_innovacion_nombre }}</td>
+                                    <td>{{ idea.fecha_creacion }}</td>
+                                    <td>{{ idea.creador_por }}</td>
+                                    <td>
+                                        {% if idea.estado %}
+                                            <span class="badge badge-success">Aprobada</span>
+                                        {% else %}
+                                            <span class="badge badge-warning">Pendiente</span>
+                                        {% endif %}
+                                    </td>  <!-- Estado de la idea -->
+                                    <td class="text-center">
+                                        {% if not idea.estado %}  <!-- Solo mostrar los botones si la idea no está aprobada -->
+                                            {% if idea.creador_por == user_email or is_experto %}
+                                                <a href="{% url 'ideas:update' pk=idea.codigo_idea %}" class="btn btn-warning btn-sm" style="width: 100px; text-align: center;">Editar</a>
+                                                <a href="{% url 'ideas:delete' idea.codigo_idea %}" class="btn btn-danger btn-sm" style="width: 100px; text-align: center;">Eliminar</a>
+                                            {% endif %}
+                                            
+                                            {% if is_experto %}
+                                                <form action="{% url 'ideas:confirmar_idea' codigo_idea=idea.codigo_idea %}" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-success btn-sm" style="width: 100px; text-align: center;">
+                                                        <i class="fas fa-check"></i> Confirmar
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="9" class="text-center">No hay ideas disponibles.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $('#datatable').DataTable();
+    });
+</script>
+{% endblock scripts %}

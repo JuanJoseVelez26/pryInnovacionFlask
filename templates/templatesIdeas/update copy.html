@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+    <!-- Cargar estilos específicos para el Datepicker -->
+    <link href="{% static 'libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+{% endblock head %}
+
+{% block content %}
+<!-- Título de la página -->
+<div class="row">
+    <div class="col-sm-6">
+        <div class="page-title-box">
+            <h4>Ideas</h4>
+        </div>
+    </div>
+</div>
+
+<!-- Formulario de edición de idea -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Editar Idea</h4>
+                <p class="card-title-desc">Actualice la información de la idea</p>
+
+                <!-- Formulario para editar -->
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!-- Mostrar el formulario con crispy_forms -->
+                    {{ form|crispy }}
+
+                    <!-- Botones para guardar o regresar -->
+                    <div class="form-group mb-0">
+                        <div>
+                            <button type="submit" class="btn btn-primary float-right">Guardar</button>
+                            <a href="{% url 'ideas:list' %}" class="btn btn-light">Regresar</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+    <!-- Cargar script para Datepicker -->
+    <script src="{% static 'libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+
+    <script>
+        // Configuración del Datepicker para el campo "fecha_creacion"
+        $(function(){
+            $("#id_fecha_creacion").datepicker({
+                autoclose: true,               // Cierra automáticamente el calendario
+                format: 'dd/mm/yyyy',          // Formato de fecha
+                todayHighlight: true           // Resalta el día de hoy
+            }).attr('readonly', 'false');        // Asegura que el campo no sea de solo lectura
+        })
+    </script>
+{% endblock scripts %}

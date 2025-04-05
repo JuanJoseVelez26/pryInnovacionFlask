@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+    <link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock head %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4>Detalle de la Idea</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="table" class="table table-bordered">
+                        <tbody>
+                            
+                            <tr>
+                                <th>Código de la idea</th>
+                                <td>{{ idea.codigo_idea }}</td>
+                            </tr>
+                            <tr>
+                                <th>Descripción</th>
+                                <td>{{ idea.descripcion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fecha de creación</th>
+                                <td>{{ idea.fecha_creacion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Palabras clave</th>
+                                <td>{{ idea.palabras_claves }}</td>
+                            </tr>
+                            <tr>
+                                <th>Recursos requeridos</th>
+                                <td>{{ idea.recursos_requeridos }}</td>
+                            </tr>
+                            <tr>
+                                <th>Archivo multimedia</th>
+                                <td>
+                                    {% if idea.archivo_multimedia %}
+                                        <a href="{{ idea.archivo_multimedia_url }}" target="_blank">Ver archivo multimedia</a>
+                                    {% else %}
+                                        No disponible
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Tipo de Innovación</th>
+                                <td>{{ tipo_innovacion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Foco de Innovación</th>
+                                <td>{{ foco_innovacion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Creado por</th>
+                                <td>{{ idea.creador_por }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="{% url 'ideas:list' %}" class="btn btn-primary">Regresar a Ideas</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $('#table').DataTable();
+    });
+</script>
+{% endblock scripts %}

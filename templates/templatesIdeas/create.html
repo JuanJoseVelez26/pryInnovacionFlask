@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+    <link href="{% static 'libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+    <script src="{% static 'libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+    <script>
+        $(function(){
+            $("#id_fecha_creacion").datepicker({
+                autoclose: true,
+                format: 'yyyy-mm-dd',
+                todayHighlight: true,
+                orientation: "bottom left"
+            });
+        });
+    </script>
+{% endblock head %}
+
+{% block content %}
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4>Crear Nueva Idea</h4>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-12"> <!-- Cambiado a col-12 para ocupar todo el ancho -->
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Registrar Idea</h4>
+                <p class="card-title-desc">Ingrese la información para la nueva idea</p>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="{{ form.titulo.id_for_label }}"> {{ form.titulo.label }} </label>
+                        {{ form.titulo }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.descripcion.id_for_label }}"> {{ form.descripcion.label }} </label>
+                        {{ form.descripcion }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.palabras_claves.id_for_label }}"> {{ form.palabras_claves.label }} </label>
+                        {{ form.palabras_claves }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.recursos_requeridos.id_for_label }}"> {{ form.recursos_requeridos.label }} </label>
+                        {{ form.recursos_requeridos }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.fecha_creacion.id_for_label }}"> {{ form.fecha_creacion.label }} </label>
+                        {{ form.fecha_creacion }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.archivo_multimedia.id_for_label }}"> {{ form.archivo_multimedia.label }} </label>
+                        {{ form.archivo_multimedia }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.id_foco_innovacion.id_for_label }}"> {{ form.id_foco_innovacion.label }} </label>
+                        {{ form.id_foco_innovacion }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.id_tipo_innovacion.id_for_label }}"> {{ form.id_tipo_innovacion.label }} </label>
+                        {{ form.id_tipo_innovacion }}
+                    </div>
+
+                    <div class="form-group mb-0">
+                        <button type="submit" class="btn btn-primary float-right">Guardar Idea</button>
+                        <a href="{% url 'ideas:list' %}" class="btn btn-light">Regresar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- end col -->
+</div>
+{% endblock content %}
