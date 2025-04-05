@@ -53,6 +53,36 @@ def lista_ideas():
         selected_estado=filtro_estado
     )
 
+# Nuevos endpoints para las plantillas HTML proporcionadas
+
+@app.route('/base')
+def base_template():
+    """
+    Endpoint para renderizar la plantilla base.html
+    """
+    return render_template('base.html')
+
+@app.route('/calendar')
+def calendar():
+    """
+    Endpoint para renderizar la plantilla calendar.html
+    """
+    return render_template('calendar.html')
+
+@app.route('/layouts-light-sidebar')
+def layouts_light_sidebar():
+    """
+    Endpoint para renderizar la plantilla layouts-light-sidebar.html
+    """
+    return render_template('layouts-light-sidebar.html')
+
+@app.route('/menu')
+def menu():
+    """
+    Endpoint para renderizar la plantilla menu.html
+    """
+    return render_template('menu.html')
+
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)
 

@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{% static 'styles/home.css' %}">
+    <style>
+        body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    background: linear-gradient(to bottom right, #ffffff, #f7f7f7); /* Gradiente gris claro */
+    background-size: cover; /* Asegura que la imagen cubra toda la pantalla */
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+/* Líneas estilizadas */
+.background::before, .background::after {
+    content: '';
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    background: transparent;
+    border-radius: 50%;
+    border: 1px solid rgba(70, 130, 180, 0.2); /* Líneas suaves */
+    z-index: 0;
+    animation: rotate 20s linear infinite;
+}
+.background::before {
+    top: -50%;
+    left: -50%;
+}
+.background::after {
+    top: -70%;
+    left: -70%;
+    animation-direction: reverse;
+}
+
+/* Animación de rotación */
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.content {
+    text-align: center;
+    color: black;
+    max-width: 700px;
+    position: relative; /* Habilita ajustes de posición */
+    left: -20%; /* Mueve el contenedor hacia la izquierda */
+    z-index: 1; /* Asegura que el contenido esté encima del fondo */
+}
+
+.content img {
+    width: 80%; /* Se ajusta al 80% del ancho en pantallas grandes */
+    max-width: 300px; /* No excede los 300px en pantallas más pequeñas */
+    margin-bottom: 5px;
+}
+
+.content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.content p {
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 30px;
+}
+
+.content .btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: white;
+    background-color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.content .btn:hover {
+    background-color: #e28743;
+}
+
+.foreground-image {
+    position: absolute;
+    top: 50%;
+    left: 70%;
+    transform: translate(-50%, -50%);
+    z-index: 2; /* Asegura que la imagen esté por encima de los otros elementos */
+    width: 40%; /* Ajusta el tamaño de la imagen */
+    max-width: 500px; /* Limita el tamaño máximo */
+    opacity: 1; /* Asegura que la imagen sea visible */
+}
+
+/* Estilos para pantallas pequeñas */
+@media (max-width: 768px) {
+    .content {
+        left: 0; /* Ajusta el contenedor a la izquierda en pantallas pequeñas */
+        padding: 20px;
+    }
+
+    .content h1 {
+        font-size: 2rem;
+    }
+
+    .content p {
+        font-size: 1.1rem;
+    }
+
+    .foreground-image {
+        left: 50%;
+        width: 60%; /* Ajusta la imagen para pantallas pequeñas */
+    }
+}
+
+/* Estilos para pantallas muy pequeñas (móviles) */
+@media (max-width: 480px) {
+    .content h1 {
+        font-size: 1.5rem;
+    }
+
+    .content p {
+        font-size: 1rem;
+    }
+
+    .foreground-image {
+        width: 80%; /* La imagen ocupa más espacio en pantallas muy pequeñas */
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <!-- Imagen al frente -->
+    <img src="{% static 'img/MALLA2.png' %}" alt="Imagen al frente" class="foreground-image">
+    <div class="background"></div>
+    <div class="content">
+        <img src="{% static 'img/logo-home.png' %}" alt="Logo">
+        <h1>Sistema de Innovación</h1>
+        <p>Área donde los estudiantes, líderes, colaboradores y administrativos realizamos actividades para el crecimiento de todos.</p>
+        <a href="{% url 'login:login' %}" class="btn">Ingresar</a>
+    </div>
+</body>
+</html>
