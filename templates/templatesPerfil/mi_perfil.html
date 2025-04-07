@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% if not request.user.is_authenticated %}
+    <div class="alert alert-danger" role="alert">
+        No tienes permiso para ver esta página. Por favor, inicia sesión.
+    </div>
+{% else %}
+    {% block content %}
+    <!-- Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="page-title">Perfil de Usuario</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <!-- User Profile Picture -->
+                        <img src="https://via.placeholder.com/150" alt="Foto de perfil" class="rounded-circle img-thumbnail mb-3">
+                        <h4 class="card-title mb-0">{{ perfil.nombre }}</h4>
+                        <p class="text-muted mb-3">{{ perfil.usuario_email }}</p>
+                        <a href="{% url 'perfil:editar_perfil' %}" class="btn btn-primary btn-sm mb-2">Editar Perfil</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Details -->
+            <div class="col-xl-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Detalles del Perfil</h4>
+                        <div class="table-responsive mt-4">
+                            <table class="table table-bordered mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">ID</th>
+                                        <td>{{ perfil.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Rol</th>
+                                        <td>{{ perfil.rol }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Fecha de Nacimiento</th>
+                                        <td>
+                                            {% if perfil.fecha_nacimiento %}
+                                                {{ perfil.fecha_nacimiento }}
+                                            {% else %}
+                                                No disponible
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Dirección</th>
+                                        <td>{{ perfil.direccion|default:"No disponible" }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Profile Section -->
+
+        <!-- Additional Information Section -->
+        <div class="row mt-4">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Información Adicional</h4>
+
+                        <!-- User Description -->
+                        <div class="mb-4">
+                            <h5><i class="fas fa-info-circle"></i> Descripción:</h5>
+                            <p class="text-muted">{{ perfil.descripcion|default:"No disponible" }}</p>
+                        </div>
+                        
+                        <!-- Expert Areas -->
+                        <div class="mb-4">
+                            <h5><i class="fas fa-user-graduate"></i> Áreas de Expertise:</h5>
+                            {% if areas_expertise %}
+                                <ul>
+                                    {% for area in areas_expertise %}
+                                        <li>{{ area.area|default:"No disponible" }}</li> <!-- Asegúrate de que 'area' es el campo correcto -->
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="text-muted">No disponible</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Mis Ideas -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title mb-4">Mis Ideas</h4>
+                                        {% if ideas %}
+                                            <ul class="list-group">
+                                                {% for idea in ideas %}
+                                                    <li class="list-group-item">
+                                                        <strong>{{ idea.titulo|default:"Sin título" }}</strong><br>
+                                                        <span class="text-muted">{{ idea.tipo_innovacion_nombre }} - {{ idea.foco_innovacion_nombre }}</span><br>
+                                                        <small>{{ idea.descripcion|default:"Sin descripción" }}</small>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            <p>No tienes ideas publicadas.</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- End Mis Ideas -->
+
+                        <!-- Mis Oportunidades -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title mb-4">Mis Oportunidades</h4>
+                                        {% if oportunidades %}
+                                            <ul class="list-group">
+                                                {% for oportunidad in oportunidades %}
+                                                    <li class="list-group-item">
+                                                        <strong>{{ oportunidad.titulo|default:"Sin título" }}</strong><br>
+                                                        <span class="text-muted">{{ oportunidad.tipo_innovacion_nombre }} - {{ oportunidad.foco_innovacion_nombre }}</span><br>
+                                                        <small>{{ oportunidad.descripcion|default:"Sin descripción" }}</small>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            <p>No tienes oportunidades publicadas.</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- End Mis Oportunidades -->
+
+                        <!-- Otra Información Adicional -->
+                        <div class="mb-4">
+                            <h5><i class="fas fa-info-circle"></i> Otra Información Adicional:</h5>
+                            {% if informacion_adicional %}
+                                <ul>
+                                    {% for info in informacion_adicional %}
+                                        <li>{{ info.info|default:"No disponible" }}</li> <!-- Asegúrate de que 'info' es el campo correcto -->
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="text-muted">No disponible</p>
+                            {% endif %}
+                        </div> <!-- End Otra Información Adicional -->
+
+                        <!-- Solo para el rol 'Experto' -->
+                        {% if perfil.rol == 'Experto' %}
+                            <div class="mt-4">
+                                <h4>Cambiar el rol de otro usuario</h4>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="nuevo_rol">Seleccionar nuevo rol:</label>
+                                        <select name="nuevo_rol" id="nuevo_rol" class="form-control">
+                                            {% for rol in roles %}
+                                                <option value="{{ rol.nombre }}">{{ rol.nombre }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="usuario_email">Seleccionar usuario:</label>
+                                        <select name="usuario_email" id="usuario_email" class="form-control">
+                                            {% for usuario in usuarios %}
+                                                <option value="{{ usuario.usuario_email }}">{{ usuario.usuario_email }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-success mt-3">Cambiar rol</button>
+                                </form>
+                            </div>
+                        {% endif %}
+
+
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Additional Information Section -->
+
+    </div>
+    <!-- End Page Content -->
+
+    {% endblock content %}
+{% endif %}

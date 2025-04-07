@@ -1,7 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import requests
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'tu_clave_secreta_aqui'  # Cambia esto por una clave secreta segura
+csrf = CSRFProtect(app)
 
 # Definir la URL base de la API
 API_BASE_URL = "http://190.217.58.246:5186/api/sgv"
@@ -32,6 +35,11 @@ def obtener_ideas(filtro_tipo=None, filtro_foco=None, filtro_estado=None):
 def home():
     return "Hola, Flask está funcionando!"
 
+# Alias para la página de inicio
+@app.route('/index')
+def index():
+    return home()
+
 # Endpoint para mostrar la lista de ideas con filtros
 @app.route('/ideas', methods=['GET'])
 def lista_ideas():
@@ -52,6 +60,79 @@ def lista_ideas():
         selected_foco=filtro_foco,
         selected_estado=filtro_estado
     )
+
+# Nuevos endpoints para las plantillas HTML proporcionadas
+
+@app.route('/base')
+def base_template():
+    """
+    Endpoint para renderizar la plantilla base.html
+    """
+    return render_template('base.html')
+
+@app.route('/calendar')
+def calendar():
+    """
+    Endpoint para renderizar la plantilla calendar.html
+    """
+    return render_template('calendar.html')
+
+@app.route('/layouts-light-sidebar')
+def layouts_light_sidebar():
+    """
+    Endpoint para renderizar la plantilla layouts-light-sidebar.html
+    """
+    return render_template('layouts-light-sidebar.html')
+
+@app.route('/menu')
+def menu():
+    """
+    Endpoint para renderizar la plantilla menu.html
+    """
+    return render_template('menu.html')
+
+@app.route('/dashboard')
+def dashboard():
+    """
+    Endpoint para renderizar el dashboard
+    """
+    return render_template('base.html')
+
+@app.route('/perfil')
+def perfil():
+    """
+    Endpoint para renderizar el perfil de usuario
+    """
+    return render_template('base.html')
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    """
+    Endpoint para cerrar sesión
+    """
+    # Aquí iría la lógica para cerrar sesión
+    return redirect(url_for('home'))
+
+@app.route('/create_idea')
+def create_idea():
+    """
+    Endpoint para crear una nueva idea
+    """
+    return render_template('base.html')
+
+@app.route('/create_opportunity')
+def create_opportunity():
+    """
+    Endpoint para crear una nueva oportunidad
+    """
+    return render_template('base.html')
+
+@app.route('/listar_proyectos')
+def listar_proyectos():
+    """
+    Endpoint para listar proyectos
+    """
+    return render_template('base.html')
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)

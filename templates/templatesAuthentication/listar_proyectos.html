@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+    <!-- CSS de Bootstrap 5 -->
+    <link href="{% static 'libs/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'styles/proyectos.css' %}" rel="stylesheet" type="text/css" />
+    <title>{% block title %}Proyectos{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static 'img/proyectos.ico' %}">
+
+
+{% endblock head %}
+
+{% block content %}
+<div class="container-fluid my-3">
+    <h1 class="text-center"><i class="fas fa-project-diagram"></i> Lista de Proyectos</h1>
+
+    <!-- Sección de Ideas -->
+    <div class="card h-100 w-100">
+        <div class="card-header"><i class="fas fa-lightbulb"> </i> Ideas</div>
+        <div class="card-body">
+            {% if ideas %}
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered" id="ideas-table">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Fecha de Creación</th>
+                                <th>Palabras Claves</th>
+                                <th>Recursos Requeridos</th>
+                                <th>Archivo Multimedia</th>
+                                <th>Creado Por</th>
+                                <th>Aprobado Por</th>
+                                <th>Fecha de Aprobación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for idea in ideas %}
+                                <tr>
+                                    <td>{{ idea.titulo }}</td>
+                                    <td>{{ idea.descripcion }}</td>
+                                    <td>{{ idea.fecha_creacion }}</td>
+                                    <td>{{ idea.palabras_claves }}</td>
+                                    <td>{{ idea.recursos_requeridos }}</td>
+                                    <td><a href="{{ idea.archivo_multimedia }}" class="file-link" target="_blank">Ver archivo</a></td>
+                                    <td>{{ idea.creador_por }}</td>
+                                    <td>{{ idea.aprobado_por }}</td>
+                                    <td>{{ idea.fecha_aprobacion }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted text-center">No hay ideas disponibles.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Sección de Oportunidades -->
+    <div class="card">
+        <div class="card-header"><i class="fas fa-briefcase"></i> Oportunidades</div>
+        <div class="card-body">
+            {% if oportunidades %}
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered" id="oportunidades-table">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Fecha de Creación</th>
+                                <th>Palabras Claves</th>
+                                <th>Recursos Requeridos</th>
+                                <th>Archivo Multimedia</th>
+                                <th>Creado Por</th>
+                                <th>Aprobado Por</th>
+                                <th>Fecha de Aprobación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for oportunidad in oportunidades %}
+                                <tr>
+                                    <td>{{ oportunidad.titulo }}</td>
+                                    <td>{{ oportunidad.descripcion }}</td>
+                                    <td>{{ oportunidad.fecha_creacion }}</td>
+                                    <td>{{ oportunidad.palabras_claves }}</td>
+                                    <td>{{ oportunidad.recursos_requeridos }}</td>
+                                    <td><a href="{{ oportunidad.archivo_multimedia }}" class="file-link" target="_blank">Ver archivo</a></td>
+                                    <td>{{ oportunidad.creador_por }}</td>
+                                    <td>{{ oportunidad.aprobado_por }}</td>
+                                    <td>{{ oportunidad.fecha_aprobacion }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted text-center">No hay oportunidades disponibles.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Sección de Soluciones -->
+    <div class="card">
+        <div class="card-header"><i class="fas fa-cogs"></i> Soluciones</div>
+        <div class="card-body">
+            {% if soluciones %}
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered" id="soluciones-table">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Fecha de Creación</th>
+                                <th>Palabras Claves</th>
+                                <th>Archivo Multimedia</th>
+                                <th>Creado Por</th>
+                                <th>Aprobado Por</th>
+                                <th>Fecha de Aprobación</th>
+                                <th>Área de Desarrollo</th>
+                                <th>Desarrollado Por</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for solucion in soluciones %}
+                                <tr>
+                                    <td>{{ solucion.titulo }}</td>
+                                    <td>{{ solucion.descripcion }}</td>
+                                    <td>{{ solucion.fecha_creacion }}</td>
+                                    <td>{{ solucion.palabras_claves }}</td>
+                                    <td><a href="{{ solucion.archivo_multimedia }}" class="file-link" target="_blank">Ver archivo</a></td>
+                                    <td>{{ solucion.creador_por }}</td>
+                                    <td>{{ solucion.aprobado_por }}</td>
+                                    <td>{{ solucion.fecha_aprobacion }}</td>
+                                    <td>{{ solucion.area_unidad_desarrollo }}</td>
+                                    <td>{{ solucion.desarrollador_por }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted text-center">No hay soluciones disponibles.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Scripts de Bootstrap y DataTables -->
+<script src="{% static 'libs/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+
+<script>
+    $(document).ready(function() {
+        // Inicialización de DataTables
+        $('#ideas-table, #oportunidades-table, #soluciones-table').DataTable({
+            responsive: true,
+            dom: 'Bfrtip',
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json"
+            },
+            "lengthChange": false
+        });
+    });
+</script>
+{% endblock %}

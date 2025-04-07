@@ -1,0 +1,31 @@
+/* Contenedor para centrar la imagen y el texto */
+.logo-container {
+    display: flex;
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    
+}
+
+/* Estilo de la imagen para logo-sm */
+.logo-image-sm {
+    width: 50px; /* Tamaño ajustado para menú cerrado */
+    height: 45px;
+    margin-top: 10px;
+}
+
+/* Estilo de la imagen para logo-lg */
+.logo-image-lg {
+    width: 50px; /* Tamaño ajustado para menú abierto */
+    height: 50px;
+    margin-right: 10px; /* Espacio entre la imagen y el texto */
+    
+}
+
+/* Texto del logo */
+.logo-text {
+    font-size: 25px;
+    color: #ffffff;
+    font-family: sans-serif;
+    font-style: normal;
+    margin-top: 7%; /* Elimina cualquier margen adicional */
+}
