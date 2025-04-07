@@ -1,0 +1,55 @@
+body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa; /* Fondo claro */
+        }
+
+        header {
+            margin-bottom: 0; /* Disminuye el espacio inferior del header */
+        }
+
+        h1 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .card {
+            flex-grow: 1; /* Ocupa todo el espacio disponible */
+            margin: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .container.my-5 {
+            margin-top: 5px; /* Reduce el margen superior */
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-size: 1.3rem;
+            padding: 100px 20px;
+        
+        }
+
+        .table thead {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .file-link {
+            color: #007bff;
+            text-decoration: underline;
+        }
+
+        .file-link:hover {
+            color: #0056b3;
+        }
+
+        .table-responsive {
+            overflow-x: auto; /* Scroll horizontal si es necesario */
+        }
+
+        .container-fluid {
+            padding: 0;
+            margin: 0;
+        }
+        
