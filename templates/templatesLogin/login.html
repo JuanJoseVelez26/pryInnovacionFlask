@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,16 +7,16 @@
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 
     <!-- Bootstrap Css -->
-    <link href="{% static 'css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
-    <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- App Css -->
-    <link href="{% static 'css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
     <!-- Estilos personalizados -->
-    <link href="{% static 'styles/login.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='styles/login.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -41,8 +40,8 @@
                                     <div class="alert alert-danger">{{ error }}</div>
                                 {% endif %}
 
-                                <form class="form-horizontal mt-4" action="{% url 'login:login' %}" method="post">
-                                    {% csrf_token %}
+                                <form class="form-horizontal mt-4" action="{{ url_for('login') }}" method="post">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                     <div class="form-group">
                                         <label for="email">Correo Electrónico</label>
                                         <input type="email" class="form-control" id="email" name="email" placeholder="Ingrese su correo electrónico" required>
@@ -67,7 +66,7 @@
                         </div>
                     </div>
                     <div class="mt-5 text-center">
-                        <p>¿No tienes cuenta? <a href="{% url 'login:register' %}" class="text-register">Regístrate ahora</a></p>
+                        <p>¿No tienes cuenta? <a href="{{ url_for('register') }}" class="text-register">Regístrate ahora</a></p>
                         <p>© 2024 <i class="mdi mdi-heart text-danger"></i> Universidad San Buenaventura</p>
                     </div>
                 </div>

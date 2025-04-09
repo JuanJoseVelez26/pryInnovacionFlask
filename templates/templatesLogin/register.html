@@ -45,7 +45,7 @@
             {% endif %}
             
             <form method="post">
-                {% csrf_token %}
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 
                 {% if form.non_field_errors %}
                     <div class="alert alert-danger">
@@ -134,7 +134,7 @@
             </form>
 
             <div class="mt-4 text-center">
-                <p>¿Ya tienes una cuenta? <a href="{% url 'login:login' %}" class="text-primary">Iniciar sesión</a></p>
+                <p>¿Ya tienes una cuenta? <a href="{{ url_for('login') }}" class="text-primary">Iniciar sesión</a></p>
             </div>
         </div>
     </div>

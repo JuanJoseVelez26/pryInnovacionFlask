@@ -1,14 +1,13 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block head %}
-<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
-<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
-<link href="{% static 'libs/animate.css/animate.min.css' %}" rel="stylesheet">
+<link href="{{ url_for('static', filename='libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='libs/animate.css/animate.min.css') }}" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/chart.js" rel="stylesheet">
-<link rel="shortcut icon" href="{% static 'img/icono.ico' %}">
+<link rel="shortcut icon" href="{{ url_for('static', filename='img/icono.ico') }}">
 <title>{% block title %}Panel de Control{% endblock %}</title>
-<link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/dashboard.css') }}">
 
 
 {% endblock head %}
@@ -20,7 +19,7 @@
         <div class="row align-items-center">
             <div class="col-12">
                 <h2 class="mb-0">Panel de Control</h2>
-                <p class="mb-0 opacity-75">Última actualización: {% now "j F Y H:i" %}</p>
+                <p class="mb-0 opacity-75">Última actualización: {{ now }}</p>
             </div>
         </div>
     </div>
