@@ -1,26 +1,26 @@
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-        {% load static %}
-        
-        
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Innovación{% endblock %}</title>
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-        <!-- Bootstrap Css -->
-        <link href="{% static 'css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
-        <!-- Icons Css -->
-        <link href="{% static 'css/icons.min.css' %} rel="stylesheet" type="text/css" />
-        <!-- App Css -->
-        <link href="{% static 'css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
-
-        <link rel="shortcut icon" href="{% static 'img/home.ico' %}">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}App{% endblock %}</title>
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- Bootstrap Css -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="{{ url_for('static', filename='css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    <!-- App Css -->
+    <link href="{{ url_for('static', filename='css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <style>
         /* Contenedor para centrar la imagen y el texto */
         .logo-container {
@@ -98,8 +98,7 @@
 
         /* --------------------- Estilo para la tarjeta 2 -----------------------*/
 
-
-       /* Estilo para la tarjeta de Oportunidades */
+        /* Estilo para la tarjeta de Oportunidades */
         .custom-card-opportunity {
             background-color: #FA0C4A; /* Color de fondo normal para oportunidades */
             border: none; /* Elimina bordes predeterminados */
@@ -140,7 +139,7 @@
             line-height: 1.5;  /* Opcional: ajustar la altura de línea */
         }
 
-        /* --------------------------- 3 ------------------------------*//cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css
+        /* --------------------- Estilo para la tarjeta 3 -----------------------*/
 
         /* Estilo para la tarjeta de Soluciones */
         .custom-card-solution {
@@ -197,29 +196,29 @@
                     <div class="d-flex">
                         <!-- LOGO -->
                         <div class="navbar-brand-box">
-                            <a href="{% url 'authentication:app'%}" class="logo logo-dark">
+                            <a href="{{ url_for('dashboard') }}" class="logo logo-dark">
                                 <!-- Icono para cuando el menú está cerrado -->
                                 <span class="logo-sm">
                                     <i class="fas fa-lightbulb main-icon-without-slide icon-png-container pd-lv4" style="font-size: 30px;"></i>
                                 </span>
                                 <!-- Icono y texto para cuando el menú está abierto -->
                                 <span class="logo-lg">
-                                    <img src="{% static 'img/MALLA.png' %}" alt="Icono personalizado" style="width: 50px; height: 50px;">
+                                    <img src="{{ url_for('static', filename='img/MALLA.png') }}" alt="Icono personalizado" style="width: 50px; height: 50px;">
                                     <span style="font-size: 2px; margin-left: 10px; top: 50%; color: #ffffff;">INNOVACIÓN</span>
                                 </span>
                             </a>
                         
-                            <a href="{% url 'authentication:app' %}" class="logo logo-light">
+                            <a href="{{ url_for('dashboard') }}" class="logo logo-light">
                                 <!-- Para cuando el menú está cerrado -->
                                 <span class="logo-sm">
                                     <div class="logo-container">
-                                        <img src="{% static 'img/MALLA.png' %}" alt="Icono cerrado" class="logo-image-sm">
+                                        <img src="{{ url_for('static', filename='img/MALLA.png') }}" alt="Icono cerrado" class="logo-image-sm">
                                     </div>
                                 </span>
                                 <!-- Para cuando el menú está abierto -->
                                 <span class="logo-lg">
                                     <div class="logo-container">
-                                        <img src="{% static 'img/MALLA.png' %}" alt="Icono abierto" class="logo-image-lg">
+                                        <img src="{{ url_for('static', filename='img/MALLA.png') }}" alt="Icono abierto" class="logo-image-lg">
                                         <span class="logo-text">INNOVACIÓN</span>
                                     </div>
                                 </span>
@@ -320,7 +319,7 @@
                                             <div class="mt-2">
                                                 {% if notificacion.leida == False %}
                                                     <form method="post" action="/notificaciones/marcar_leida/" class="d-inline">
-                                                        {% csrf_token %}
+                                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                                         <input type="hidden" name="id" value="{{ notificacion.id }}">
                                                         <button type="submit" class="btn btn-sm btn-outline-success">
                                                             <i class="ti-check"></i> Marcar como leída
@@ -328,7 +327,7 @@
                                                     </form>
                                                 {% endif %}
                                                 <form method="post" action="/notificaciones/eliminar/" class="d-inline">
-                                                    {% csrf_token %}
+                                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                                     <input type="hidden" name="id" value="{{ notificacion.id }}">
                                                     <button type="submit" class="btn btn-sm btn-outline-danger">
                                                         <i class="ti-trash"></i> Eliminar
@@ -348,17 +347,16 @@
                         
                         
 
-
                         <!-- Perfil -->
                         <div class="dropdown d-inline-block">
                             <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="rounded-circle header-profile-user" src="{% static 'images/users/user.png'%}"
+                                <img class="rounded-circle header-profile-user" src="{{ url_for('static', filename='images/users/user.png') }}"
                                     alt="Header Avatar">
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <!-- item-->
-                                <a class="dropdown-item" href="{% url 'perfil:mi_perfil' %}">  
+                                <a class="dropdown-item" href="{{ url_for('perfil') }}">  
                                     <i class="mdi mdi-account-circle font-size-17 text-muted align-middle mr-1"></i> Perfil
                                 </a>
                                 
@@ -366,8 +364,8 @@
                                 <div class="dropdown-divider"></div>
                                 
                                 <!-- Botón de cerrar sesión -->
-                                <form action="{% url 'login:logout' %}" method="post" style="display: inline;">
-                                    {% csrf_token %}
+                                <form action="{{ url_for('logout') }}" method="post" style="display: inline;">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                     <button type="submit" class="dropdown-item text-danger" style="background: none; border: none; padding: 0;">
                                         <i class="mdi mdi-power font-size-17 text-muted align-middle mr-1 text-danger"></i> Salir
                                     </button>
@@ -395,104 +393,38 @@
                         <!--- Sidemenu -->
                         <div id="sidebar-menu">
                             <!-- Left Menu Start -->
-                            <ul class="metismenu list-unstyled" id="side-menu">
-                                <li class="menu-title">Main</li>
-        
-                                <li id="dashboard_li">
-                                    <a href="{% url 'authentication:dashboard'%}" class="waves-effect" id="dashboard_anchor">
-                                        <i class="mdi mdi-view-dashboard"></i>
-                                        <span>Dashboard</span>
-                                    </a>
-                                </li>
-                                <li id="logoanalitica_li">
-                                    <a href="http://190.217.58.246/" class="waves-effect" id="logoanalitica_li_anchor">
-                                        <i class="mdi mdi-view-dashboard"></i>
-                                        <span>Análitica Usbmed</span>
-                                    </a>
-                                </li>
-                                <li id="proyectos_li">
-                                    <a href="{% url 'authentication:listar_proyectos' %}" class="waves-effect" id="proyectos_anchor">
-                                        <i class="mdi mdi-briefcase"></i>
-                                        <span>Proyectos</span>
-                                    </a>
-                                </li>
-                                
-
-
-        
-                                <li class="menu-title">Components</li>
-
+                            <ul class="metismenu" id="side-menu">
+                                <li class="menu-title">Navegación</li>
                                 <li>
-                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                        <i class="mdi mdi-lightbulb-on"></i>
-                                        <span>Módulo de Ideas</span>
+                                    <a href="{{ url_for('dashboard') }}" class="waves-effect">
+                                        <i class="remixicon-dashboard-line"></i>
+                                        <span> Dashboard </span>
                                     </a>
-                                    <ul class="sub-menu" aria-expanded="false">
-                                        <li><a href="{% url 'ideas:create' %}">Agrega tu idea</a></li>
-                                        <li><a href="#">Matriz de evaluación y retroalimentación</a></li>
-                                        <li><a href="#">Estadísticas de ideas</a></li>
-                                        <li><a href="#">Retos</a></li>
-                                        <li><a href="#">Top 10 - Generadores de ideas</a></li>
-                                        <li><a href="#">Evaluación de ideas</a></li>
-                                        <li><a href="#">Mercado de ideas</a></li>
-                                    </ul>
                                 </li>
-                                
-        
                                 <li>
-                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                        <i class="fas fa-chart-line"></i>
-                                        <span>Modulo Oportunidades</span>
+                                    <a href="{{ url_for('listar_proyectos') }}" class="waves-effect">
+                                        <i class="remixicon-folder-line"></i>
+                                        <span> Proyectos </span>
                                     </a>
-                                    <ul class="sub-menu" aria-expanded="false">
-                                        <li><a href="{% url 'oportunidades:create' %}">Crear Oportunidad</a></li>
-                                        <li><a href="#">Tabla de selección de fuentes</a></li>
-                                        <li><a href="#">Formulario de resgistro de nuevo experto</a></li>
-
-                                    </ul>
                                 </li>
-
-                                
-        
-                    
-        
                                 <li>
-                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                        <i class="fas fa-cogs"></i>
-                                        <span>Modulo Soluciones</span>
+                                    <a href="{{ url_for('lista_ideas') }}" class="waves-effect">
+                                        <i class="remixicon-lightbulb-line"></i>
+                                        <span> Ideas </span>
                                     </a>
-                                    <ul class="sub-menu" aria-expanded="false">
-                                        <li><a href="#">Crear solución</a></li>
-                                        <li><a href="#">Calendario de lanzamientos</a></li>
-                                        <li>
-                                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                                <span>Lanzamientos</span>
-                                            </a>
-                                            <ul class="sub-menu" aria-expanded="false">
-                                                <li><a href="#">Últimos Lanzamientos</a></li>
-                                                <li><a href="#">Próximos Lanzamientos</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
                                 </li>
-                                
-                                
-        
-                                <li class="menu-title">Extras</li>
-
-        
                                 <li>
-                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                        <i class="mdi mdi-account-box"></i>
-                                        <span> Authentication </span>
+                                    <a href="{{ url_for('lista_opportunities') }}" class="waves-effect">
+                                        <i class="remixicon-briefcase-line"></i>
+                                        <span> Oportunidades </span>
                                     </a>
-                                    <ul class="sub-menu" aria-expanded="false">
-                                        <li><a target="_blank" href="{% url 'perfil:mi_perfil' %}">Login</a></li>
-                                        <li><a  target="_blank" href="#">Register</a></li>
-                                        <li><a  target="_blank" href="#">Recover Password</a></li>
-                                    </ul>
                                 </li>
-        
+                                <li>
+                                    <a href="{{ url_for('lista_solutions') }}" class="waves-effect">
+                                        <i class="remixicon-tools-line"></i>
+                                        <span> Soluciones </span>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                         <!-- Sidebar -->
@@ -511,9 +443,9 @@
 
                                     <!-- Tarjetas de módulo -->
                                     <div class="col-lg-4 col-md-6 col-sm-12 d-flex">
-                                        <a href="{% url 'ideas:list' %}" class="card flex-grow-1 custom-card text-white card-module" style="text-decoration: none;">
+                                        <a href="{{ url_for('lista_ideas') }}" class="card flex-grow-1 custom-card text-white card-module" style="text-decoration: none;">
                                             <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                                                <img src="{% static 'img/ideas.png' %}" alt="Módulo de Ideas" class="module-image mb-3">
+                                                <img src="{{ url_for('static', filename='img/ideas.png') }}" alt="Módulo de Ideas" class="module-image mb-3">
                                                 <h4 class="card-title">Módulo de ideas</h4>
                                                 <p class="card-text">Creación de ideas.</p>
                                             </div>
@@ -522,9 +454,9 @@
                                     
         
                                     <div class="col-lg-4 col-md-6 col-sm-12 d-flex">
-                                        <a href="{% url 'oportunidades:list_oportunidad' %}" class="card flex-grow-1 custom-card-opportunity text-white card-module" style="text-decoration: none;">
+                                        <a href="{{ url_for('lista_opportunities') }}" class="card flex-grow-1 custom-card-opportunity text-white card-module" style="text-decoration: none;">
                                             <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                                                <img src="{% static 'img/oportunidad.png' %}" alt="Módulo de Oportunidades" class="module-image mb-3">
+                                                <img src="{{ url_for('static', filename='img/oportunidad.png') }}" alt="Módulo de Oportunidades" class="module-image mb-3">
                                                 <h4 class="card-title">Módulo de Oportunidades</h4>
                                                 <p class="card-text">Gestión de oportunidades.</p>
                                             </div>
@@ -536,9 +468,9 @@
                                 
     
                                     <div class="col-lg-4 col-md-6 col-sm-12 d-flex">
-                                        <a href="{% url 'soluciones:list_soluciones' %}" class="card flex-grow-1 custom-card-solution text-white card-module" style="text-decoration: none;">
+                                        <a href="{{ url_for('lista_solutions') }}" class="card flex-grow-1 custom-card-solution text-white card-module" style="text-decoration: none;">
                                             <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                                                <img src="{% static 'img/soluciones1.png' %}" alt="Módulo de Soluciones" class="module-image mb-3">
+                                                <img src="{{ url_for('static', filename='img/soluciones1.png') }}" alt="Módulo de Soluciones" class="module-image mb-3">
                                                 <h4 class="card-title">Módulo de Soluciones</h4>
                                                 <p class="card-text">Gestión de soluciones.</p>
                                             </div>
@@ -585,7 +517,7 @@
         
                             <div class="p-4">
                                 <div class="mb-2">
-                                    <img src="{% static 'images/layouts/layout-1.jpg'%}" class="img-fluid img-thumbnail" alt="">
+                                    <img src="{{ url_for('static', filename='images/layouts/layout-1.jpg') }}" class="img-fluid img-thumbnail" alt="">
                                 </div>
                                 <div class="custom-control custom-switch mb-3">
                                     <input type="checkbox" class="custom-control-input theme-choice" id="light-mode-switch" checked />
@@ -593,10 +525,10 @@
                                 </div>
             
                                 <div class="mb-2">
-                                    <img src="{% static 'images/layouts/layout-2.jpg'%}" class="img-fluid img-thumbnail" alt="">
+                                    <img src="{{ url_for('static', filename='images/layouts/layout-2.jpg') }}" class="img-fluid img-thumbnail" alt="">
                                 </div>
                                 <div class="custom-control custom-switch mb-3">
-                                    <input type="checkbox" class="custom-control-input theme-choice" id="dark-mode-switch" data-bsStyle="{% static 'css/bootstrap-dark.min.css' %}" data-appStyle="{% static 'css/app-dark.min.css'%}" />
+                                    <input type="checkbox" class="custom-control-input theme-choice" id="dark-mode-switch" data-bsStyle="{{ url_for('static', filename='css/bootstrap-dark.min.css') }}" data-appStyle="{{ url_for('static', filename='css/app-dark.min.css') }}" />
                                     <label class="custom-control-label" for="dark-mode-switch">Dark Mode</label>
                                 </div>
                             </div>
@@ -609,31 +541,16 @@
                     <div class="rightbar-overlay"></div> 
                     
                     <!-- JAVASCRIPT -->
-                    <script src="static/libs/jquery/jquery.min.js"></script>
-                    <script src="static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-                    <script src="static/libs/metismenu/metisMenu.min.js"></script>
-                    <script src="static/libs/simplebar/simplebar.min.js"></script>
-                    <script src="static/libs/node-waves/waves.min.js"></script>
-                    <script src="static/libs/jquery-sparkline/jquery.sparkline.min.js"></script>
+                    <script src="{{ url_for('static', filename='libs/jquery/jquery.min.js') }}"></script>
+                    <script src="{{ url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+                    <script src="{{ url_for('static', filename='libs/metismenu/metisMenu.min.js') }}"></script>
+                    <script src="{{ url_for('static', filename='libs/simplebar/simplebar.min.js') }}"></script>
+                    <script src="{{ url_for('static', filename='libs/node-waves/waves.min.js') }}"></script>
+                    <script src="{{ url_for('static', filename='libs/jquery-sparkline/jquery.sparkline.min.js') }}"></script>
         
                     <!-- App js -->
-                    <script src="static/js/app.js"></script>
-                    <script src="static/js/ajax.js"></script>
+                    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+                    <script src="{{ url_for('static', filename='js/ajax.js') }}"></script>
         
-
-
-        <div class="container-fluid">
-            <div class="row">
-
-
-                {% include "menu.html" %}
-
-                <div class="col-md-9 main-content">
-                    {% block content %}
-                    
-                    {% endblock content %}
-                </div>
-            </div>
-        </div>
-        </body>
+                </body>
     </html>

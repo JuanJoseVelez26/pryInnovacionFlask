@@ -1,11 +1,10 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="{% static 'styles/home.css' %}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/home.css') }}">
     <style>
         body {
     margin: 0;
@@ -146,13 +145,13 @@
 <body>
     <div class="background"></div>
     <!-- Imagen al frente -->
-    <img src="{% static 'img/MALLA2.png' %}" alt="Imagen al frente" class="foreground-image">
+    <img src="{{ url_for('static', filename='img/MALLA2.png') }}" alt="Imagen al frente" class="foreground-image">
     <div class="background"></div>
     <div class="content">
-        <img src="{% static 'img/logo-home.png' %}" alt="Logo">
+        <img src="{{ url_for('static', filename='img/logo-home.png') }}" alt="Logo">
         <h1>Sistema de Innovación</h1>
         <p>Área donde los estudiantes, líderes, colaboradores y administrativos realizamos actividades para el crecimiento de todos.</p>
-        <a href="{% url 'login:login' %}" class="btn">Ingresar</a>
+        <a href="{{ url_for('login') }}" class="btn">Ingresar</a>
     </div>
 </body>
 </html>
