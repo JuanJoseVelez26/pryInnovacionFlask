@@ -60,7 +60,11 @@
                             <img class="rounded-circle header-profile-user" src="{{ url_for('static', filename='images/users/user.png') }}"
                                 alt="Header Avatar">
                             <span class="d-none d-xl-inline-block ml-1">
-                                {{ current_user.username if current_user.is_authenticated else 'Usuario' }}
+                                {% if current_user.is_authenticated %}
+                                    {{ current_user.nombre if current_user.nombre else current_user.email }}
+                                {% else %}
+                                    Usuario
+                                {% endif %}
                             </span>
                             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                         </button>

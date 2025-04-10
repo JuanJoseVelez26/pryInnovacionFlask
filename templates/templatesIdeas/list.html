@@ -1,10 +1,9 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block head %}
 <!-- DataTables -->
-<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
-<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 {% endblock head %}
 
 {% block content %}
@@ -24,11 +23,11 @@
             <div class="card-body">
                 <h4 class="card-title mb-4">
                     Ideas
-                    <a class="btn btn-success float-right" href="{% url 'ideas:create' %}">Crear Nueva Idea</a>
+                    <a class="btn btn-success float-right" href="{{ url_for('create_idea') }}">Crear Nueva Idea</a>
                 </h4>
 
                 <!-- Filtros -->
-                <form method="get" action="{% url 'ideas:list' %}">
+                <form method="get" action="{{ url_for('lista_ideas') }}">
                     <div class="row mb-4">
                         <div class="col-md-3">
                             <label for="tipo_innovacion">Tipo de Innovación</label>
@@ -89,7 +88,7 @@
                                 {% for idea in ideas %}
                                 <tr {% if idea.estado %} class="table-success" {% endif %}>
                                     <td>
-                                        <a href="{% url 'ideas:detail' idea.codigo_idea %}">{{ idea.titulo }}</a>
+                                        <a href="{{ url_for('detail_idea', codigo_idea=idea.codigo_idea) }}">{{ idea.titulo }}</a>
                                     </td>
                                     <td>{{ idea.descripcion }}</td>
                                     <td>{{ idea.palabras_claves }}</td>
@@ -107,13 +106,13 @@
                                     <td class="text-center">
                                         {% if not idea.estado %}  <!-- Solo mostrar los botones si la idea no está aprobada -->
                                             {% if idea.creador_por == user_email or is_experto %}
-                                                <a href="{% url 'ideas:update' pk=idea.codigo_idea %}" class="btn btn-warning btn-sm" style="width: 100px; text-align: center;">Editar</a>
-                                                <a href="{% url 'ideas:delete' idea.codigo_idea %}" class="btn btn-danger btn-sm" style="width: 100px; text-align: center;">Eliminar</a>
+                                                <a href="{{ url_for('update_idea', codigo_idea=idea.codigo_idea) }}" class="btn btn-warning btn-sm" style="width: 100px; text-align: center;">Editar</a>
+                                                <a href="{{ url_for('delete_idea', codigo_idea=idea.codigo_idea) }}" class="btn btn-danger btn-sm" style="width: 100px; text-align: center;">Eliminar</a>
                                             {% endif %}
                                             
                                             {% if is_experto %}
-                                                <form action="{% url 'ideas:confirmar_idea' codigo_idea=idea.codigo_idea %}" method="post">
-                                                    {% csrf_token %}
+                                                <form action="{{ url_for('confirmar_idea', codigo_idea=idea.codigo_idea) }}" method="post">
+                                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                                     <button type="submit" class="btn btn-success btn-sm" style="width: 100px; text-align: center;">
                                                         <i class="fas fa-check"></i> Confirmar
                                                     </button>
@@ -139,10 +138,10 @@
 {% endblock content %}
 
 {% block scripts %}
-<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
-<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
-<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
-<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
 <script>
     $(document).ready(function() {
         $('#datatable').DataTable();
