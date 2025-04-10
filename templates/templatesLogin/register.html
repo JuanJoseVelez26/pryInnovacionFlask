@@ -1,144 +1,123 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Usuario</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Estilos personalizados -->
-    <style>
-        body {
-            background-color: #f0f0f0;
-            background-image: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 25%, #d0d0d0 50%, #b0b0b0 75%, #a0a0a0 100%);
+{% extends "base.html" %}
 
-            color: #000000;
-        }
-        .form-label {
-            color: #000000;
-        }
-        .form-control {
-            color: #000000;
-            font-family: 'Roboto', sans-serif;
-        }
-        .alert-info {
-            background-color: #e3f2fd;
-        }
-        .alert-danger {
-            color: #000000;
-        }
-        .text-primary {
-            color: #007bff;
-        }
-    </style>
-</head>
-<body>
-    <div class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="card p-5" style="width: 100%; max-width: 600px;">
-            <h2 class="text-center mb-4">Crea tu Cuenta</h2>
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-info">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-            
-            <form method="post">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                
-                {% if form.non_field_errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ form.non_field_errors }}</strong>
-                    </div>
-                {% endif %}
-
-                <div class="mb-3">
-                    <label for="email" class="form-label">Correo Electrónico</label>
-                    <input type="email" name="email" class="form-control" required>
-                    {% for error in form.email.errors %}
-                        <div class="alert alert-danger">{{ error }}</div>
-                    {% endfor %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Registro de Usuario</h3>
                 </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('register') }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.email.label(class="form-label") }}
+                                {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else "")) }}
+                                {% if form.email.errors %}
+                                    {% for error in form.email.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
 
-                <div class="mb-3">
-                    <label for="password1" class="form-label">Contraseña</label>
-                    <input type="password" name="password1" class="form-control" required>
-                    {% for error in form.password1.errors %}
-                        <div class="alert alert-danger">{{ error }}</div>
-                    {% endfor %}
+                            <div class="col-md-6 mb-3">
+                                {{ form.nombre.label(class="form-label") }}
+                                {{ form.nombre(class="form-control" + (" is-invalid" if form.nombre.errors else "")) }}
+                                {% if form.nombre.errors %}
+                                    {% for error in form.nombre.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.password1.label(class="form-label") }}
+                                {{ form.password1(class="form-control" + (" is-invalid" if form.password1.errors else "")) }}
+                                {% if form.password1.errors %}
+                                    {% for error in form.password1.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                {{ form.password2.label(class="form-label") }}
+                                {{ form.password2(class="form-control" + (" is-invalid" if form.password2.errors else "")) }}
+                                {% if form.password2.errors %}
+                                    {% for error in form.password2.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.fecha_nacimiento.label(class="form-label") }}
+                                {{ form.fecha_nacimiento(class="form-control" + (" is-invalid" if form.fecha_nacimiento.errors else ""), type="date") }}
+                                {% if form.fecha_nacimiento.errors %}
+                                    {% for error in form.fecha_nacimiento.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                {{ form.direccion.label(class="form-label") }}
+                                {{ form.direccion(class="form-control" + (" is-invalid" if form.direccion.errors else "")) }}
+                                {% if form.direccion.errors %}
+                                    {% for error in form.direccion.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.descripcion.label(class="form-label") }}
+                            {{ form.descripcion(class="form-control" + (" is-invalid" if form.descripcion.errors else ""), rows="3") }}
+                            {% if form.descripcion.errors %}
+                                {% for error in form.descripcion.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.area_expertise.label(class="form-label") }}
+                                {{ form.area_expertise(class="form-control" + (" is-invalid" if form.area_expertise.errors else "")) }}
+                                {% if form.area_expertise.errors %}
+                                    {% for error in form.area_expertise.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                {{ form.informacion_adicional.label(class="form-label") }}
+                                {{ form.informacion_adicional(class="form-control" + (" is-invalid" if form.informacion_adicional.errors else ""), rows="3") }}
+                                {% if form.informacion_adicional.errors %}
+                                    {% for error in form.informacion_adicional.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Registrarse</button>
+                            <a href="{{ url_for('login') }}" class="btn btn-link">¿Ya tienes cuenta? Inicia sesión</a>
+                        </div>
+                    </form>
                 </div>
-
-                <div class="mb-3">
-                    <label for="password2" class="form-label">Repetir Contraseña</label>
-                    <input type="password" name="password2" class="form-control" required>
-                    {% for error in form.password2.errors %}
-                        <div class="alert alert-danger">{{ error }}</div>
-                    {% endfor %}
-                </div>
-
-                <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" name="nombre" class="form-control" required>
-                    {% for error in form.nombre.errors %}
-                        <div class="alert alert-danger">{{ error }}</div>
-                    {% endfor %}
-                </div>
-
-                <div class="mb-3">
-                    <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
-                    <input type="date" name="fecha_nacimiento" class="form-control" required>
-                    {% for error in form.fecha_nacimiento.errors %}
-                        <div class="alert alert-danger">{{ error }}</div>
-                    {% endfor %}
-                </div>
-
-                <div class="mb-3">
-                    <label for="direccion" class="form-label">Dirección</label>
-                    <input type="text" name="direccion" class="form-control" required>
-                    {% for error in form.direccion.errors %}
-                        <div class="alert alert-danger">{{ error }}</div>
-                    {% endfor %}
-                </div>
-
-                <div class="mb-3">
-                    <label for="descripcion" class="form-label">Descripción</label>
-                    <textarea name="descripcion" class="form-control" rows="3" required></textarea>
-                    {% for error in form.descripcion.errors %}
-                        <div class="alert alert-danger">{{ error }}</div>
-                    {% endfor %}
-                </div>
-
-                <!-- Campo para Área de Expertise -->
-                <div class="mb-3">
-                    <label for="area_expertise" class="form-label">Área de Expertise</label>
-                    <input type="text" name="area_expertise" class="form-control" required>
-                    {% for error in form.area_expertise.errors %}
-                        <div class="alert alert-danger">{{ error }}</div>
-                    {% endfor %}
-                </div>
-
-                <!-- Campo para Información Adicional -->
-                <div class="mb-3">
-                    <label for="informacion_adicional" class="form-label">Información Adicional</label>
-                    <textarea name="informacion_adicional" class="form-control" rows="3" required></textarea>
-                    {% for error in form.informacion_adicional.errors %}
-                        <div class="alert alert-danger">{{ error }}</div>
-                    {% endfor %}
-                </div>
-
-                <!-- Botón de Registro -->
-                <div class="d-grid mt-4">
-                    <button type="submit" class="btn btn-primary">Registrarse</button>
-                </div>
-            </form>
-
-            <div class="mt-4 text-center">
-                <p>¿Ya tienes una cuenta? <a href="{{ url_for('login') }}" class="text-primary">Iniciar sesión</a></p>
             </div>
         </div>
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>
+{% endblock %}

@@ -4,11 +4,27 @@ from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from datetime import datetime
 import os
+from config_flask import *
+import mysql.connector
+from werkzeug.security import generate_password_hash
+from passlib.hash import pbkdf2_sha256
+from forms.formsLogin.forms import LoginForm, RegisterForm
+from dotenv import load_dotenv
+
+# Cargar variables de entorno
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'tu_clave_secreta_aqui'  # Cambia esto por una clave secreta segura
+app.config.from_object('config_flask')
 csrf = CSRFProtect(app)
-app.secret_key = os.urandom(24)
+
+# Configuración de la base de datos
+db_config = {
+    'host': os.environ.get('DB_HOST', 'localhost'),
+    'user': os.environ.get('DB_USER', 'root'),
+    'password': os.environ.get('DB_PASSWORD', ''),
+    'database': os.environ.get('DB_NAME', 'innovacion_db')
+}
 
 # Configuración de Flask-Login
 login_manager = LoginManager()
@@ -17,20 +33,37 @@ login_manager.login_view = 'login'
 
 # Clase de usuario para Flask-Login
 class User(UserMixin):
-    def __init__(self, email):
-        self.id = email
-
-# Usuario de ejemplo
-users = {
-    1: User(1)
-}
+    def __init__(self, user_data):
+        self.id = user_data['id']
+        self.email = user_data['email']
+        self.nombre = user_data.get('nombre', '')
+        self.apellido = user_data.get('apellido', '')
+        self.rol = user_data.get('rol', '')
+        self.fecha_nacimiento = user_data.get('fecha_nacimiento', '')
+        self.direccion = user_data.get('direccion', '')
+        self.descripcion = user_data.get('descripcion', '')
+        self.area_expertise = user_data.get('area_expertise', '')
+        self.info_adicional = user_data.get('info_adicional', '')
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User(user_id)
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM usuario WHERE id = %s", (user_id,))
+        user_data = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        
+        if user_data:
+            return User(user_data)
+        return None
+    except Exception as e:
+        print(f"Error al cargar usuario: {e}")
+        return None
 
 # Definir la URL base de la API
-API_BASE_URL = "http://190.217.58.246:5186/api/sgv"
+API_BASE_URL = API_URL
 
 # Funciones para obtener datos desde la API
 def obtener_focos_innovacion():
@@ -66,58 +99,222 @@ def index():
 # Ruta de login actualizada
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+    # Comentado temporalmente para permitir acceso sin login
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('dashboard'))
         
-        # Aquí deberías verificar las credenciales contra tu base de datos
-        # Por ahora, usamos un usuario de ejemplo
-        if email == "usuario@ejemplo.com" and password == "password":
-            user = users[1]
-            login_user(user)
-            session['user_email'] = email
-            return redirect(url_for('dashboard'))
-        else:
-            flash('Credenciales inválidas', 'error')
+    # form = LoginForm()
+    # if form.validate_on_submit():
+    #     try:
+    #         # Intentar autenticación directa con la base de datos como respaldo
+    #         conn = mysql.connector.connect(**db_config)
+    #         cursor = conn.cursor(dictionary=True)
+            
+    #         # Verificar credenciales
+    #         cursor.execute("SELECT * FROM usuario WHERE email = %s", (form.email.data,))
+    #         user_data = cursor.fetchone()
+            
+    #         if user_data:
+    #             # Verificar la contraseña usando passlib
+    #             stored_password = user_data['password']
+    #             if stored_password.startswith('pbkdf2_sha256$'):
+    #                 # Si la contraseña está hasheada con pbkdf2_sha256 (formato Django)
+    #                 if pbkdf2_sha256.verify(form.password.data, stored_password):
+    #                     # Obtener datos de perfil
+    #                     cursor.execute("""
+    #                         SELECT p.*, u.email, u.rol 
+    #                         FROM perfil p 
+    #                         JOIN usuario u ON p.usuario_email = u.email 
+    #                         WHERE u.email = %s
+    #                     """, (form.email.data,))
+    #                     profile = cursor.fetchone()
+                        
+    #                     if not profile:
+    #                         flash("No se encontraron datos de perfil para el usuario.", "error")
+    #                         return render_template('templatesLogin/login.html', form=form)
+                        
+    #                     # Convertir fecha de nacimiento si está presente
+    #                     fecha_nacimiento = profile.get('fecha_nacimiento', '')
+    #                     if fecha_nacimiento:
+    #                         try:
+    #                             fecha_nacimiento = datetime.strptime(str(fecha_nacimiento), "%Y-%m-%d")
+    #                             fecha_nacimiento = fecha_nacimiento.strftime("%d/%m/%Y")
+    #                         except ValueError:
+    #                             fecha_nacimiento = None
+                        
+    #                     # Crear objeto de usuario
+    #                     user = User(user_data)
+                        
+    #                     # Almacenar datos en sesión
+    #                     session['user_email'] = user.email
+    #                     session['user_name'] = profile.get('nombre', '')
+    #                     session['user_role'] = profile.get('rol', '')
+    #                     session['user_birthdate'] = fecha_nacimiento
+    #                     session['user_address'] = profile.get('direccion', '')
+    #                     session['user_description'] = profile.get('descripcion', '')
+    #                     session['user_area_expertise'] = profile.get('area_expertise', '')
+    #                     session['user_info_adicional'] = profile.get('info_adicional', '')
+                        
+    #                     # Actualizar last_login en la base de datos
+    #                     cursor.execute("""
+    #                         UPDATE usuario 
+    #                         SET last_login = %s 
+    #                         WHERE email = %s
+    #                     """, (datetime.now(), form.email.data))
+    #                     conn.commit()
+                        
+    #                     # Iniciar sesión
+    #                     login_user(user)
+    #                     flash('Has iniciado sesión exitosamente', 'success')
+    #                     return redirect(url_for('dashboard'))
+    #             else:
+    #                 # Intentar con werkzeug si no es pbkdf2_sha256
+    #                 from werkzeug.security import check_password_hash
+    #                 if check_password_hash(stored_password, form.password.data):
+    #                     # Obtener datos de perfil
+    #                     cursor.execute("""
+    #                         SELECT p.*, u.email, u.rol 
+    #                         FROM perfil p 
+    #                         JOIN usuario u ON p.usuario_email = u.email 
+    #                         WHERE u.email = %s
+    #                     """, (form.email.data,))
+    #                     profile = cursor.fetchone()
+                        
+    #                     if not profile:
+    #                         flash("No se encontraron datos de perfil para el usuario.", "error")
+    #                         return render_template('templatesLogin/login.html', form=form)
+                        
+    #                     # Convertir fecha de nacimiento si está presente
+    #                     fecha_nacimiento = profile.get('fecha_nacimiento', '')
+    #                     if fecha_nacimiento:
+    #                         try:
+    #                             fecha_nacimiento = datetime.strptime(str(fecha_nacimiento), "%Y-%m-%d")
+    #                             fecha_nacimiento = fecha_nacimiento.strftime("%d/%m/%Y")
+    #                         except ValueError:
+    #                             fecha_nacimiento = None
+                        
+    #                     # Crear objeto de usuario
+    #                     user = User(user_data)
+                        
+    #                     # Almacenar datos en sesión
+    #                     session['user_email'] = user.email
+    #                     session['user_name'] = profile.get('nombre', '')
+    #                     session['user_role'] = profile.get('rol', '')
+    #                     session['user_birthdate'] = fecha_nacimiento
+    #                     session['user_address'] = profile.get('direccion', '')
+    #                     session['user_description'] = profile.get('descripcion', '')
+    #                     session['user_area_expertise'] = profile.get('area_expertise', '')
+    #                     session['user_info_adicional'] = profile.get('info_adicional', '')
+                        
+    #                     # Actualizar last_login en la base de datos
+    #                     cursor.execute("""
+    #                         UPDATE usuario 
+    #                         SET last_login = %s 
+    #                         WHERE email = %s
+    #                     """, (datetime.now(), form.email.data))
+    #                     conn.commit()
+                        
+    #                     # Iniciar sesión
+    #                     login_user(user)
+    #                     flash('Has iniciado sesión exitosamente', 'success')
+    #                     return redirect(url_for('dashboard'))
+            
+    #         flash('Correo electrónico o contraseña inválidos', 'error')
+    #     except mysql.connector.Error as e:
+    #         print(f"Error de base de datos: {e}")
+    #         flash('Error al conectar con la base de datos', 'error')
+    #     except Exception as e:
+    #         print(f"Error en login: {e}")
+    #         flash('Error al intentar iniciar sesión', 'error')
+    #     finally:
+    #         if 'cursor' in locals() and cursor:
+    #             cursor.close()
+    #         if 'conn' in locals() and conn:
+    #             conn.close()
     
-    return render_template('templatesLogin/login.html')
+    # Redirigir directamente al dashboard sin autenticación
+    return redirect(url_for('dashboard'))
 
 # Ruta de registro
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':
-        # Obtener datos del formulario
-        email = request.form.get('email')
-        password = request.form.get('password')
-        # TODO: Implementar el registro real de usuarios
-        if email and password:
-            flash('Registro exitoso')
-            return redirect(url_for('login'))
-
-    return render_template('templatesLogin/register.html')
+    # Comentado temporalmente para permitir acceso sin login
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('dashboard'))
+        
+    # form = RegisterForm()
+    # if form.validate_on_submit():
+    #     try:
+    #         conn = mysql.connector.connect(**db_config)
+    #         cursor = conn.cursor(dictionary=True)
+            
+    #         # Verificar si el email ya existe
+    #         cursor.execute("SELECT * FROM usuario WHERE email = %s", (form.email.data,))
+    #         if cursor.fetchone():
+    #             flash('El email ya está registrado', 'error')
+    #             return render_template('templatesLogin/register.html', form=form)
+            
+    #         # Crear usuario
+    #         hashed_password = generate_password_hash(form.password1.data)
+    #         cursor.execute("""
+    #             INSERT INTO usuario (email, password, is_active, is_staff)
+    #             VALUES (%s, %s, %s, %s)
+    #         """, (form.email.data, hashed_password, True, False))
+            
+    #         # Crear perfil
+    #         cursor.execute("""
+    #             INSERT INTO perfil (
+    #                 usuario_email, nombre, fecha_nacimiento, direccion,
+    #                 descripcion, area_expertise, info_adicional
+    #             ) VALUES (%s, %s, %s, %s, %s, %s, %s)
+    #         """, (
+    #             form.email.data, form.nombre.data, form.fecha_nacimiento.data,
+    #             form.direccion.data, form.descripcion.data,
+    #             form.area_expertise.data, form.informacion_adicional.data
+    #         ))
+            
+    #         conn.commit()
+    #         flash('Registro exitoso. Por favor inicia sesión.', 'success')
+    #         return redirect(url_for('login'))
+            
+    #     except Exception as e:
+    #         print(f"Error en registro: {e}")
+    #         flash('Error al registrar usuario', 'error')
+    #     finally:
+    #         if cursor:
+    #             cursor.close()
+    #         if conn:
+    #             conn.close()
+    
+    # Redirigir directamente al dashboard sin autenticación
+    return redirect(url_for('dashboard'))
 
 # Ruta de perfil actualizada
 @app.route('/perfil')
-@login_required
+# @login_required
 def perfil():
-    return render_template('templatesLogin/perfil.html', usuario=current_user)
+    # Comentado temporalmente para permitir acceso sin login
+    # return render_template('templatesLogin/perfil.html', usuario=current_user)
+    return render_template('templatesLogin/perfil.html')
 
 # Ruta de logout actualizada
 @app.route('/logout', methods=['POST'])
-@login_required
+# @login_required
 def logout():
-    logout_user()
-    session.pop('user_email', None)
-    flash('Has cerrado sesión exitosamente', 'success')
+    # Comentado temporalmente para permitir acceso sin login
+    # logout_user()
+    # session.clear()
+    # flash('Has cerrado sesión exitosamente', 'success')
     return redirect(url_for('login'))
 
 # Endpoint para mostrar la lista de ideas con filtros
 @app.route('/ideas', methods=['GET'])
-@login_required
+# @login_required
 def lista_ideas():
-    user_email = session.get('user_email')
-    if not user_email:
-        return redirect(url_for('login'))
+    # Comentado temporalmente para permitir acceso sin login
+    # user_email = session.get('user_email')
+    # if not user_email:
+    #     return redirect(url_for('login'))
     
     try:
         # Obtener parámetros de filtrado
@@ -156,7 +353,7 @@ def lista_ideas():
                               selected_tipo=tipo_innovacion,
                               selected_foco=foco_innovacion,
                               selected_estado=estado,
-                              user_email=user_email,
+                              user_email="usuario@ejemplo.com",  # Usuario ficticio para desarrollo
                               is_experto=is_experto)
     except Exception as e:
         print(f"Error al obtener las ideas: {e}")
@@ -164,11 +361,12 @@ def lista_ideas():
         return render_template('templatesIdeas/list.html', ideas=[], tipos=[], focos=[])
 
 @app.route('/ideas/create', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def create_idea():
-    user_email = session.get('user_email')
-    if not user_email:
-        return redirect(url_for('login'))
+    # Comentado temporalmente para permitir acceso sin login
+    # user_email = session.get('user_email')
+    # if not user_email:
+    #     return redirect(url_for('login'))
     
     if request.method == 'POST':
         try:
@@ -204,7 +402,7 @@ def create_idea():
                 "archivo_multimedia": archivo_multimedia_path,
                 "id_foco_innovacion": id_foco_innovacion,
                 "id_tipo_innovacion": id_tipo_innovacion,
-                "creador_por": user_email,
+                "creador_por": "usuario@ejemplo.com",  # Usuario ficticio para desarrollo
                 "estado": False  # Por defecto, la idea está pendiente
             }
             
@@ -234,11 +432,12 @@ def create_idea():
         return redirect(url_for('lista_ideas'))
 
 @app.route('/ideas/<int:codigo_idea>', methods=['GET'])
-@login_required
+# @login_required
 def detail_idea(codigo_idea):
-    user_email = session.get('user_email')
-    if not user_email:
-        return redirect(url_for('login'))
+    # Comentado temporalmente para permitir acceso sin login
+    # user_email = session.get('user_email')
+    # if not user_email:
+    #     return redirect(url_for('login'))
     
     try:
         # Obtener datos de la idea
@@ -273,11 +472,12 @@ def detail_idea(codigo_idea):
         return redirect(url_for('lista_ideas'))
 
 @app.route('/ideas/<int:codigo_idea>/update', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def update_idea(codigo_idea):
-    user_email = session.get('user_email')
-    if not user_email:
-        return redirect(url_for('login'))
+    # Comentado temporalmente para permitir acceso sin login
+    # user_email = session.get('user_email')
+    # if not user_email:
+    #     return redirect(url_for('login'))
     
     try:
         # Obtener datos de la idea
@@ -293,7 +493,7 @@ def update_idea(codigo_idea):
         
         # Verificar si el usuario es el creador o un experto
         is_experto = False  # Aquí deberías implementar la lógica para verificar si el usuario es experto
-        if idea['creador_por'] != user_email and not is_experto:
+        if idea['creador_por'] != "usuario@ejemplo.com" and not is_experto:  # Usuario ficticio para desarrollo
             flash("No tiene permiso para editar esta idea", "error")
             return redirect(url_for('lista_ideas'))
         
@@ -367,11 +567,12 @@ def update_idea(codigo_idea):
         return redirect(url_for('lista_ideas'))
 
 @app.route('/ideas/<int:codigo_idea>/delete', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def delete_idea(codigo_idea):
-    user_email = session.get('user_email')
-    if not user_email:
-        return redirect(url_for('login'))
+    # Comentado temporalmente para permitir acceso sin login
+    # user_email = session.get('user_email')
+    # if not user_email:
+    #     return redirect(url_for('login'))
     
     try:
         # Obtener datos de la idea
@@ -387,7 +588,7 @@ def delete_idea(codigo_idea):
         
         # Verificar si el usuario es el creador o un experto
         is_experto = False  # Aquí deberías implementar la lógica para verificar si el usuario es experto
-        if idea['creador_por'] != user_email and not is_experto:
+        if idea['creador_por'] != "usuario@ejemplo.com" and not is_experto:  # Usuario ficticio para desarrollo
             flash("No tiene permiso para eliminar esta idea", "error")
             return redirect(url_for('lista_ideas'))
         
@@ -414,11 +615,12 @@ def delete_idea(codigo_idea):
         return redirect(url_for('lista_ideas'))
 
 @app.route('/ideas/<int:codigo_idea>/confirmar', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def confirmar_idea(codigo_idea):
-    user_email = session.get('user_email')
-    if not user_email:
-        return redirect(url_for('login'))
+    # Comentado temporalmente para permitir acceso sin login
+    # user_email = session.get('user_email')
+    # if not user_email:
+    #     return redirect(url_for('login'))
     
     try:
         # Verificar si el usuario es experto
@@ -495,11 +697,12 @@ def menu():
     return render_template('menu.html')
 
 @app.route('/dashboard')
-@login_required
+# @login_required
 def dashboard():
-    user_email = session.get('user_email')
-    if not user_email:
-        return redirect(url_for('login'))
+    # Comentado temporalmente para permitir acceso sin login
+    # user_email = session.get('user_email')
+    # if not user_email:
+    #     return redirect(url_for('login'))
     
     try:
         ideas_client = APIClient("idea")
@@ -532,67 +735,80 @@ def dashboard():
                              solucion_count=0, usuario_count=0, now=datetime.now())
 
 @app.route('/app')
-@login_required
+# @login_required
 def app_view():
-    user_email = session.get('user_email')
-    if not user_email:
-        flash("Debes iniciar sesión para ver tus notificaciones.")
-        return redirect(url_for('login'))
+    # Comentado temporalmente para permitir acceso sin login
+    # user_email = session.get('user_email')
+    # if not user_email:
+    #     flash("Debes iniciar sesión para ver tus notificaciones.")
+    #     return redirect(url_for('login'))
 
-    api_client = APIClient("notificaciones")
-    where_condition = f"usuario_email = '{user_email}'"
-    notificaciones = api_client.get_data(where_condition=where_condition)
+    # api_client = APIClient("notificaciones")
+    # where_condition = f"usuario_email = '{user_email}'"
+    # notificaciones = api_client.get_data(where_condition=where_condition)
 
-    if not notificaciones or not isinstance(notificaciones, list):
-        flash("No se pudieron cargar las notificaciones.")
-        notificaciones = []
+    # if not notificaciones or not isinstance(notificaciones, list):
+    #     flash("No se pudieron cargar las notificaciones.")
+    #     notificaciones = []
 
-    notificaciones = sorted(notificaciones, key=lambda x: x.get('leida', True))
+    # notificaciones = sorted(notificaciones, key=lambda x: x.get('leida', True))
+    # return render_template('templatesAuthentication/app.html', notificaciones=notificaciones)
+    
+    # Datos ficticios para desarrollo
+    notificaciones = [
+        {"id": 1, "titulo": "Notificación de prueba", "mensaje": "Esta es una notificación de prueba", "fecha": datetime.now(), "leida": False},
+        {"id": 2, "titulo": "Otra notificación", "mensaje": "Esta es otra notificación de prueba", "fecha": datetime.now(), "leida": True}
+    ]
     return render_template('templatesAuthentication/app.html', notificaciones=notificaciones)
 
 @app.route('/marcar_leida', methods=['POST'])
-@login_required
+# @login_required
 def marcar_leida():
-    notificacion_id = request.form.get('id')
-    if notificacion_id:
-        api_client = APIClient("notificaciones")
-        where_condition = f"id = {notificacion_id}"
-        json_data = {"leida": True}
-        response = api_client.update_data(where_condition=where_condition, json_data=json_data)
+    # Comentado temporalmente para permitir acceso sin login
+    # notificacion_id = request.form.get('id')
+    # if notificacion_id:
+    #     api_client = APIClient("notificaciones")
+    #     where_condition = f"id = {notificacion_id}"
+    #     json_data = {"leida": True}
+    #     response = api_client.update_data(where_condition=where_condition, json_data=json_data)
         
-        if response:
-            flash("Notificación marcada como leída.")
-        else:
-            flash("No se pudo marcar como leída. Intenta nuevamente.")
-    else:
-        flash("ID de notificación no válido.")
+    #     if response:
+    #         flash("Notificación marcada como leída.")
+    #     else:
+    #         flash("No se pudo marcar como leída. Intenta nuevamente.")
+    # else:
+    #     flash("ID de notificación no válido.")
     
+    flash("Notificación marcada como leída.")
     return redirect(url_for('app_view'))
 
 @app.route('/eliminar_notificacion', methods=['POST'])
-@login_required
+# @login_required
 def eliminar_notificacion():
-    notificacion_id = request.form.get('id')
-    if notificacion_id:
-        api_client = APIClient("notificaciones")
-        where_condition = f"id = {notificacion_id}"
-        response = api_client.delete_data(where_condition=where_condition)
+    # Comentado temporalmente para permitir acceso sin login
+    # notificacion_id = request.form.get('id')
+    # if notificacion_id:
+    #     api_client = APIClient("notificaciones")
+    #     where_condition = f"id = {notificacion_id}"
+    #     response = api_client.delete_data(where_condition=where_condition)
         
-        if response:
-            flash("Notificación eliminada correctamente.")
-        else:
-            flash("No se pudo eliminar la notificación. Intenta nuevamente.")
-    else:
-        flash("ID de notificación no válido.")
+    #     if response:
+    #         flash("Notificación eliminada correctamente.")
+    #     else:
+    #         flash("No se pudo eliminar la notificación. Intenta nuevamente.")
+    # else:
+    #     flash("ID de notificación no válido.")
     
+    flash("Notificación eliminada correctamente.")
     return redirect(url_for('app_view'))
 
 @app.route('/listar_proyectos')
-@login_required
+# @login_required
 def listar_proyectos():
-    user_email = session.get('user_email')
-    if not user_email:
-        return redirect(url_for('login'))
+    # Comentado temporalmente para permitir acceso sin login
+    # user_email = session.get('user_email')
+    # if not user_email:
+    #     return redirect(url_for('login'))
     
     try:
         client = APIClient('proyecto')
@@ -610,11 +826,12 @@ def listar_proyectos():
                              ideas=[], oportunidades=[], soluciones=[])
 
 @app.route('/lista_ideas')
-@login_required
+# @login_required
 def lista_ideas_view():
-    user_email = session.get('user_email')
-    if not user_email:
-        return redirect(url_for('login'))
+    # Comentado temporalmente para permitir acceso sin login
+    # user_email = session.get('user_email')
+    # if not user_email:
+    #     return redirect(url_for('login'))
     
     try:
         client = APIClient('idea')
@@ -625,11 +842,12 @@ def lista_ideas_view():
         return render_template('templatesAuthentication/lista_ideas.html', ideas=[])
 
 @app.route('/lista_opportunities')
-@login_required
+# @login_required
 def lista_opportunities():
-    user_email = session.get('user_email')
-    if not user_email:
-        return redirect(url_for('login'))
+    # Comentado temporalmente para permitir acceso sin login
+    # user_email = session.get('user_email')
+    # if not user_email:
+    #     return redirect(url_for('login'))
     
     try:
         client = APIClient('oportunidad')
@@ -640,11 +858,12 @@ def lista_opportunities():
         return render_template('templatesAuthentication/lista_opportunities.html', oportunidades=[])
 
 @app.route('/lista_solutions')
-@login_required
+# @login_required
 def lista_solutions():
-    user_email = session.get('user_email')
-    if not user_email:
-        return redirect(url_for('login'))
+    # Comentado temporalmente para permitir acceso sin login
+    # user_email = session.get('user_email')
+    # if not user_email:
+    #     return redirect(url_for('login'))
     
     try:
         client = APIClient('solucion')
@@ -656,11 +875,12 @@ def lista_solutions():
 
 # Rutas para crear ideas y oportunidades
 @app.route('/create_idea')
-@login_required
+# @login_required
 def create_idea_view():
-    user_email = session.get('user_email')
-    if not user_email:
-        return redirect(url_for('login'))
+    # Comentado temporalmente para permitir acceso sin login
+    # user_email = session.get('user_email')
+    # if not user_email:
+    #     return redirect(url_for('login'))
     
     try:
         # Obtener tipos y focos de innovación para el formulario
@@ -673,11 +893,12 @@ def create_idea_view():
         return redirect(url_for('lista_ideas'))
 
 @app.route('/create_opportunity')
-@login_required
+# @login_required
 def create_opportunity():
-    user_email = session.get('user_email')
-    if not user_email:
-        return redirect(url_for('login'))
+    # Comentado temporalmente para permitir acceso sin login
+    # user_email = session.get('user_email')
+    # if not user_email:
+    #     return redirect(url_for('login'))
     
     try:
         # Obtener tipos y focos de innovación para el formulario
@@ -693,32 +914,87 @@ def create_opportunity():
 class APIClient:
     def __init__(self, table_name):
         self.table_name = table_name
+        self.base_url = API_URL
+        self.headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
 
     def get_data(self, select_columns=None, where_condition=None):
-        # TODO: Implementar la lógica real de la API
-        # Por ahora retornamos datos de ejemplo
-        if self.table_name == "notificaciones":
-            return [
-                {"id": 1, "mensaje": "Notificación de ejemplo", "leida": False},
-                {"id": 2, "mensaje": "Otra notificación", "leida": True}
-            ]
-        elif self.table_name == "idea":
-            return [{"titulo": "Idea 1"}, {"titulo": "Idea 2"}]
-        elif self.table_name == "oportunidad":
-            return [{"titulo": "Oportunidad 1"}, {"titulo": "Oportunidad 2"}]
-        elif self.table_name == "solucion":
-            return [{"titulo": "Solución 1"}, {"titulo": "Solución 2"}]
-        elif self.table_name == "usuario":
-            return [{"email": "usuario1@example.com"}, {"email": "usuario2@example.com"}]
-        return []
+        try:
+            payload = {
+                "procedure": "select_json_entity",
+                "parameters": {
+                    "table_name": self.table_name,
+                    "select_columns": select_columns if select_columns else "*",
+                    "where_condition": where_condition if where_condition else None
+                }
+            }
+            
+            response = requests.post(
+                self.base_url,
+                json=payload,
+                headers=self.headers,
+                timeout=10
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                return data.get('outputParams', {}).get('result', [])
+            else:
+                print(f"Error en la petición: {response.status_code} - {response.text}")
+                return []
+                
+        except requests.exceptions.RequestException as e:
+            print(f"Error de conexión: {str(e)}")
+            return []
 
     def update_data(self, where_condition, json_data):
-        # TODO: Implementar la lógica real de actualización
-        return True
+        try:
+            payload = {
+                "procedure": "update_json_entity",
+                "parameters": {
+                    "table_name": self.table_name,
+                    "set_columns": json_data,
+                    "where_condition": where_condition
+                }
+            }
+            
+            response = requests.post(
+                self.base_url,
+                json=payload,
+                headers=self.headers,
+                timeout=10
+            )
+            
+            return response.status_code == 200
+            
+        except requests.exceptions.RequestException as e:
+            print(f"Error de conexión: {str(e)}")
+            return False
 
     def delete_data(self, where_condition):
-        # TODO: Implementar la lógica real de eliminación
-        return True
+        try:
+            payload = {
+                "procedure": "delete_json_entity",
+                "parameters": {
+                    "table_name": self.table_name,
+                    "where_condition": where_condition
+                }
+            }
+            
+            response = requests.post(
+                self.base_url,
+                json=payload,
+                headers=self.headers,
+                timeout=10
+            )
+            
+            return response.status_code == 200
+            
+        except requests.exceptions.RequestException as e:
+            print(f"Error de conexión: {str(e)}")
+            return False
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000)

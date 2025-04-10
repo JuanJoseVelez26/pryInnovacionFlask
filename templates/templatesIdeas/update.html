@@ -5,7 +5,7 @@
 
 {% block head %}
     <!-- Cargar estilos específicos para el Datepicker -->
-    <link href="{% static 'libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
 {% endblock head %}
 
 {% block content %}
@@ -28,7 +28,7 @@
 
                 <!-- Formulario para editar -->
                 <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <!-- Mostrar el formulario con crispy_forms -->
                     {{ form|crispy }}
 
@@ -36,7 +36,7 @@
                     <div class="form-group mb-0">
                         <div>
                             <button type="submit" class="btn btn-primary float-right">Guardar</button>
-                            <a href="{% url 'ideas:list' %}" class="btn btn-light">Regresar</a>
+                            <a href="{{ url_for('lista_ideas') }}" class="btn btn-light">Regresar</a>
                         </div>
                     </div>
                 </form>
@@ -48,7 +48,7 @@
 
 {% block scripts %}
     <!-- Cargar script para Datepicker -->
-    <script src="{% static 'libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{{ url_for('static', filename='libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 
     <script>
         // Configuración del Datepicker para el campo "fecha_creacion"

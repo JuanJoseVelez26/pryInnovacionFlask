@@ -1,9 +1,8 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block head %}
-    <link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
-    <link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 {% endblock head %}
 
 {% block content %}
@@ -70,7 +69,7 @@
                 </div>
 
                 <div class="text-center mt-4">
-                    <a href="{% url 'ideas:list' %}" class="btn btn-primary">Regresar a Ideas</a>
+                    <a href="{{ url_for('lista_ideas') }}" class="btn btn-primary">Regresar a Ideas</a>
                 </div>
             </div>
         </div>
@@ -79,10 +78,10 @@
 {% endblock content %}
 
 {% block scripts %}
-<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
-<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
-<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
-<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
 <script>
     $(document).ready(function() {
         $('#table').DataTable();

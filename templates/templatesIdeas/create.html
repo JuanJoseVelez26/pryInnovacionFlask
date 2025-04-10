@@ -1,9 +1,8 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block head %}
-    <link href="{% static 'libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
-    <script src="{% static 'libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+    <link href="{{ url_for('static', filename='libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script>
         $(function(){
             $("#id_fecha_creacion").datepicker({
@@ -35,7 +34,7 @@
                 <p class="card-title-desc">Ingrese la información para la nueva idea</p>
 
                 <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
                     <div class="form-group">
                         <label for="{{ form.titulo.id_for_label }}"> {{ form.titulo.label }} </label>
@@ -79,7 +78,7 @@
 
                     <div class="form-group mb-0">
                         <button type="submit" class="btn btn-primary float-right">Guardar Idea</button>
-                        <a href="{% url 'ideas:list' %}" class="btn btn-light">Regresar</a>
+                        <a href="{{ url_for('lista_ideas') }}" class="btn btn-light">Regresar</a>
                     </div>
                 </form>
             </div>
