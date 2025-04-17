@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <link href="{{ url_for('static', filename='libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+{% endblock head %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4>Detalle de la Solución</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="table" class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th>Código de la solución</th>
+                                <td>{{ solucion.codigo_solucion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Título</th>
+                                <td>{{ solucion.titulo }}</td>
+                            </tr>
+                            <tr>
+                                <th>Descripción</th>
+                                <td>{{ solucion.descripcion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fecha de creación</th>
+                                <td>{{ solucion.fecha_creacion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Palabras clave</th>
+                                <td>{{ solucion.palabras_claves }}</td>
+                            </tr>
+                            <tr>
+                                <th>Recursos requeridos</th>
+                                <td>{{ solucion.recursos_requeridos }}</td>
+                            </tr>
+                            <tr>
+                                <th>Archivo multimedia</th>
+                                <td>
+                                    {% if solucion.archivo_multimedia_url %}
+                                        <a href="{{ solucion.archivo_multimedia_url }}" target="_blank">Ver archivo</a>
+                                    {% else %}
+                                        No disponible
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Tipo de Innovación</th>
+                                <td>{{ solucion.id_tipo_innovacion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Foco de Innovación</th>
+                                <td>{{ solucion.id_foco_innovacion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Creado por</th>
+                                <td>{{ solucion.creador_por }}</td>
+                            </tr>
+                            <tr>
+                                <th>Desarrollado por</th>
+                                <td>{{ solucion.desarrollador_por }}</td>
+                            </tr>
+                            <tr>
+                                <th>Área o unidad de desarrollo</th>
+                                <td>{{ solucion.area_unidad_desarrollo }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('soluciones.list_soluciones') }}" class="btn btn-primary">Regresar a Soluciones</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        $('#table').DataTable();
+    });
+</script>
+{% endblock scripts %}

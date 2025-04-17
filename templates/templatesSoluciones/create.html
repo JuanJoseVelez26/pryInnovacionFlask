@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <link href="{{ url_for('static', filename='libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+{% endblock head %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script>
+        $(function(){
+            $("#id_fecha_creacion").datepicker({
+                autoclose: true,
+                format: 'yyyy-mm-dd',
+                todayHighlight: true,
+                orientation: "bottom left"
+            });
+        });
+    </script>
+{% endblock scripts %}
+
+{% block content %}
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4>Crear Nueva Solución</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Registrar Solución</h4>
+                <p class="card-title-desc">Ingrese la información para la nueva solución</p>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+
+                    <div class="form-group">
+                        {{ form.titulo.label(class="form-label") }}
+                        {{ form.titulo(class="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.descripcion.label(class="form-label") }}
+                        {{ form.descripcion(class="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.palabras_claves.label(class="form-label") }}
+                        {{ form.palabras_claves(class="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.recursos_requeridos.label(class="form-label") }}
+                        {{ form.recursos_requeridos(class="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.fecha_creacion.label(class="form-label") }}
+                        {{ form.fecha_creacion(class="form-control", id="id_fecha_creacion") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.archivo_multimedia.label(class="form-label") }}
+                        {{ form.archivo_multimedia(class="form-control-file") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.id_foco_innovacion.label(class="form-label") }}
+                        {{ form.id_foco_innovacion(class="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.id_tipo_innovacion.label(class="form-label") }}
+                        {{ form.id_tipo_innovacion(class="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.creador_por.label(class="form-label") }}
+                        {{ form.creador_por(class="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.desarrollador_por.label(class="form-label") }}
+                        {{ form.desarrollador_por(class="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.area_unidad_desarrollo.label(class="form-label") }}
+                        {{ form.area_unidad_desarrollo(class="form-control") }}
+                    </div>
+
+                    <div class="form-group mb-0">
+                        <button type="submit" class="btn btn-primary float-right">Guardar Solución</button>
+                        <a href="{{ url_for('soluciones.list_soluciones') }}" class="btn btn-light">Regresar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
