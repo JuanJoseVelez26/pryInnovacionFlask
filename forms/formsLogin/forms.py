@@ -14,10 +14,12 @@ logger = logging.getLogger(__name__)
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[
         DataRequired(message='El email es requerido'),
-        Email(message='Por favor ingrese un email válido')
+        Email(message='Ingrese un email válido')
     ])
+    
     password = PasswordField('Contraseña', validators=[
-        DataRequired(message='La contraseña es requerida')
+        DataRequired(message='La contraseña es requerida'),
+        Length(min=6, message='La contraseña debe tener al menos 6 caracteres')
     ])
 
     def validate(self, extra_validators=None):
@@ -112,34 +114,42 @@ class LoginForm(FlaskForm):
 class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[
         DataRequired(message='El email es requerido'),
-        Email(message='Por favor ingrese un email válido')
+        Email(message='Ingrese un email válido')
     ])
+    
     password1 = PasswordField('Contraseña', validators=[
         DataRequired(message='La contraseña es requerida'),
-        Length(min=8, message='La contraseña debe tener al menos 8 caracteres')
+        Length(min=6, message='La contraseña debe tener al menos 6 caracteres')
     ])
+    
     password2 = PasswordField('Confirmar Contraseña', validators=[
         DataRequired(message='Debe confirmar la contraseña'),
         EqualTo('password1', message='Las contraseñas no coinciden')
     ])
+    
     nombre = StringField('Nombre', validators=[
         DataRequired(message='El nombre es requerido'),
-        Length(max=100, message='El nombre no puede tener más de 100 caracteres')
+        Length(max=100, message='El nombre no puede exceder los 100 caracteres')
     ])
+    
     fecha_nacimiento = DateField('Fecha de Nacimiento', validators=[
         DataRequired(message='La fecha de nacimiento es requerida')
     ])
+    
     direccion = StringField('Dirección', validators=[
         DataRequired(message='La dirección es requerida'),
-        Length(max=255, message='La dirección no puede tener más de 255 caracteres')
+        Length(max=255, message='La dirección no puede exceder los 255 caracteres')
     ])
+    
     descripcion = TextAreaField('Descripción', validators=[
         DataRequired(message='La descripción es requerida')
     ])
-    area_expertise = StringField('Área de expertise', validators=[
+    
+    area_expertise = StringField('Área de Expertise', validators=[
         Optional(),
-        Length(max=100, message='El área de expertise no puede tener más de 100 caracteres')
+        Length(max=100, message='El área de expertise no puede exceder los 100 caracteres')
     ])
-    informacion_adicional = TextAreaField('Información adicional', validators=[
+    
+    informacion_adicional = TextAreaField('Información Adicional', validators=[
         Optional()
     ]) 

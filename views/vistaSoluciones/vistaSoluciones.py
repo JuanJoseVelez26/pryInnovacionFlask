@@ -3,11 +3,14 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 from urllib.parse import unquote
 import os, json, requests
+from flask_login import login_required, current_user
+import mysql.connector
+from config_flask import DATABASE_CONFIG
 
 #from models.api_client import APIClient, FocoInnovacionAPI, TipoInnovacionAPI
 #from forms.formsSoluciones import SolucionesForm
 #from utils.notificaciones import create_notification
-from forms.formsSoluciones import SolucionesUpdateForm
+from forms.formsSoluciones.formsSoluciones import SolucionesUpdateForm
 
 
 
@@ -542,3 +545,80 @@ def confirmar_solucion(request, codigo_solucion):
         else:
             # Si no es el segundo paso, mostrar el formulario de confirmación
             return render(request, 'soluciones/confirmar_solucion.html', {'solucion': solucion_data, 'is_experto': is_experto})
+
+soluciones_bp = Blueprint('soluciones', __name__)
+
+@soluciones_bp.route('/soluciones/crear', methods=['GET', 'POST'])
+@login_required
+def create():
+    if request.method == 'POST':
+        try:
+            conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
+            cursor = conn.cursor()
+            
+            # Aquí iría la lógica para crear una solución
+            # Por ahora solo mostramos un mensaje de éxito
+            flash('Solución creada exitosamente', 'success')
+            return redirect(url_for('soluciones.create'))
+            
+        except Exception as e:
+            flash(f'Error al crear la solución: {str(e)}', 'danger')
+        finally:
+            if 'conn' in locals():
+                conn.close()
+    
+    return render_template('templatesSoluciones/create.html')
+
+@soluciones_bp.route('/soluciones/calendario')
+@login_required
+def calendario():
+    try:
+        conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
+        cursor = conn.cursor(dictionary=True)
+        
+        # Aquí iría la lógica para obtener el calendario
+        # Por ahora solo renderizamos la plantilla
+        return render_template('templatesSoluciones/calendario.html')
+        
+    except Exception as e:
+        flash(f'Error al cargar el calendario: {str(e)}', 'danger')
+        return redirect(url_for('soluciones.create'))
+    finally:
+        if 'conn' in locals():
+            conn.close()
+
+@soluciones_bp.route('/soluciones/ultimos-lanzamientos')
+@login_required
+def ultimos_lanzamientos():
+    try:
+        conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
+        cursor = conn.cursor(dictionary=True)
+        
+        # Aquí iría la lógica para obtener los últimos lanzamientos
+        # Por ahora solo renderizamos la plantilla
+        return render_template('templatesSoluciones/ultimos_lanzamientos.html')
+        
+    except Exception as e:
+        flash(f'Error al cargar los últimos lanzamientos: {str(e)}', 'danger')
+        return redirect(url_for('soluciones.create'))
+    finally:
+        if 'conn' in locals():
+            conn.close()
+
+@soluciones_bp.route('/soluciones/proximos-lanzamientos')
+@login_required
+def proximos_lanzamientos():
+    try:
+        conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
+        cursor = conn.cursor(dictionary=True)
+        
+        # Aquí iría la lógica para obtener los próximos lanzamientos
+        # Por ahora solo renderizamos la plantilla
+        return render_template('templatesSoluciones/proximos_lanzamientos.html')
+        
+    except Exception as e:
+        flash(f'Error al cargar los próximos lanzamientos: {str(e)}', 'danger')
+        return redirect(url_for('soluciones.create'))
+    finally:
+        if 'conn' in locals():
+            conn.close()

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, IntegerField, DateField, FileField, SelectField
-from wtforms.validators import DataRequired, Length
+from wtforms import StringField, TextAreaField, SelectField, FileField
+from wtforms.validators import DataRequired, Length, Optional
 import requests
 
 # Funciones para obtener datos desde la API
@@ -19,51 +19,65 @@ def obtener_tipos_innovacion():
 class IdeasForm(FlaskForm):
     titulo = StringField(
         'Título',
-        validators=[DataRequired(), Length(max=255)],
+        validators=[
+            DataRequired(message='El título es requerido'),
+            Length(min=5, max=100, message='El título debe tener entre 5 y 100 caracteres')
+        ],
         render_kw={"class": "form-control", "placeholder": "Ingrese el título de la idea"}
     )
     
     descripcion = TextAreaField(
         'Descripción',
-        validators=[DataRequired()],
+        validators=[
+            DataRequired(message='La descripción es requerida'),
+            Length(min=10, max=1000, message='La descripción debe tener entre 10 y 1000 caracteres')
+        ],
         render_kw={"class": "form-control", "placeholder": "Proporcione una descripción detallada de la idea"}
-    )
-    
-    recursos_requeridos = IntegerField(
-        'Recursos Requeridos',
-        validators=[DataRequired()],
-        render_kw={"class": "form-control", "placeholder": "Cantidad de recursos necesarios"}
     )
     
     palabras_claves = StringField(
         'Palabras Claves',
-        validators=[DataRequired(), Length(max=255)],
+        validators=[
+            DataRequired(message='Las palabras claves son requeridas'),
+            Length(max=200, message='Las palabras claves no pueden exceder los 200 caracteres')
+        ],
         render_kw={"class": "form-control", "placeholder": "Palabras clave relacionadas con la idea"}
     )
     
-    fecha_creacion = DateField(
-        'Fecha de Creación',
-        validators=[DataRequired()],
-        format='%Y-%m-%d',
-        render_kw={"class": "form-control", "type": "date"}
-    )
-    
-    archivo_multimedia = FileField(
-        'Archivos Multimedia',
-        render_kw={"class": "form-control"}
+    recursos_requeridos = TextAreaField(
+        'Recursos Requeridos',
+        validators=[
+            Optional(),
+            Length(max=500, message='Los recursos requeridos no pueden exceder los 500 caracteres')
+        ],
+        render_kw={"class": "form-control", "placeholder": "Describa los recursos necesarios"}
     )
     
     id_foco_innovacion = SelectField(
         'Foco de Innovación',
-        choices=[],
-        validators=[DataRequired()],
+        coerce=int,
+        validators=[DataRequired(message='El foco de innovación es requerido')],
         render_kw={"class": "form-control"}
     )
     
     id_tipo_innovacion = SelectField(
         'Tipo de Innovación',
-        choices=[],
-        validators=[DataRequired()],
+        coerce=int,
+        validators=[DataRequired(message='El tipo de innovación es requerido')],
+        render_kw={"class": "form-control"}
+    )
+    
+    mensaje_experto = TextAreaField(
+        'Mensaje del Experto',
+        validators=[
+            Optional(),
+            Length(max=500, message='El mensaje no puede exceder los 500 caracteres')
+        ],
+        render_kw={"class": "form-control", "placeholder": "Mensaje del experto sobre la idea"}
+    )
+    
+    archivo_multimedia = FileField(
+        'Archivos Multimedia',
         render_kw={"class": "form-control"}
     )
 
