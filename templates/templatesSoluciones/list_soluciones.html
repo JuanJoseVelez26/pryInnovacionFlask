@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block head %}
+<!-- DataTables -->
+<link href="{{ url_for('static', filename='libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+{% endblock head %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4>Lista de Soluciones</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">
+                    Soluciones
+                    <a class="btn btn-success float-right" href="{{ url_for('soluciones.create') }}">Crear Nueva Solución</a>
+                </h4>
+
+                <!-- Filtros -->
+                <form method="get" action="{{ url_for('soluciones.list_soluciones') }}">
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <label for="tipo_innovacion">Tipo de Innovación</label>
+                            <select id="tipo_innovacion" name="tipo_innovacion" class="form-control">
+                                <option value="">-- Todos --</option>
+                                {% for tipo in tipos %}
+                                    <option value="{{ tipo.id_tipo_innovacion }}" {% if tipo.id_tipo_innovacion == selected_tipo %}selected{% endif %}>
+                                        {{ tipo.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="foco_innovacion">Foco de Innovación</label>
+                            <select id="foco_innovacion" name="foco_innovacion" class="form-control">
+                                <option value="">-- Todos --</option>
+                                {% for foco in focos %}
+                                    <option value="{{ foco.id_foco_innovacion }}" {% if foco.id_foco_innovacion == selected_foco %}selected{% endif %}>
+                                        {{ foco.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="estado">Estado</label>
+                            <select id="estado" name="estado" class="form-control">
+                                <option value="">-- Todos --</option>
+                                <option value="True" {% if selected_estado == 'True' %}selected{% endif %}>Aprobada</option>
+                                <option value="False" {% if selected_estado == 'False' %}selected{% endif %}>Pendiente</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Tabla de Soluciones -->
+                <div class="table-responsive">
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Palabras clave</th>
+                                <th>Tipo de Innovación</th>
+                                <th>Foco de Innovación</th>
+                                <th>Fecha de Creación</th>
+                                <th>Creado por</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if soluciones %}
+                                {% for solucion in soluciones %}
+                                <tr {% if solucion.estado %} class="table-success" {% endif %}>
+                                    <td>
+                                        <a href="{{ url_for('soluciones.detail_soluciones', codigo_solucion=solucion.codigo_solucion) }}">
+                                            {{ solucion.titulo }}
+                                        </a>
+                                    </td>
+                                    <td>{{ solucion.descripcion }}</td>
+                                    <td>{{ solucion.palabras_claves }}</td>
+                                    <td>{{ solucion.tipo_innovacion_nombre }}</td>
+                                    <td>{{ solucion.foco_innovacion_nombre }}</td>
+                                    <td>{{ solucion.fecha_creacion }}</td>
+                                    <td>{{ solucion.creador_por }}</td>
+                                    <td>
+                                        {% if solucion.estado %}
+                                            <span class="badge badge-success">Aprobada</span>
+                                        {% else %}
+                                            <span class="badge badge-warning">Aprobación pendiente</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-center">
+                                        {% if not solucion.estado %}
+                                            {% if solucion.creador_por == user_email or is_experto %}
+                                                <a href="{{ url_for('soluciones.update_soluciones', codigo_solucion=solucion.codigo_solucion) }}" class="btn btn-warning btn-sm" style="width: 100px;">Editar</a>
+                                                <a href="{{ url_for('soluciones.delete_soluciones', codigo_solucion=solucion.codigo_solucion) }}" class="btn btn-danger btn-sm" style="width: 100px;">Eliminar</a>
+                                            {% endif %}
+                                            {% if is_experto %}
+                                                <form action="{{ url_for('soluciones.confirmar_solucion', codigo_solucion=solucion.codigo_solucion) }}" method="post">
+                                                    {{ csrf_field() }}
+                                                    <button type="submit" class="btn btn-success btn-sm" style="width: 100px;">
+                                                        <i class="fas fa-check"></i> Aprobar
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="9" class="text-center">No hay soluciones disponibles.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        $('#datatable').DataTable();
+    });
+</script>
+{% endblock scripts %}
