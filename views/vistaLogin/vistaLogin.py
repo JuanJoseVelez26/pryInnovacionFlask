@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from flask_login import login_user, logout_user, current_user
 from datetime import datetime
 import mysql.connector
 from werkzeug.security import generate_password_hash
@@ -14,10 +13,12 @@ login_bp = Blueprint('login', __name__)
 
 @login_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('auth.dashboard'))
-        
     form = LoginForm()
+    if request.method == 'GET':
+        # if current_user.is_authenticated:
+        #     return redirect(url_for('auth.dashboard'))
+        return render_template('templatesLogin/login.html', form=form)
+    
     if form.validate_on_submit():
         try:
             conn = mysql.connector.connect(**db_config)
@@ -133,10 +134,12 @@ def login():
 
 @login_bp.route('/register', methods=['GET', 'POST'])
 def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('auth.dashboard'))
-        
     form = RegisterForm()
+    if request.method == 'GET':
+        # if current_user.is_authenticated:
+        #     return redirect(url_for('auth.dashboard'))
+        return render_template('templatesLogin/register.html', form=form)
+    
     if form.validate_on_submit():
         try:
             conn = mysql.connector.connect(**db_config)

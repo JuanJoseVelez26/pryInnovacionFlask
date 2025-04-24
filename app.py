@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import requests
 from flask_wtf.csrf import CSRFProtect
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+# from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from datetime import datetime
 import os
 from config_flask import *
@@ -23,7 +23,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 csrf = CSRFProtect(app)
 
-# Configuración de Flask-Login
+# Configuración de Flask-Login (desactivado por ahora)
 # login_manager = LoginManager()
 # login_manager.init_app(app)
 # login_manager.login_view = 'login.login'
@@ -33,17 +33,17 @@ db_config = DATABASE_CONFIG['mysql']
 
 db = SQLAlchemy(app)
 
-class User:
-    def __init__(self, user_data):
-        self.id = user_data['id']
-        self.email = user_data['email']
-        self.rol = user_data['rol']
-        self.is_active = user_data.get('is_active', True)
-        self.is_authenticated = True
-        self.is_anonymous = False
-
-    def get_id(self):
-        return str(self.id)
+# class User:
+#     def __init__(self, user_data):
+#         self.id = user_data['id']
+#         self.email = user_data['email']
+#         self.rol = user_data['rol']
+#         self.is_active = user_data.get('is_active', True)
+#         self.is_authenticated = True
+#         self.is_anonymous = False
+# 
+#     def get_id(self):
+#         return str(self.id)
 
 # @login_manager.user_loader
 # def load_user(user_id):
