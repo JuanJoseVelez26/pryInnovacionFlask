@@ -1,52 +1,69 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='styles/login.css') }}" rel="stylesheet" type="text/css" />
+</head>
 
-{% block title %}Iniciar Sesión{% endblock %}
+<body>
+    <div class="background-container"></div>
+    <div class="account-pages my-5 pt-sm-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6 col-xl-5">
+                    <div class="card overflow-hidden">
+                        <div class="card-body pt-0">
+                            <h3 class="text-center mt-4">
+                                <a href="#" class="logo logo-admin">
+                                    <img src="https://www.usbmed.edu.co/Portals/0/logo-usbmed.png?ver=2023-08-29-004046-690" height="30" alt="logo">
+                                </a>
+                            </h3>
+                            <div class="p-3">
+                                <h4 class="font-size-18 mb-1 text-center">¡Bienvenidos!</h4>
+                                <p class="text-muted text-center">Grupo Innovación</p>
 
-{% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="text-center">Iniciar Sesión</h4>
-            </div>
-            <div class="card-body">
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}">{{ message }}</div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-                
-                <form method="POST" action="{{ url_for('login.login') }}">
-                    {{ form.csrf_token }}
-                    <div class="mb-3">
-                        {{ form.email.label(class="form-label") }}
-                        {{ form.email(class="form-control") }}
-                        {% if form.email.errors %}
-                            {% for error in form.email.errors %}
-                                <div class="text-danger">{{ error }}</div>
-                            {% endfor %}
-                        {% endif %}
+                                {% with messages = get_flashed_messages(with_categories=true) %}
+                                    {% if messages %}
+                                        {% for category, message in messages %}
+                                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endwith %}
+
+                                <form class="form-horizontal mt-4" action="{{ url_for('login.login') }}" method="post">
+                                    {{ form.csrf_token }}
+                                    <div class="form-group">
+                                        <label for="email">Correo Electrónico</label>
+                                        {{ form.email(class="form-control", id="email", placeholder="Ingrese su correo electrónico", required=True) }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contrasena">Contraseña</label>
+                                        {{ form.password(class="form-control", id="contrasena", placeholder="Ingrese su contraseña", required=True) }}
+                                    </div>
+                                    <div class="form-group row mt-4">
+                                        <div class="col-12 text-center">
+                                            <button type="submit" class="btn btn-custom w-md waves-effect waves-light">Iniciar Sesión</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        {{ form.password.label(class="form-label") }}
-                        {{ form.password(class="form-control") }}
-                        {% if form.password.errors %}
-                            {% for error in form.password.errors %}
-                                <div class="text-danger">{{ error }}</div>
-                            {% endfor %}
-                        {% endif %}
+                    <div class="mt-5 text-center">
+                        <p>¿No tienes cuenta? <a href="{{ url_for('register') }}" class="text-register">Regístrate ahora</a></p>
+                        <p>© 2024 <i class="mdi mdi-heart text-danger"></i> Universidad San Buenaventura</p>
                     </div>
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-                    </div>
-                </form>
-                <div class="text-center mt-3">
-                    <p>¿No tienes una cuenta? <a href="{{ url_for('login.register') }}">Regístrate aquí</a></p>
                 </div>
             </div>
         </div>
     </div>
-</div>
-{% endblock %}
+</body>
+</html>

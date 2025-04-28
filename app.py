@@ -1,66 +1,115 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import requests
 from flask_wtf.csrf import CSRFProtect
-# from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from datetime import datetime
 import os
 from config_flask import *
-import mysql.connector
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from passlib.hash import pbkdf2_sha256
 from forms.formsLogin.forms import LoginForm, RegisterForm
 from dotenv import load_dotenv
-from flask_sqlalchemy import SQLAlchemy
+from models import db, Usuario, Perfil, Idea, Oportunidad, Proyecto, Solucion
 
 # Cargar variables de entorno
 load_dotenv()
 
 app = Flask(__name__)
 app.config.from_object('config_flask')
-app.config['SECRET_KEY'] = 'tu_clave_secreta_aqui'
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_CONFIG['mysql']['SQLALCHEMY_DATABASE_URI']
+app.config['SECRET_KEY'] = SECRET_KEY
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_CONFIG[DATABASE_TYPE]['SQLALCHEMY_DATABASE_URI']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 csrf = CSRFProtect(app)
 
-# Configuración de Flask-Login (desactivado por ahora)
-# login_manager = LoginManager()
-# login_manager.init_app(app)
-# login_manager.login_view = 'login.login'
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login.login'
+login_manager.login_message = 'Por favor inicia sesión para acceder a esta página.'
 
 # Usar la configuración de MySQL
 db_config = DATABASE_CONFIG['mysql']
 
-db = SQLAlchemy(app)
+# Inicializar SQLAlchemy
+db.init_app(app)
 
-# class User:
-#     def __init__(self, user_data):
-#         self.id = user_data['id']
-#         self.email = user_data['email']
-#         self.rol = user_data['rol']
-#         self.is_active = user_data.get('is_active', True)
-#         self.is_authenticated = True
-#         self.is_anonymous = False
-# 
-#     def get_id(self):
-#         return str(self.id)
+@login_manager.user_loader
+def load_user(user_id):
+    return Usuario.query.get(int(user_id))
 
-# @login_manager.user_loader
-# def load_user(user_id):
-#     try:
-#         conn = mysql.connector.connect(**db_config)
-#         cursor = conn.cursor(dictionary=True)
-#         cursor.execute("SELECT * FROM usuario WHERE id = %s", (user_id,))
-#         user_data = cursor.fetchone()
-#         cursor.close()
-#         conn.close()
-#         
-#         if user_data:
-#             return User(user_data)
-#         return None
-#     except Exception as e:
-#         print(f"Error al cargar usuario: {e}")
-#         return None
+@app.route('/')
+def index():
+    return redirect(url_for('login.login'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = Usuario.query.filter_by(email=form.email.data).first()
+        if user:
+            try:
+                if pbkdf2_sha256.verify(form.password.data, user.password):
+                    login_user(user)
+                    next_page = request.args.get('next')
+                    return redirect(next_page or url_for('dashboard'))
+            except ValueError:
+                # Si falla el hash, intenta comparar en texto plano
+                if form.password.data == user.password:
+                    # Actualiza la contraseña a hash seguro
+                    user.password = pbkdf2_sha256.hash(form.password.data)
+                    db.session.commit()
+                    login_user(user)
+                    next_page = request.args.get('next')
+                    return redirect(next_page or url_for('dashboard'))
+        flash('Email o contraseña incorrectos', 'error')
+    return render_template('templatesLogin/login.html', form=form)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('Has cerrado sesión correctamente', 'success')
+    return redirect(url_for('login.login'))
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        if Usuario.query.filter_by(email=form.email.data).first():
+            flash('El email ya está registrado', 'error')
+            return redirect(url_for('register'))
+        
+        hashed_password = generate_password_hash(form.password.data)
+        new_user = Usuario(
+            nombre=form.nombre.data,
+            email=form.email.data,
+            password=hashed_password
+        )
+        
+        db.session.add(new_user)
+        
+        # Crear perfil asociado
+        new_profile = Perfil(
+            usuario=new_user,
+            descripcion=form.descripcion.data,
+            area_expertise_id=form.area_expertise.data
+        )
+        db.session.add(new_profile)
+        
+        try:
+            db.session.commit()
+            flash('Registro exitoso. Por favor inicia sesión.', 'success')
+            return redirect(url_for('login.login'))
+        except Exception as e:
+            db.session.rollback()
+            flash('Error al registrar usuario. Por favor intenta nuevamente.', 'error')
+    
+    return render_template('templatesLogin/register.html', form=form)
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('dashboard.html', user=current_user)
 
 # Definir la URL base de la API
 API_BASE_URL = API_URL
@@ -83,4 +132,6 @@ app.register_blueprint(oportunidades_bp)
 app.register_blueprint(soluciones_bp)
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(debug=True, host='127.0.0.1', port=5000)

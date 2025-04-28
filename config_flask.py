@@ -19,7 +19,12 @@ DATABASE_CONFIG = {
     
     # Configuración para PostgreSQL
     'postgresql': {
-        'SQLALCHEMY_DATABASE_URI': 'postgresql://postgres:@localhost:5432/bdinnovacion',
+        'host': 'localhost',
+        'user': 'postgres',
+        'password': 'Postres',
+        'database': 'bd_Innovacion',
+        'port': 5432,
+        'SQLALCHEMY_DATABASE_URI': 'postgresql://postgres:Postres@localhost:5432/bd_Innovacion',
         'SQLALCHEMY_TRACK_MODIFICATIONS': False
     },
     
