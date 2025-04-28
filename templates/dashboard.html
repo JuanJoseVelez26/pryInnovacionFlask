@@ -117,14 +117,14 @@
                 <div class="card-body">
                     <h4 class="card-title mb-4">Acciones Rápidas</h4>
                     <div class="d-grid gap-2">
-                        <a href="{{ url_for('create_idea') }}" class="btn btn-primary waves-effect waves-light">
+                        <a href="{{ url_for('ideas.create_idea') }}" class="btn btn-primary waves-effect waves-light">
                             <i class="ri-add-line align-middle me-1"></i> Nueva Idea
                         </a>
-                        <a href="{{ url_for('create_opportunity') }}" class="btn btn-success waves-effect waves-light">
+                        <a href="{{ url_for('oportunidades.create') }}" class="btn btn-success waves-effect waves-light">
                             <i class="ri-add-line align-middle me-1"></i> Nueva Oportunidad
                         </a>
-                        <a href="{{ url_for('listar_proyectos') }}" class="btn btn-info waves-effect waves-light">
-                            <i class="ri-folder-line align-middle me-1"></i> Ver Proyectos
+                        <a href="{{ url_for('ideas.list_ideas') }}" class="btn btn-info waves-effect waves-light">
+                            <i class="ri-folder-line align-middle me-1"></i> Ver Ideas
                         </a>
                     </div>
                 </div>

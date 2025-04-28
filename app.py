@@ -39,29 +39,14 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    return redirect(url_for('login.login'))
+    return redirect(url_for('dashboard'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = Usuario.query.filter_by(email=form.email.data).first()
-        if user:
-            try:
-                if pbkdf2_sha256.verify(form.password.data, user.password):
-                    login_user(user)
-                    next_page = request.args.get('next')
-                    return redirect(next_page or url_for('dashboard'))
-            except ValueError:
-                # Si falla el hash, intenta comparar en texto plano
-                if form.password.data == user.password:
-                    # Actualiza la contraseña a hash seguro
-                    user.password = pbkdf2_sha256.hash(form.password.data)
-                    db.session.commit()
-                    login_user(user)
-                    next_page = request.args.get('next')
-                    return redirect(next_page or url_for('dashboard'))
-        flash('Email o contraseña incorrectos', 'error')
+        # Redirigir directamente al dashboard
+        return redirect(url_for('dashboard'))
     return render_template('templatesLogin/login.html', form=form)
 
 @app.route('/logout')
@@ -107,9 +92,21 @@ def register():
     return render_template('templatesLogin/register.html', form=form)
 
 @app.route('/dashboard')
-@login_required
 def dashboard():
-    return render_template('dashboard.html', user=current_user)
+    # Crear un usuario temporal para la sesión
+    session['user_email'] = 'usuario@temporal.com'
+    session['user_name'] = 'Usuario Temporal'
+    session['user_role'] = 'Usuario'
+    
+    # Datos temporales para el dashboard
+    dashboard_data = {
+        'total_ideas': 0,
+        'total_opportunities': 0,
+        'total_projects': 0,
+        'recent_activities': []
+    }
+    
+    return render_template('dashboard.html', **dashboard_data)
 
 # Definir la URL base de la API
 API_BASE_URL = API_URL
