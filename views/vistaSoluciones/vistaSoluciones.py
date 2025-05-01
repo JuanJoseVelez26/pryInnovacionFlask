@@ -79,7 +79,7 @@ def calendario():
         if 'conn' in locals():
             conn.close()
 
-'''@soluciones_bp.route('/soluciones/ultimos-lanzamientos')
+@soluciones_bp.route('/soluciones/ultimos-lanzamientos')
 def ultimos_lanzamientos():
     try:
         conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
@@ -92,11 +92,11 @@ def ultimos_lanzamientos():
         return redirect(url_for('soluciones.listar'))
     finally:
         if 'conn' in locals():
-            conn.close()'''
+            conn.close()
 
-# Analizando su funcionamiento
 
-'''@soluciones_bp.route('/soluciones/proximos-lanzamientos')
+
+@soluciones_bp.route('/soluciones/proximos-lanzamientos')
 def proximos_lanzamientos():
     try:
         conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
@@ -109,4 +109,4 @@ def proximos_lanzamientos():
         return redirect(url_for('soluciones.listar'))
     finally:
         if 'conn' in locals():
-            conn.close()'''
+            conn.close()
