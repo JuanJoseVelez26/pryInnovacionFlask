@@ -15,7 +15,7 @@ from forms.formsSoluciones.formsSoluciones import SolucionesUpdateForm, Solucion
 # Crear un solo blueprint para soluciones
 soluciones_bp = Blueprint('soluciones', __name__)
 
-@soluciones_bp.route('/soluciones/listar')
+@soluciones_bp.route('/soluciones/listar',methods = ['GET'])
 def listar():
     user_email = session.get('user_email')
     if not user_email:
@@ -33,7 +33,7 @@ def listar():
         """)
         soluciones = cursor.fetchall()
         
-        return render_template('templatesSoluciones/list.html', soluciones=soluciones)
+        return render_template('templatesSoluciones/list_soluciones.html', soluciones=soluciones)
         
     except Exception as e:
         flash(f'Error al cargar las soluciones: {str(e)}', 'danger')
@@ -44,7 +44,7 @@ def listar():
 
 @soluciones_bp.route('/soluciones/crear', methods=['GET', 'POST'])
 def create():
-    form = SolucionesForm()
+    form = SolucionesUpdateForm()
     
     if request.method == 'POST' and form.validate_on_submit():
         try:
@@ -70,7 +70,7 @@ def calendario():
         conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
         cursor = conn.cursor(dictionary=True)
         
-        return render_template('templatesSoluciones/calendario.html')
+        return render_template('calendar.html')
         
     except Exception as e:
         flash(f'Error al cargar el calendario: {str(e)}', 'danger')
@@ -79,7 +79,7 @@ def calendario():
         if 'conn' in locals():
             conn.close()
 
-@soluciones_bp.route('/soluciones/ultimos-lanzamientos')
+'''@soluciones_bp.route('/soluciones/ultimos-lanzamientos')
 def ultimos_lanzamientos():
     try:
         conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
@@ -92,9 +92,11 @@ def ultimos_lanzamientos():
         return redirect(url_for('soluciones.listar'))
     finally:
         if 'conn' in locals():
-            conn.close()
+            conn.close()'''
 
-@soluciones_bp.route('/soluciones/proximos-lanzamientos')
+# Analizando su funcionamiento
+
+'''@soluciones_bp.route('/soluciones/proximos-lanzamientos')
 def proximos_lanzamientos():
     try:
         conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
@@ -107,4 +109,4 @@ def proximos_lanzamientos():
         return redirect(url_for('soluciones.listar'))
     finally:
         if 'conn' in locals():
-            conn.close()
+            conn.close()'''
