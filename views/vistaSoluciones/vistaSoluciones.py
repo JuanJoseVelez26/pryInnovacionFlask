@@ -10,7 +10,7 @@ from config_flask import DATABASE_CONFIG
 #from models.api_client import APIClient, FocoInnovacionAPI, TipoInnovacionAPI
 #from forms.formsSoluciones import SolucionesForm
 #from utils.notificaciones import create_notification
-from forms.formsSoluciones.formsSoluciones import SolucionesUpdateForm, SolucionesForm
+from forms.formsSoluciones.formsSoluciones import SolucionesForm
 
 # Crear un solo blueprint para soluciones
 soluciones_bp = Blueprint('soluciones', __name__)
@@ -44,7 +44,7 @@ def listar():
 
 @soluciones_bp.route('/soluciones/crear', methods=['GET', 'POST'])
 def create():
-    form = SolucionesUpdateForm()
+    form = SolucionesForm()
     
     if request.method == 'POST' and form.validate_on_submit():
         try:
