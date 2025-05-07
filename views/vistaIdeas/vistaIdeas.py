@@ -1,13 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, jsonify
 # from flask_login import login_required, current_user
-import mysql.connector
+import psycopg2
+from psycopg2.extras import DictCursor
 from datetime import datetime
 from config_flask import DATABASE_CONFIG
 from forms.formsIdeas.formsIdeas import IdeasForm
 from forms.formsIdeas.forms import IdeaForm
 
-# Usar la configuración de MySQL
-db_config = DATABASE_CONFIG['mysql']
+# Usar la configuración de PostgreSQL
+db_config = DATABASE_CONFIG['postgresql']
 
 ideas_bp = Blueprint('ideas', __name__)
 
@@ -15,8 +16,8 @@ ideas_bp = Blueprint('ideas', __name__)
 # @login_required
 def list_ideas():
     try:
-        conn = mysql.connector.connect(**db_config)
-        cursor = conn.cursor(dictionary=True)
+        conn = psycopg2.connect(**db_config)
+        cursor = conn.cursor(cursor_factory=DictCursor)
         
         # Construir la consulta base
         query = """
@@ -41,13 +42,10 @@ def list_ideas():
             filters.append("i.id_foco_innovacion = %s")
             params.append(foco_innovacion)
         if estado is not None and estado != '':
-             # Convertir estado a booleano adecuado para la base de datos (ej: 0 o 1)
-            try:
-                estado_bool = int(estado) # Asume 0 para pendiente, 1 para aprobado
-                filters.append("i.estado = %s")
-                params.append(estado_bool)
-            except ValueError:
-                flash('Valor de estado inválido.', 'warning')
+            # Convertir estado a booleano para PostgreSQL
+            estado_bool = estado == '1'
+            filters.append("i.estado = %s")
+            params.append(estado_bool)
 
         if filters:
             query += " WHERE " + " AND ".join(filters)
@@ -94,17 +92,15 @@ def list_ideas():
     finally:
         if 'cursor' in locals() and cursor:
             cursor.close()
-        if 'conn' in locals() and conn.is_connected():
+        if 'conn' in locals() and conn:
             conn.close()
-    
-    return render_template('templatesIdeas/list.html', ideas=ideas)
 
 @ideas_bp.route('/ideas/<int:codigo_idea>')
 # @login_required
 def view_idea(codigo_idea):
     try:
-        conn = mysql.connector.connect(**db_config)
-        cursor = conn.cursor(dictionary=True)
+        conn = psycopg2.connect(**db_config)
+        cursor = conn.cursor(cursor_factory=DictCursor)
         
         cursor.execute("""
             SELECT i.*, u.nombre as autor_nombre, ti.nombre as tipo_innovacion_nombre, fi.nombre as foco_innovacion_nombre
@@ -140,7 +136,7 @@ def view_idea(codigo_idea):
     finally:
         if 'cursor' in locals() and cursor:
             cursor.close()
-        if 'conn' in locals() and conn.is_connected():
+        if 'conn' in locals() and conn:
             conn.close()
 
 @ideas_bp.route('/ideas/create', methods=['GET', 'POST'])
@@ -152,16 +148,16 @@ def create_idea():
     form = IdeaForm()
     
     try:
-        conn = mysql.connector.connect(**db_config)
-        cursor_tipos = conn.cursor(dictionary=True)
-        cursor_tipos.execute("SELECT id_tipo_innovacion as id, nombre FROM tipo_innovacion")
-        tipos_innovacion = cursor_tipos.fetchall()
-        cursor_tipos.close()
+        conn = psycopg2.connect(**db_config)
+        cursor = conn.cursor(cursor_factory=DictCursor)
+        cursor.execute("SELECT id_tipo_innovacion as id, nombre FROM tipo_innovacion")
+        tipos_innovacion = cursor.fetchall()
+        cursor.close()
 
-        cursor_focos = conn.cursor(dictionary=True)
-        cursor_focos.execute("SELECT id_foco_innovacion as id, nombre FROM foco_innovacion")
-        focos_innovacion = cursor_focos.fetchall()
-        cursor_focos.close()
+        cursor = conn.cursor(cursor_factory=DictCursor)
+        cursor.execute("SELECT id_foco_innovacion as id, nombre FROM foco_innovacion")
+        focos_innovacion = cursor.fetchall()
+        cursor.close()
         conn.close() # Cerrar conexión después de obtener tipos y focos
 
         # Asignar las opciones a los campos SelectField del formulario
@@ -178,7 +174,7 @@ def create_idea():
 
     if form.validate_on_submit():
         try:
-            conn = mysql.connector.connect(**db_config)
+            conn = psycopg2.connect(**db_config)
             cursor = conn.cursor()
             
             cursor.execute("""
@@ -193,7 +189,7 @@ def create_idea():
                 form.id_tipo_innovacion.data,
                 form.id_foco_innovacion.data,
                 user_email, # Usar el email de la sesión o el temporal
-                0 # Estado pendiente por defecto
+                False # Estado pendiente por defecto en PostgreSQL es false
             ))
             
             conn.commit()
@@ -205,13 +201,13 @@ def create_idea():
         finally:
             if 'cursor' in locals() and cursor:
                 cursor.close()
-            if 'conn' in locals() and conn.is_connected():
+            if 'conn' in locals() and conn:
                 conn.close()
 
     # Si no es POST o falla la validación/inserción, renderizar el formulario
     return render_template('templatesIdeas/create.html',
                          form=form,
-                         tipos_innovacion=tipos_innovacion, # Pasar tipos y focos aunque ya estén en form.choices
+                         tipos_innovacion=tipos_innovacion,
                          focos_innovacion=focos_innovacion)
 
 @ideas_bp.route('/ideas/<int:codigo_idea>/update', methods=['GET', 'POST'])
@@ -221,8 +217,8 @@ def update_idea(codigo_idea):
     form = IdeasForm() # Asume que IdeasForm es para la actualización
 
     try:
-        conn = mysql.connector.connect(**db_config)
-        cursor = conn.cursor(dictionary=True)
+        conn = psycopg2.connect(**db_config)
+        cursor = conn.cursor(cursor_factory=DictCursor)
         
         # Obtener idea para verificar propietario y rellenar formulario
         cursor.execute("SELECT * FROM idea WHERE codigo_idea = %s", (codigo_idea,))
@@ -279,12 +275,11 @@ def update_idea(codigo_idea):
 
     except Exception as e:
         flash(f'Error al procesar la actualización: {str(e)}', 'danger')
-        # Podrías redirigir o renderizar el template con un mensaje de error
-        return redirect(url_for('ideas.list_ideas')) # Redirigir en caso de error grave
+        return redirect(url_for('ideas.list_ideas'))
     finally:
         if 'cursor' in locals() and cursor:
             cursor.close()
-        if 'conn' in locals() and conn.is_connected():
+        if 'conn' in locals() and conn:
             conn.close()
 
 @ideas_bp.route('/ideas/<int:codigo_idea>/delete', methods=['POST'])
@@ -293,8 +288,8 @@ def delete_idea(codigo_idea):
     user_email = session.get('email', 'usuario@ejemplo.com') # Usar email temporal si no hay sesión
 
     try:
-        conn = mysql.connector.connect(**db_config)
-        cursor = conn.cursor(dictionary=True) # Usar dictionary=True para facilitar la verificación
+        conn = psycopg2.connect(**db_config)
+        cursor = conn.cursor(cursor_factory=DictCursor)
 
         # Primero, verificar si la idea existe y si el usuario es el propietario
         cursor.execute("SELECT usuario_email FROM idea WHERE codigo_idea = %s", (codigo_idea,))
@@ -319,12 +314,11 @@ def delete_idea(codigo_idea):
 
     except Exception as e:
         flash(f'Error al eliminar la idea: {str(e)}', 'danger')
-        # Redirigir a la vista de la idea si falla la eliminación pero la verificación pasó
         return redirect(url_for('ideas.view_idea', codigo_idea=codigo_idea))
     finally:
         if 'cursor' in locals() and cursor:
             cursor.close()
-        if 'conn' in locals() and conn.is_connected():
+        if 'conn' in locals() and conn:
             conn.close()
 
 @ideas_bp.route('/ideas/<int:codigo_idea>/confirmar', methods=['POST'])
@@ -342,41 +336,40 @@ def confirmar_idea(codigo_idea):
         return redirect(url_for('ideas.view_idea', codigo_idea=codigo_idea))
 
     try:
-        conn = mysql.connector.connect(**db_config)
+        conn = psycopg2.connect(**db_config)
         cursor = conn.cursor()
 
         # Actualizar estado de la idea
         cursor.execute("""
-            UPDATE idea SET estado = 1, fecha_modificacion = %s
+            UPDATE idea SET estado = true, fecha_modificacion = %s
             WHERE codigo_idea = %s
         """, (datetime.now(), codigo_idea))
 
-        # Crear proyecto a partir de la idea (ajustar según tu esquema de 'proyecto')
-        # Asegúrate de que la tabla 'proyecto' y sus columnas existan
+        # Crear proyecto a partir de la idea
         cursor.execute("""
             INSERT INTO proyecto (titulo, descripcion, palabras_claves, recursos_requeridos,
                                   fecha_creacion, id_tipo_innovacion, id_foco_innovacion,
-                                  creador_por, estado, fecha_aprobacion, aprobado_por, id_idea)
+                                  usuario_email, estado, fecha_aprobacion, aprobado_por, id_idea)
             SELECT titulo, descripcion, palabras_claves, recursos_requeridos,
                    fecha_creacion, id_tipo_innovacion, id_foco_innovacion,
-                   usuario_email, 1, %s, %s, codigo_idea
+                   usuario_email, true, %s, %s, codigo_idea
             FROM idea WHERE codigo_idea = %s
         """, (datetime.now(), user_email, codigo_idea))
 
         conn.commit()
         flash('Idea confirmada y proyecto creado exitosamente.', 'success')
 
-    except mysql.connector.Error as err:
+    except psycopg2.Error as err:
          flash(f'Error de base de datos al confirmar la idea: {err}', 'danger')
     except Exception as e:
         flash(f'Error inesperado al confirmar la idea: {str(e)}', 'danger')
     finally:
         if 'cursor' in locals() and cursor:
              cursor.close()
-        if 'conn' in locals() and conn.is_connected():
+        if 'conn' in locals() and conn:
             conn.close()
 
-    return redirect(url_for('ideas.list_ideas')) # Redirige siempre al final
+    return redirect(url_for('ideas.list_ideas'))
 
 @ideas_bp.route('/ideas/matriz-evaluacion')
 # @login_required
@@ -386,29 +379,24 @@ def matriz_evaluacion():
 @ideas_bp.route('/ideas/estadisticas')
 # @login_required
 def estadisticas():
-    # Aquí podrías añadir lógica para obtener y pasar datos de estadísticas
     return render_template('templatesIdeas/estadisticas.html')
 
 @ideas_bp.route('/ideas/retos')
 # @login_required
 def retos():
-    # Lógica para mostrar retos
     return render_template('templatesIdeas/retos.html')
 
 @ideas_bp.route('/ideas/top-generadores')
 # @login_required
 def top_generadores():
-    # Lógica para obtener y mostrar el top 10
     return render_template('templatesIdeas/top_generadores.html')
 
 @ideas_bp.route('/ideas/evaluacion')
 # @login_required
 def evaluacion():
-    # Lógica para la evaluación de ideas
     return render_template('templatesIdeas/evaluacion.html')
 
 @ideas_bp.route('/ideas/mercado')
 # @login_required
 def mercado():
-    # Lógica para el mercado de ideas
     return render_template('templatesIdeas/mercado.html')

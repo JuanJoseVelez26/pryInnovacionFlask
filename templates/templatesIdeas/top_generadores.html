@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Top Generadores de Ideas</h2>
+    
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Total Ideas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for usuario, total_ideas in top_generadores %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ usuario }}</td>
+                            <td>{{ total_ideas }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if not top_generadores %}
+            <div class="alert alert-info" role="alert">
+                No hay datos disponibles.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

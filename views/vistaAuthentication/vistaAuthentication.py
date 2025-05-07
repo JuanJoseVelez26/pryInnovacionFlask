@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 # from flask_login import login_required, current_user
-import mysql.connector
+import psycopg2
 from config_flask import DATABASE_CONFIG
 from datetime import datetime
 
@@ -14,9 +14,9 @@ def dashboard():
     cursor = None # Inicializar cursor a None
     try:
         print("--- Intentando conectar a la BD ---") # DEBUG
-        conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
+        conn = psycopg2.connect(**DATABASE_CONFIG['postgresql'])
         print("--- Conexión a BD exitosa ---") # DEBUG
-        cursor = conn.cursor(dictionary=True)
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         print("--- Cursor creado ---") # DEBUG
 
         # Obtener estadísticas del usuario
@@ -24,10 +24,10 @@ def dashboard():
         cursor.execute("""
             SELECT
                 COUNT(*) as total_ideas,
-                SUM(CASE WHEN estado = 1 THEN 1 ELSE 0 END) as ideas_aprobadas,
-                SUM(CASE WHEN estado = 0 THEN 1 ELSE 0 END) as ideas_pendientes
+                SUM(CASE WHEN estado = true THEN 1 ELSE 0 END) as ideas_aprobadas,
+                SUM(CASE WHEN estado = false THEN 1 ELSE 0 END) as ideas_pendientes
             FROM idea
-            WHERE creador_por = %s
+            WHERE usuario_email = %s
         """, ('usuario@ejemplo.com',))  # Email temporal
         stats = cursor.fetchone()
         print(f"--- Estadísticas obtenidas: {stats} ---") # DEBUG
@@ -35,11 +35,11 @@ def dashboard():
         # Obtener ideas recientes
         print("--- Ejecutando query de ideas recientes ---") # DEBUG
         cursor.execute("""
-            SELECT i.*, ti.name as tipo_innovacion_nombre, fi.name as foco_innovacion_nombre
+            SELECT i.*, ti.nombre as tipo_innovacion_nombre, fi.nombre as foco_innovacion_nombre
             FROM idea i
             LEFT JOIN tipo_innovacion ti ON i.id_tipo_innovacion = ti.id_tipo_innovacion
             LEFT JOIN foco_innovacion fi ON i.id_foco_innovacion = fi.id_foco_innovacion
-            WHERE i.creador_por = %s
+            WHERE i.usuario_email = %s
             ORDER BY i.fecha_creacion DESC
             LIMIT 5
         """, ('usuario@ejemplo.com',))  # Email temporal
@@ -48,18 +48,18 @@ def dashboard():
 
         # Formatear fechas
         print("--- Formateando fechas ---") # DEBUG
-        for idea in ideas:
+        for idea in dict(ideas):
             if idea['fecha_creacion']:
                 idea['fecha_creacion'] = idea['fecha_creacion'].strftime('%d/%m/%Y')
         print("--- Fechas formateadas ---") # DEBUG
 
         print("--- Renderizando plantilla dashboard.html ---") # DEBUG
         return render_template('templatesAuthentication/dashboard.html',
-                            stats=stats,
+                            stats=dict(stats),
                             ideas=ideas)
 
-    except mysql.connector.Error as err:
-        print(f"!!! Error de MySQL: {err} !!!") # DEBUG
+    except psycopg2.Error as err:
+        print(f"!!! Error de PostgreSQL: {err} !!!") # DEBUG
         flash(f'Error de base de datos al cargar el dashboard: {err}', 'danger')
         return redirect(url_for('main.index'))
     except Exception as e:
@@ -71,7 +71,7 @@ def dashboard():
         if cursor:
             print("--- Cerrando cursor ---") # DEBUG
             cursor.close()
-        if conn and conn.is_connected():
+        if conn:
             print("--- Cerrando conexión BD ---") # DEBUG
             conn.close()
 
@@ -79,8 +79,8 @@ def dashboard():
 # @login_required
 def notificaciones():
     try:
-        conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
-        cursor = conn.cursor(dictionary=True)
+        conn = psycopg2.connect(**DATABASE_CONFIG['postgresql'])
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cursor.execute("""
             SELECT *
             FROM notificacion
@@ -111,7 +111,7 @@ def notificaciones():
 def configuracion():
     if request.method == 'POST':
         try:
-            conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
+            conn = psycopg2.connect(**DATABASE_CONFIG['postgresql'])
             cursor = conn.cursor()
             cursor.execute("""
                 UPDATE usuario
@@ -133,8 +133,8 @@ def configuracion():
             flash(f'Error al actualizar la configuración: {str(e)}', 'danger')
     
     try:
-        conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
-        cursor = conn.cursor(dictionary=True)
+        conn = psycopg2.connect(**DATABASE_CONFIG['postgresql'])
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cursor.execute("""
             SELECT notificaciones_email, notificaciones_push
             FROM usuario

@@ -4,11 +4,14 @@
 
 {% block content %}
 <div class="container-fluid">
-    <!-- Hero Section -->
+    <!-- Hero Section with Background Image -->
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-body text-center">
+                <div class="card-body text-center position-relative">
+                    <div class="hero-image mb-4">
+                        <img src="{{ url_for('static', filename='img/MALLA.png') }}" alt="Logo MALLA" style="max-width: 200px;">
+                    </div>
                     <h1 class="display-4 mb-4">Bienvenido al Sistema de Gestión de Innovación</h1>
                     <p class="lead mb-5">Una plataforma para gestionar y desarrollar ideas innovadoras</p>
                     {% if not session.get('email') %}
@@ -22,12 +25,12 @@
         </div>
     </div>
 
-    <!-- Features Section -->
+    <!-- Features Section with Images -->
     <div class="row mt-4">
         <div class="col-md-4">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-lightbulb fa-3x text-primary mb-3"></i>
+                    <img src="{{ url_for('static', filename='img/ideas.png') }}" alt="Ideas" class="feature-image mb-3" style="max-width: 100px;">
                     <h3>Ideas</h3>
                     <p>Comparte y desarrolla tus ideas innovadoras con la comunidad universitaria.</p>
                     {% if session.get('email') %}
@@ -37,9 +40,9 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-briefcase fa-3x text-success mb-3"></i>
+                    <img src="{{ url_for('static', filename='img/oportunidad.png') }}" alt="Oportunidades" class="feature-image mb-3" style="max-width: 100px;">
                     <h3>Oportunidades</h3>
                     <p>Identifica y aprovecha oportunidades de innovación en tu entorno.</p>
                     {% if session.get('email') %}
@@ -49,9 +52,9 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-body text-center">
-                    <i class="fas fa-project-diagram fa-3x text-info mb-3"></i>
+                    <img src="{{ url_for('static', filename='img/soluciones1.png') }}" alt="Proyectos" class="feature-image mb-3" style="max-width: 100px;">
                     <h3>Proyectos</h3>
                     <p>Transforma las ideas en proyectos reales con el apoyo de expertos.</p>
                     {% if session.get('email') %}
@@ -62,12 +65,15 @@
         </div>
     </div>
 
-    <!-- About Section -->
+    <!-- About Section with Logo -->
     <div class="row mt-4">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="text-center mb-4">Sobre el Sistema</h2>
+                    <div class="text-center mb-4">
+                        <img src="{{ url_for('static', filename='img/logo-usb-medellin.png') }}" alt="Logo USB Medellín" style="max-width: 150px;" class="mb-3">
+                        <h2>Sobre el Sistema</h2>
+                    </div>
                     <div class="row">
                         <div class="col-md-6">
                             <h4>Misión</h4>
@@ -83,4 +89,29 @@
         </div>
     </div>
 </div>
+
+<style>
+.hero-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.feature-image {
+    transition: transform 0.3s ease;
+}
+
+.card:hover .feature-image {
+    transform: scale(1.1);
+}
+
+.card {
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+</style>
 {% endblock %} 

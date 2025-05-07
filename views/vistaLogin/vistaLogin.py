@@ -1,13 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from datetime import datetime
-import mysql.connector
+import psycopg2
+from psycopg2.extras import DictCursor
 from werkzeug.security import generate_password_hash
 from passlib.hash import pbkdf2_sha256
 from forms.formsLogin.forms import LoginForm, RegisterForm
 from config_flask import DATABASE_CONFIG
 
-# Usar la configuración de MySQL
-db_config = DATABASE_CONFIG['mysql']
+# Usar la configuración de PostgreSQL
+db_config = DATABASE_CONFIG['postgresql']
 
 login_bp = Blueprint('login', __name__)
 
@@ -21,8 +22,8 @@ def login():
     
     if form.validate_on_submit():
         try:
-            conn = mysql.connector.connect(**db_config)
-            cursor = conn.cursor(dictionary=True)
+            conn = psycopg2.connect(**db_config)
+            cursor = conn.cursor(cursor_factory=DictCursor)
             
             cursor.execute("SELECT * FROM usuario WHERE email = %s", (form.email.data,))
             user_data = cursor.fetchone()
@@ -118,7 +119,7 @@ def login():
                         return redirect(url_for('auth.dashboard'))
             
             flash('Correo electrónico o contraseña inválidos', 'error')
-        except mysql.connector.Error as e:
+        except psycopg2.Error as e:
             print(f"Error de base de datos: {e}")
             flash('Error al conectar con la base de datos', 'error')
         except Exception as e:
@@ -142,8 +143,8 @@ def register():
     
     if form.validate_on_submit():
         try:
-            conn = mysql.connector.connect(**db_config)
-            cursor = conn.cursor(dictionary=True)
+            conn = psycopg2.connect(**db_config)
+            cursor = conn.cursor(cursor_factory=DictCursor)
             
             cursor.execute("SELECT * FROM usuario WHERE email = %s", (form.email.data,))
             if cursor.fetchone():
