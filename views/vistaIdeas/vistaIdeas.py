@@ -11,8 +11,17 @@ from .models import (
     APIClient, TipoInnovacionAPI, FocoInnovacionAPI,
     IdeaUsuario
 )
-from forms.formsIdeas.formsIdeas import IdeasForm 
-from .utils import create_notification  # asumiendo que la tienes en utils.py
+from forms.formsIdeas.formsIdeas import IdeasForm, IdeasUpdateForm
+from .utils import create_notification
+
+from datetime import datetime, timezone #esto reemplaza el .utils de django
+
+# UTC ahora mismo, consciente de zona:
+now_utc = datetime.now(timezone.utc)
+
+# Si solo necesitas una cadena ISO:
+now_iso = now_utc.isoformat()
+
 
 ideas_bp = Blueprint('ideas', __name__, template_folder='templates/ideas')
 
