@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block head %}
+<!-- Cargar estilos específicos para el Datepicker -->
+<link href="{{ url_for('static', filename='libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+{% endblock head %}
+
+{% block content %}
+<!-- Título de la página -->
+<div class="row">
+    <div class="col-sm-6">
+        <div class="page-title-box">
+            <h4>Editar Solución</h4>
+        </div>
+    </div>
+</div>
+
+<!-- Formulario de edición de solución -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Actualizar Información</h4>
+                <p class="card-title-desc">Modifique la información de la solución</p>
+
+                <!-- Formulario para editar -->
+                <form method="POST" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}  <!-- Incluye CSRF y campos ocultos -->
+
+                    <!-- Renderizado con Flask-WTF (sin crispy) -->
+                    {% for field in form %}
+                        <div class="form-group">
+                            {{ field.label(class="form-label") }}
+                            {{ field(class="form-control") }}
+                            {% if field.errors %}
+                                <ul class="text-danger">
+                                    {% for error in field.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <!-- Botones -->
+                    <div class="form-group mb-0">
+                        <div>
+                            <button type="submit" class="btn btn-primary float-right">Guardar</button>
+                            <a href="{{ url_for('soluciones.list_soluciones') }}" class="btn btn-light">Regresar</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<!-- Cargar script para Datepicker -->
+<script src="{{ url_for('static', filename='libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+
+<script>
+    $(function(){
+        $("#id_fecha_creacion").datepicker({
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            todayHighlight: true
+        }).attr('readonly', 'false');
+    })
+</script>
+{% endblock scripts %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Editar Perfil</h2>
+    
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                {{ form.csrf_token }}
+                
+                <div class="form-group mb-3">
+                    <label for="{{ form.nombre.id }}">{{ form.nombre.label }}</label>
+                    {{ form.nombre(class="form-control") }}
+                    {% if form.nombre.errors %}
+                        {% for error in form.nombre.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="{{ form.fecha_nacimiento.id }}">{{ form.fecha_nacimiento.label }}</label>
+                    {{ form.fecha_nacimiento(class="form-control", type="date") }}
+                    {% if form.fecha_nacimiento.errors %}
+                        {% for error in form.fecha_nacimiento.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="{{ form.direccion.id }}">{{ form.direccion.label }}</label>
+                    {{ form.direccion(class="form-control") }}
+                    {% if form.direccion.errors %}
+                        {% for error in form.direccion.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="{{ form.descripcion.id }}">{{ form.descripcion.label }}</label>
+                    {{ form.descripcion(class="form-control", rows="4") }}
+                    {% if form.descripcion.errors %}
+                        {% for error in form.descripcion.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="{{ form.area_expertise.id }}">{{ form.area_expertise.label }}</label>
+                    {{ form.area_expertise(class="form-control") }}
+                    {% if form.area_expertise.errors %}
+                        {% for error in form.area_expertise.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="{{ form.info_adicional.id }}">{{ form.info_adicional.label }}</label>
+                    {{ form.info_adicional(class="form-control", rows="4") }}
+                    {% if form.info_adicional.errors %}
+                        {% for error in form.info_adicional.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block mt-4">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

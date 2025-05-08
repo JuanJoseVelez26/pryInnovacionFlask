@@ -18,7 +18,7 @@
             <div class="card-body">
                 <h4 class="card-title">Confirmar Actualización de Ideas</h4>
 
-                {% if not request.POST.confirmar %}
+                {% if not request.form.get('confirmar') %}
                     <p>¿Está seguro de que desea confirmar esta idea?</p>
                     <p>
                         Idea: <b>{{ idea.titulo }}</b>
@@ -27,9 +27,9 @@
                     <div class="form-group mb-0">
                         <div>
                             <form method="POST">
-                                {% csrf_token %}
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                 <button type="submit" name="confirmar" class="btn btn-success float-right">Confirmar</button>
-                                <a href="{% url 'ideas:list' %}" class="btn btn-light">Regresar</a>
+                                <a href="{{ url_for('lista_ideas') }}" class="btn btn-light">Regresar</a>
                             </form>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                             ¡Idea confirmada exitosamente!
                         {% endif %}
                     </p>
-                    <a href="{% url 'ideas:list' %}" class="btn btn-primary">Regresar a la lista</a>
+                    <a href="{{ url_for('lista_ideas') }}" class="btn btn-primary">Regresar a la lista</a>
                 {% endif %}
             </div>
         </div>

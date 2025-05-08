@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">Dashboard</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Ideas</h4>
+                    <div class="text-center">
+                        <div class="avatar-sm mx-auto">
+                            <span class="avatar-title rounded-circle bg-light text-primary font-size-24">
+                                <i class="ri-lightbulb-line"></i>
+                            </span>
+                        </div>
+                        <div class="mt-4">
+                            <h5>Total de Ideas</h5>
+                            <p class="text-muted mb-2">Ideas registradas en el sistema</p>
+                            <h5 class="mb-0">{{ total_ideas }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Oportunidades</h4>
+                    <div class="text-center">
+                        <div class="avatar-sm mx-auto">
+                            <span class="avatar-title rounded-circle bg-light text-success font-size-24">
+                                <i class="ri-briefcase-line"></i>
+                            </span>
+                        </div>
+                        <div class="mt-4">
+                            <h5>Total de Oportunidades</h5>
+                            <p class="text-muted mb-2">Oportunidades identificadas</p>
+                            <h5 class="mb-0">{{ total_opportunities }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Proyectos</h4>
+                    <div class="text-center">
+                        <div class="avatar-sm mx-auto">
+                            <span class="avatar-title rounded-circle bg-light text-info font-size-24">
+                                <i class="ri-folder-line"></i>
+                            </span>
+                        </div>
+                        <div class="mt-4">
+                            <h5>Total de Proyectos</h5>
+                            <p class="text-muted mb-2">Proyectos en desarrollo</p>
+                            <h5 class="mb-0">{{ total_projects }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-8">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Actividad Reciente</h4>
+                    <div class="table-responsive">
+                        <table class="table table-centered table-nowrap mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Usuario</th>
+                                    <th>Acción</th>
+                                    <th>Detalles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for activity in recent_activities %}
+                                <tr>
+                                    <td>{{ activity.date }}</td>
+                                    <td>{{ activity.user }}</td>
+                                    <td>{{ activity.action }}</td>
+                                    <td>{{ activity.details }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Acciones Rápidas</h4>
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('ideas.create_idea') }}" class="btn btn-primary waves-effect waves-light">
+                            <i class="ri-add-line align-middle me-1"></i> Nueva Idea
+                        </a>
+                        <a href="{{ url_for('oportunidades.create') }}" class="btn btn-success waves-effect waves-light">
+                            <i class="ri-add-line align-middle me-1"></i> Nueva Oportunidad
+                        </a>
+                        <a href="{{ url_for('ideas.list_ideas') }}" class="btn btn-info waves-effect waves-light">
+                            <i class="ri-folder-line align-middle me-1"></i> Ver Ideas
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        // Aquí puedes agregar cualquier JavaScript específico para el dashboard
+    });
+</script>
+{% endblock %} 

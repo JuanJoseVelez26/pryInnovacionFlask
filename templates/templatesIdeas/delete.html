@@ -22,7 +22,7 @@
 
                 <!-- Formulario para confirmar eliminación -->
                 <form method="POST">
-                    {% csrf_token %}
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
                     <!-- Mensaje de confirmación -->
                     <p>¿Está seguro de que desea eliminar esta idea?</p>
@@ -44,7 +44,7 @@
                             <!-- Botón para eliminar -->
                             <button type="submit" class="btn btn-danger float-right">Eliminar</button>
                             <!-- Botón para regresar a la lista -->
-                            <a href="{% url 'ideas:list' %}" class="btn btn-light">Regresar</a>
+                            <a href="{{ url_for('lista_ideas') }}" class="btn btn-light">Regresar</a>
                         </div>
                     </div>
 

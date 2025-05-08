@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}App{% endblock %}</title>
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- Bootstrap Css -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="{{ url_for('static', filename='css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    <!-- App Css -->
+    <link href="{{ url_for('static', filename='css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        /* Contenedor para centrar la imagen y el texto */
+        .logo-container {
+            display: flex;
+            align-items: center; /* Centra verticalmente */
+            justify-content: center; /* Centra horizontalmente */
+            
+        }
+
+        /* Estilo de la imagen para logo-sm */
+        .logo-image-sm {
+            width: 50px; /* Tamaño ajustado para menú cerrado */
+            height: 45px;
+            margin-top: 10px;
+        }
+
+        /* Estilo de la imagen para logo-lg */
+        .logo-image-lg {
+            width: 50px; /* Tamaño ajustado para menú abierto */
+            height: 50px;
+            margin-right: 10px; /* Espacio entre la imagen y el texto */
+            
+        }
+
+        /* Texto del logo */
+        .logo-text {
+            font-size: 25px;
+            color: #ffffff;
+            font-family: sans-serif;
+            font-style: normal;
+            margin-top: 7%; /* Elimina cualquier margen adicional */
+        }
+            /* --------------------- Estilo para la tarjeta 1 -----------------------*/
+
+        /* Estilo para la tarjeta */
+        .custom-card {
+            background-color: #6C0B99; /* Color de fondo normal */
+            border: none; /* Elimina bordes predeterminados */
+            transition: transform 0.3s ease, background-color 0.3s ease; /* Animación al pasar el cursor */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera para realzar */
+        }
+
+        /* Color para cuando el cursor está sobre la tarjeta */
+        .custom-card:hover {
+            background-color: #6C0B99; /* Color al pasar el cursor */
+            transform: scale(1.05); /* Agranda la tarjeta ligeramente */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Aumenta la sombra */
+        }
+
+        /* Estilo para el texto de la tarjeta */
+        .custom-card .card-title,
+        .custom-card .card-text {
+            color: black; /* Color del texto */
+            font-size: 25px;
+        }
+
+        /* Estilo de la imagen dentro de la tarjeta */
+        .custom-card .module-image {
+            width: 100%; /* Tamaño de la imagen */
+            height: 100%;
+            margin-bottom: 10px; /* Espaciado inferior */
+        }
+
+        /* Fondo de la tarjeta cuando está inactiva (opcional) */
+        .custom-card:active {
+            background-color: #6C0B99; /* Color cuando se hace clic */
+            transform: scale(0.98); /* Reduce ligeramente el tamaño */
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15); /* Cambia la sombra */
+        } 
+        .custom-card .card-text {
+            font-size: 1.2rem; /* Ajusta el tamaño del texto según prefieras */
+            font-weight: 300;  /* Opcional: cambiar el grosor del texto */
+            line-height: 1.5;  /* Opcional: ajustar la altura de línea */
+        }
+
+        /* --------------------- Estilo para la tarjeta 2 -----------------------*/
+
+        /* Estilo para la tarjeta de Oportunidades */
+        .custom-card-opportunity {
+            background-color: #FA0C4A; /* Color de fondo normal para oportunidades */
+            border: none; /* Elimina bordes predeterminados */
+            transition: transform 0.3s ease, background-color 0.3s ease; /* Animación al pasar el cursor */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera para realzar */
+        }
+
+        /* Color para cuando el cursor está sobre la tarjeta de Oportunidades */
+        .custom-card-opportunity:hover {
+            background-color: #FA0C4A; /* Color al pasar el cursor */
+            transform: scale(1.05); /* Agranda la tarjeta ligeramente */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Aumenta la sombra */
+        }
+
+        /* Estilo para el texto de la tarjeta de Oportunidades */
+        .custom-card-opportunity .card-title,
+        .custom-card-opportunity .card-text {
+            color: black; /* Color del texto */
+            font-size: 25px;
+        }
+
+        /* Estilo de la imagen dentro de la tarjeta de Oportunidades */
+        .custom-card-opportunity .module-image {
+            width: 100%; /* Tamaño de la imagen */
+            height: 100%;
+            margin-bottom: 10px; /* Espaciado inferior */
+        }
+
+        /* Fondo de la tarjeta cuando está inactiva (opcional) */
+        .custom-card-opportunity:active {
+            background-color: #FA0C4A; /* Color cuando se hace clic */
+            transform: scale(0.98); /* Reduce ligeramente el tamaño */
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15); /* Cambia la sombra */
+        }
+        .custom-card-opportunity .card-text {
+            font-size: 1.2rem; /* Ajusta el tamaño del texto según prefieras */
+            font-weight: 300;  /* Opcional: cambiar el grosor del texto */
+            line-height: 1.5;  /* Opcional: ajustar la altura de línea */
+        }
+
+        /* --------------------- Estilo para la tarjeta 3 -----------------------*/
+
+        /* Estilo para la tarjeta de Soluciones */
+        .custom-card-solution {
+            background-color: #33CCFF; /* Color de fondo normal para soluciones */
+            border: none; /* Elimina bordes predeterminados */
+            transition: transform 0.3s ease, background-color 0.3s ease; /* Animación al pasar el cursor */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera para realzar */
+        }
+
+        /* Color para cuando el cursor está sobre la tarjeta de Soluciones */
+        .custom-card-solution:hover {
+            background-color: #33CCFF; /* Color al pasar el cursor */
+            transform: scale(1.05); /* Agranda la tarjeta ligeramente */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Aumenta la sombra */
+        }
+
+        /* Estilo para el texto de la tarjeta de Soluciones */
+        .custom-card-solution .card-title,
+        .custom-card-solution .card-text {
+            color: black; /* Color del texto */
+            font-size: 25px;
+        }
+
+        /* Estilo de la imagen dentro de la tarjeta de Soluciones */
+        .custom-card-solution .module-image {
+            width: 100%; /* Tamaño de la imagen */
+            height: 100%;
+            margin-bottom: 10px; /* Espaciado inferior */
+        }
+
+        /* Fondo de la tarjeta cuando está inactiva (opcional) */
+        .custom-card-solution:active {
+            background-color: #33CCFF; /* Color cuando se hace clic */
+            transform: scale(0.98); /* Reduce ligeramente el tamaño */
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15); /* Cambia la sombra */
+        }
+        .custom-card-solution .card-text {
+            font-size: 1.2rem; /* Ajusta el tamaño del texto según prefieras */
+            font-weight: 300;  /* Opcional: cambiar el grosor del texto */
+            line-height: 1.5;  /* Opcional: ajustar la altura de línea */
+        }
+            
+
+    </style>
+
+    </head>
+        <body data-sidebar="dark">
+
+            <!-- Begin page -->
+            <div id="layout-wrapper">
+        
+                <header id="page-topbar">
+                <div class="navbar-header">
+                    <div class="d-flex">
+                        <!-- LOGO -->
+                        <div class="navbar-brand-box">
+                            <a href="{{ url_for('dashboard') }}" class="logo logo-dark">
+                                <!-- Icono para cuando el menú está cerrado -->
+                                <span class="logo-sm">
+                                    <i class="fas fa-lightbulb main-icon-without-slide icon-png-container pd-lv4" style="font-size: 30px;"></i>
+                                </span>
+                                <!-- Icono y texto para cuando el menú está abierto -->
+                                <span class="logo-lg">
+                                    <img src="{{ url_for('static', filename='img/MALLA.png') }}" alt="Icono personalizado" style="width: 50px; height: 50px;">
+                                    <span style="font-size: 2px; margin-left: 10px; top: 50%; color: #ffffff;">INNOVACIÓN</span>
+                                </span>
+                            </a>
+                        
+                            <a href="{{ url_for('dashboard') }}" class="logo logo-light">
+                                <!-- Para cuando el menú está cerrado -->
+                                <span class="logo-sm">
+                                    <div class="logo-container">
+                                        <img src="{{ url_for('static', filename='img/MALLA.png') }}" alt="Icono cerrado" class="logo-image-sm">
+                                    </div>
+                                </span>
+                                <!-- Para cuando el menú está abierto -->
+                                <span class="logo-lg">
+                                    <div class="logo-container">
+                                        <img src="{{ url_for('static', filename='img/MALLA.png') }}" alt="Icono abierto" class="logo-image-lg">
+                                        <span class="logo-text">INNOVACIÓN</span>
+                                    </div>
+                                </span>
+                            </a>
+
+
+                            </a>
+                        </div>
+                        
+                        <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect" id="vertical-menu-btn">
+                            <i class="mdi mdi-menu"></i>
+                        </button>   
+                    </div>
+            
+                    <div class="d-flex justify-content-end">  <!-- Agrupamos todo lo relacionado al lado derecho -->
+                        
+                        <!-- App Search-->
+                        <form class="app-search d-none d-lg-block">
+                            <div class="position-relative">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="fa fa-search"></span>
+                            </div>
+                        </form>
+                
+                        <div class="dropdown d-inline-block d-lg-none ml-2">
+                            <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-search-dropdown"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="mdi mdi-magnify"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
+                                aria-labelledby="page-header-search-dropdown">
+                            
+                                <form class="p-3">
+                                    <div class="form-group m-0">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Search ..." aria-label="Recipient's username">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+            
+                        <div class="dropdown d-none d-lg-inline-block">
+                            <button type="button" class="btn header-item noti-icon waves-effect" data-toggle="fullscreen">
+                                <i class="mdi mdi-fullscreen font-size-24"></i>
+                            </button>
+                        </div>
+            
+                        <!-- Notificaciones -->
+                        <div class="dropdown d-inline-block ml-1">
+                            <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="ti-bell"></i>
+                                <span class="badge badge-danger badge-pill">
+                                    {{ notificaciones|length }}  <!-- Muestra el total de notificaciones -->
+                                </span>
+                            </button>
+                        
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0" aria-labelledby="page-header-notifications-dropdown">
+                                <!-- Encabezado de las notificaciones -->
+                                <div class="p-3 border-bottom">
+                                    <h5 class="m-0 font-size-16">Notificaciones ({{ notificaciones|length }})</h5>
+                                </div>
+                        
+                                <!-- Contenedor de notificaciones con scroll -->
+                                <div data-simplebar style="max-height: 350px; padding: 10px;">
+                                    {% for notificacion in notificaciones %}
+                                        <div class="dropdown-item text-reset notification-item">
+                                            <!-- Mostrar el email del experto que hizo la notificación -->
+                                            <h6 class="mt-0 mb-1 font-weight-bold">
+                                                {{ notificacion.experto_email }} <small class="text-muted">hizo una notificación</small>
+                                            </h6>
+                        
+                                            <!-- Mostrar "La idea" seguido del título de la entidad -->
+                                            <h6 class="mt-0 mb-1 font-weight-bold">
+                                                La idea: {{ notificacion.entidad_titulo }}
+                                            </h6>
+                        
+                                            <!-- Mostrar mensaje del experto -->
+                                            <p class="mb-1" style="word-wrap: break-word; white-space: normal;">
+                                                <strong>Mensaje del experto:</strong> {{ notificacion.mensaje_experto }}
+                                            </p>
+                        
+                                            <!-- Mostrar mensaje por defecto si el mensaje del experto no está disponible -->
+                                            <p class="mb-1" style="word-wrap: break-word; white-space: normal;">
+                                                <strong>Mensaje por defecto:</strong> {{ notificacion.mensaje_default }}
+                                            </p>
+                        
+                                            <!-- Tipo de entidad y fecha de creación -->
+                                            <small class="text-muted">
+                                                Tipo: {{ notificacion.tipo_entidad }} | Fecha: {{ notificacion.fecha_creacion }}
+                                            </small>
+                        
+                                            <!-- Botones de acción alineados a la izquierda -->
+                                            <div class="mt-2">
+                                                {% if notificacion.leida == False %}
+                                                    <form method="post" action="/notificaciones/marcar_leida/" class="d-inline">
+                                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                        <input type="hidden" name="id" value="{{ notificacion.id }}">
+                                                        <button type="submit" class="btn btn-sm btn-outline-success">
+                                                            <i class="ti-check"></i> Marcar como leída
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                                <form method="post" action="/notificaciones/eliminar/" class="d-inline">
+                                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                    <input type="hidden" name="id" value="{{ notificacion.id }}">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                        <i class="ti-trash"></i> Eliminar
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    {% empty %}
+                                        <p class="text-center p-3 mb-0">No tienes notificaciones nuevas.</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        
+
+                        <!-- Perfil -->
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="rounded-circle header-profile-user" src="{{ url_for('static', filename='images/users/user.png') }}"
+                                    alt="Header Avatar">
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <!-- item-->
+                                <a class="dropdown-item" href="{{ url_for('perfil') }}">  
+                                    <i class="mdi mdi-account-circle font-size-17 text-muted align-middle mr-1"></i> Perfil
+                                </a>
+                                
+                                <a class="dropdown-item d-block" href="#"><span class="badge badge-success float-right">11</span><i class="mdi mdi-settings font-size-17 text-muted align-middle mr-1"></i> Settings</a>
+                                <div class="dropdown-divider"></div>
+                                
+                                <!-- Botón de cerrar sesión -->
+                                <form action="{{ url_for('logout') }}" method="post" style="display: inline;">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <button type="submit" class="dropdown-item text-danger" style="background: none; border: none; padding: 0;">
+                                        <i class="mdi mdi-power font-size-17 text-muted align-middle mr-1 text-danger"></i> Salir
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+            
+                        <!-- Configuraciones -->
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item noti-icon right-bar-toggle waves-effect">
+                                <i class="mdi mdi-spin mdi-settings"></i>
+                            </button>
+                        </div>
+                    
+                    </div>
+                </div>
+            </header>
+                
+                
+                <!-- ========== Left Sidebar Start ========== -->
+                <div class="vertical-menu">
+        
+                    <div data-simplebar class="h-100">
+        
+                        <!--- Sidemenu -->
+                        <div id="sidebar-menu">
+                            <!-- Left Menu Start -->
+                            <ul class="metismenu" id="side-menu">
+                                <li class="menu-title">Navegación</li>
+                                <li>
+                                    <a href="{{ url_for('dashboard') }}" class="waves-effect">
+                                        <i class="remixicon-dashboard-line"></i>
+                                        <span> Dashboard </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('listar_proyectos') }}" class="waves-effect">
+                                        <i class="remixicon-folder-line"></i>
+                                        <span> Proyectos </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('lista_ideas') }}" class="waves-effect">
+                                        <i class="remixicon-lightbulb-line"></i>
+                                        <span> Ideas </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('lista_opportunities') }}" class="waves-effect">
+                                        <i class="remixicon-briefcase-line"></i>
+                                        <span> Oportunidades </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('lista_solutions') }}" class="waves-effect">
+                                        <i class="remixicon-tools-line"></i>
+                                        <span> Soluciones </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Sidebar -->
+                    </div>
+                </div>
+                <!-- Left Sidebar End -->
+        
+                <!-- ============================================================== -->
+                <!-- Start right Content here -->
+                <!-- ============================================================== -->
+                <div class="main-content d-flex flex-column" style="height: 100vh; overflow: hidden;">
+                    <div class="page-content flex-grow-1 d-flex flex-column">
+                        <div class="container-fluid flex-grow-1 d-flex flex-column">
+                            <div id="result" class="flex-grow-1 d-flex align-items-stretch">
+                                <div class="row flex-grow-1 w-100">
+
+                                    <!-- Tarjetas de módulo -->
+                                    <div class="col-lg-4 col-md-6 col-sm-12 d-flex">
+                                        <a href="{{ url_for('lista_ideas') }}" class="card flex-grow-1 custom-card text-white card-module" style="text-decoration: none;">
+                                            <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                                                <img src="{{ url_for('static', filename='img/ideas.png') }}" alt="Módulo de Ideas" class="module-image mb-3">
+                                                <h4 class="card-title">Módulo de ideas</h4>
+                                                <p class="card-text">Creación de ideas.</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    
+        
+                                    <div class="col-lg-4 col-md-6 col-sm-12 d-flex">
+                                        <a href="{{ url_for('lista_opportunities') }}" class="card flex-grow-1 custom-card-opportunity text-white card-module" style="text-decoration: none;">
+                                            <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                                                <img src="{{ url_for('static', filename='img/oportunidad.png') }}" alt="Módulo de Oportunidades" class="module-image mb-3">
+                                                <h4 class="card-title">Módulo de Oportunidades</h4>
+                                                <p class="card-text">Gestión de oportunidades.</p>
+                                            </div>
+                                        </a>
+                                    </div>
+
+
+                                
+                                
+    
+                                    <div class="col-lg-4 col-md-6 col-sm-12 d-flex">
+                                        <a href="{{ url_for('lista_solutions') }}" class="card flex-grow-1 custom-card-solution text-white card-module" style="text-decoration: none;">
+                                            <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                                                <img src="{{ url_for('static', filename='img/soluciones1.png') }}" alt="Módulo de Soluciones" class="module-image mb-3">
+                                                <h4 class="card-title">Módulo de Soluciones</h4>
+                                                <p class="card-text">Gestión de soluciones.</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>      
+                        <footer class="footer bg-light" style="height: 50px;">
+                            <div class="container-fluid h-100">
+                                <div class="row h-100">
+                                    <div class="col-sm-12 text-center d-flex align-items-center justify-content-center">
+                                        © 2024 Universidad San Buenaventura Medellín
+                                    </div>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+  
+                <!-- Agregar las dependencias de FontAwesome para los íconos -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                
+                
+                    <!-- END layout-wrapper -->
+        
+                    <!-- Right Sidebar -->
+                    <div class="right-bar">
+                        <div data-simplebar class="h-100">
+                            <div class="rightbar-title px-3 py-4">
+                                <a href="javascript:void(0);" class="right-bar-toggle float-right">
+                                    <i class="mdi mdi-close noti-icon"></i>
+                                </a>
+                                <h5 class="m-0">Settings</h5>
+                            </div>
+        
+                            <!-- Settings -->
+                            <hr class="mt-0" />
+                            <h6 class="text-center mb-0">Choose Layouts</h6>
+        
+                            <div class="p-4">
+                                <div class="mb-2">
+                                    <img src="{{ url_for('static', filename='images/layouts/layout-1.jpg') }}" class="img-fluid img-thumbnail" alt="">
+                                </div>
+                                <div class="custom-control custom-switch mb-3">
+                                    <input type="checkbox" class="custom-control-input theme-choice" id="light-mode-switch" checked />
+                                    <label class="custom-control-label" for="light-mode-switch">Light Mode</label>
+                                </div>
+            
+                                <div class="mb-2">
+                                    <img src="{{ url_for('static', filename='images/layouts/layout-2.jpg') }}" class="img-fluid img-thumbnail" alt="">
+                                </div>
+                                <div class="custom-control custom-switch mb-3">
+                                    <input type="checkbox" class="custom-control-input theme-choice" id="dark-mode-switch" data-bsStyle="{{ url_for('static', filename='css/bootstrap-dark.min.css') }}" data-appStyle="{{ url_for('static', filename='css/app-dark.min.css') }}" />
+                                    <label class="custom-control-label" for="dark-mode-switch">Dark Mode</label>
+                                </div>
+                            </div>
+        
+                        </div> <!-- end slimscroll-menu-->
+                    </div>
+                    <!-- /Right-bar -->
+        
+                    <!-- Right bar overlay-->
+                    <div class="rightbar-overlay"></div> 
+                    
+                    <!-- JAVASCRIPT -->
+                    <script src="{{ url_for('static', filename='libs/jquery/jquery.min.js') }}"></script>
+                    <script src="{{ url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+                    <script src="{{ url_for('static', filename='libs/metismenu/metisMenu.min.js') }}"></script>
+                    <script src="{{ url_for('static', filename='libs/simplebar/simplebar.min.js') }}"></script>
+                    <script src="{{ url_for('static', filename='libs/node-waves/waves.min.js') }}"></script>
+                    <script src="{{ url_for('static', filename='libs/jquery-sparkline/jquery.sparkline.min.js') }}"></script>
+        
+                    <!-- App js -->
+                    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+                    <script src="{{ url_for('static', filename='js/ajax.js') }}"></script>
+        
+                </body>
+    </html>
