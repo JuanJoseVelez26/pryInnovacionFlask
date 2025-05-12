@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4>Crear Nueva Oportunidad</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Registrar Oportunidad</h4>
+                <p class="card-title-desc">Ingrese la información para la nueva oportunidad</p>
+
+                {# Mostrar errores generales del formulario si existen #}
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        Errores en el formulario:
+                        <ul>
+                        {% for field, error_list in form.errors.items() %}
+                            {% for error in error_list %}
+                                <li>{{ form[field].label.text }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <form method="POST" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.titulo.label(class="form-label") }}
+                        {{ form.titulo(class="form-control" + (" is-invalid" if form.titulo.errors else "")) }}
+                        {% if form.titulo.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.titulo.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.descripcion.label(class="form-label") }}
+                        {{ form.descripcion(class="form-control" + (" is-invalid" if form.descripcion.errors else ""), rows=5) }}
+                        {% if form.descripcion.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.descripcion.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.palabras_claves.label(class="form-label") }}
+                        {{ form.palabras_claves(class="form-control" + (" is-invalid" if form.palabras_claves.errors else "")) }}
+                        {% if form.palabras_claves.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.palabras_claves.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.recursos_requeridos.label(class="form-label") }}
+                        {{ form.recursos_requeridos(class="form-control" + (" is-invalid" if form.recursos_requeridos.errors else ""), rows=3) }}
+                        {% if form.recursos_requeridos.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.recursos_requeridos.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.tipo_mercado.label(class="form-label") }}
+                        {{ form.tipo_mercado(class="form-select" + (" is-invalid" if form.tipo_mercado.errors else "")) }}
+                        {% if form.tipo_mercado.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.tipo_mercado.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.estado.label(class="form-label") }}
+                        {{ form.estado(class="form-select" + (" is-invalid" if form.estado.errors else "")) }}
+                        {% if form.estado.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.estado.errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group mb-0">
+                        <button type="submit" class="btn btn-primary">Guardar Oportunidad</button>
+                        <a href="{{ url_for('oportunidades.list_oportunidades') }}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

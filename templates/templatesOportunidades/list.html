@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4>Lista de Oportunidades</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="card-title">Oportunidades</h4>
+                    <a href="{{ url_for('oportunidades.create_oportunidad') }}" class="btn btn-primary">Nueva Oportunidad</a>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Tipo de Mercado</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for oportunidad in oportunidades %}
+                            <tr>
+                                <td>{{ oportunidad.titulo }}</td>
+                                <td>{{ oportunidad.descripcion|truncate(100) }}</td>
+                                <td>{{ dict(form.tipo_mercado.choices).get(oportunidad.tipo_mercado) }}</td>
+                                <td>{{ dict(form.estado.choices).get(oportunidad.estado) }}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ url_for('oportunidades.view_oportunidad', oportunidad_id=oportunidad.id) }}" class="btn btn-info btn-sm" title="Ver">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ url_for('oportunidades.update_oportunidad', oportunidad_id=oportunidad.id) }}" class="btn btn-warning btn-sm" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-danger btn-sm" title="Eliminar" data-delete-url="{{ url_for('oportunidades.delete_oportunidad', oportunidad_id=oportunidad.id) }}"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function confirmarEliminacion(url) {
+    if (confirm('¿Está seguro que desea eliminar esta oportunidad?')) {
+        const headers = {
+            'X-CSRFToken': '{{ csrf_token() }}',
+            'Content-Type': 'application/json',
+        };
+        fetch(url, { method: 'POST', headers })
+            .then((response) => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Error al eliminar la oportunidad');
+                }
+            })
+            .catch(() => {
+                alert('Error al eliminar la oportunidad');
+            });
+    }
+}
+
+$(document).ready(function() {
+    $('#datatable').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json',
+        },
+    });
+
+    // Manejar clics en botones de eliminar
+    $('.btn-danger').on('click', function() {
+        const url = $(this).data('delete-url');
+        confirmarEliminacion(url);
+    });
+});
+</script>
+{% endblock %}

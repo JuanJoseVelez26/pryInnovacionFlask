@@ -26,11 +26,12 @@ def check_and_clean_transactions():
         conn.set_session(autocommit=True)
         
         with conn.cursor() as cur:
-            # Verificar transacciones activas
+            # Verificar todas las conexiones activas excepto la nuestra
             cur.execute("""
                 SELECT pid, usename, application_name, state, query_start, state_change
                 FROM pg_stat_activity 
-                WHERE state = 'idle in transaction'
+                WHERE pid <> pg_backend_pid()
+                AND datname = 'bd_Innovacion'
             """)
             
             idle_transactions = cur.fetchall()
