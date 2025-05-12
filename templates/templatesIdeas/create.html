@@ -95,21 +95,21 @@
                     #}                    
 
                     <div class="mb-3">
-                        {{ form.id_tipo_innovacion.label(class="form-label") }}
-                        {{ form.id_tipo_innovacion(class="form-select" + (" is-invalid" if form.id_tipo_innovacion.errors else "")) }}
-                        {% if form.id_tipo_innovacion.errors %}
+                        {{ form.tipo_innovacion.label(class="form-label") }}
+                        {{ form.tipo_innovacion(class="form-select" + (" is-invalid" if form.tipo_innovacion.errors else "")) }}
+                        {% if form.tipo_innovacion.errors %}
                             <div class="invalid-feedback">
-                                {% for error in form.id_tipo_innovacion.errors %}{{ error }}{% endfor %}
+                                {% for error in form.tipo_innovacion.errors %}{{ error }}{% endfor %}
                             </div>
                         {% endif %}
                     </div>
                     
                     <div class="mb-3">
-                        {{ form.id_foco_innovacion.label(class="form-label") }}
-                        {{ form.id_foco_innovacion(class="form-select" + (" is-invalid" if form.id_foco_innovacion.errors else "")) }}
-                        {% if form.id_foco_innovacion.errors %}
+                        {{ form.foco_innovacion.label(class="form-label") }}
+                        {{ form.foco_innovacion(class="form-select" + (" is-invalid" if form.foco_innovacion.errors else "")) }}
+                        {% if form.foco_innovacion.errors %}
                             <div class="invalid-feedback">
-                                {% for error in form.id_foco_innovacion.errors %}{{ error }}{% endfor %}
+                                {% for error in form.foco_innovacion.errors %}{{ error }}{% endfor %}
                             </div>
                         {% endif %}
                     </div>

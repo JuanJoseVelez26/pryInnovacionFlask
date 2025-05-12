@@ -28,7 +28,7 @@
                 <div class="d-flex">
                     <!-- LOGO -->
                     <div class="navbar-brand-box">
-                        <a href="{{ url_for('main.index') }}" class="logo logo-dark">
+                        <a href="{{ url_for('dashboard.index') if session.get('user_email') else url_for('login.login_view') }}" class="logo logo-dark">
                             <span class="logo-sm">
                                 <i class="fas fa-lightbulb main-icon-without-slide icon-png-container pd-lv4" style="font-size: 30px;"></i>
                             </span>
@@ -38,7 +38,7 @@
                             </span>
                         </a>
                     
-                        <a href="{{ url_for('main.index') }}" class="logo logo-light">
+                        <a href="{{ url_for('dashboard.index') if session.get('user_email') else url_for('login.login_view') }}" class="logo logo-light">
                             <span class="logo-sm">
                                 <div class="logo-container">
                                     <img src="{{ url_for('static', filename='img/MALLA.png') }}" alt="Icono cerrado" class="logo-image-sm">
@@ -102,18 +102,14 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
                             {% if session.get('email') %}
-                                <a class="dropdown-item" href="{{ url_for('perfil.mi_perfil') }}">  
+                                <a class="dropdown-item" href="{{ url_for('dashboard.index') }}">  
                                     <i class="mdi mdi-account-circle font-size-17 text-muted align-middle mr-1"></i> Perfil
                                 </a>
-                                <a class="dropdown-item" href="{{ url_for('auth.dashboard') }}">
+                                <a class="dropdown-item" href="{{ url_for('dashboard.index') }}">
                                     <i class="mdi mdi-view-dashboard font-size-17 text-muted align-middle mr-1"></i> Dashboard
                                 </a>
-                                <a class="dropdown-item" href="{{ url_for('auth.notificaciones') }}">
-                                    <i class="mdi mdi-bell font-size-17 text-muted align-middle mr-1"></i> Notificaciones
-                                </a>
-                                <a class="dropdown-item" href="{{ url_for('auth.configuracion') }}">
-                                    <i class="mdi mdi-settings font-size-17 text-muted align-middle mr-1"></i> Configuración
-                                </a>
+
+
                                 <div class="dropdown-divider"></div>
                                 <form action="{{ url_for('login.logout') }}" method="post" style="display: inline;">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -122,10 +118,10 @@
                                     </button>
                                 </form>
                             {% else %}
-                                <a class="dropdown-item" href="{{ url_for('login.login') }}">
-                                    <i class="mdi mdi-login font-size-17 text-muted align-middle mr-1"></i> Iniciar Sesión
+                                <a class="dropdown-item" href="{{ url_for('login.login_view') }}">
+                                    <i class="mdi mdi-login font-size-17 text-muted align-middle mr-1"></i> Iniciar sesión
                                 </a>
-                                <a class="dropdown-item" href="{{ url_for('login.register') }}">
+                                <a class="dropdown-item" href="{{ url_for('login.register_view') }}">
                                     <i class="mdi mdi-account-plus font-size-17 text-muted align-middle mr-1"></i> Registrarse
                                 </a>
                             {% endif %}
@@ -150,7 +146,7 @@
                         <li class="menu-title">Main</li>
         
                         <li id="dashboard_li">
-                            <a href="{{ url_for('auth.dashboard') }}" class="waves-effect" id="dashboard_anchor">
+                            <a href="{{ url_for('dashboard.index') }}" class="waves-effect" id="dashboard_anchor">
                                 <i class="mdi mdi-view-dashboard"></i>
                                 <span>Dashboard</span>
                             </a>
@@ -195,9 +191,8 @@
                                 <span>Modulo Oportunidades</span>
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="{{ url_for('oportunidades.create') }}">Crear Oportunidad</a></li>
-                                <li><a href="{{ url_for('oportunidades.tabla_fuentes') }}">Tabla de selección de fuentes</a></li>
-                                <li><a href="{{ url_for('oportunidades.registro_experto') }}">Formulario de registro de nuevo experto</a></li>
+                                <li><a href="{{ url_for('oportunidades.create_oportunidad') }}">Crear Oportunidad</a></li>
+                                <li><a href="{{ url_for('oportunidades.list_oportunidades') }}">Lista de oportunidades</a></li>
                             </ul>
                         </li>
         
@@ -207,7 +202,7 @@
                                 <span>Modulo Soluciones</span>
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="{{ url_for('soluciones.create') }}">Crear solución</a></li>
+                                <li><a href="{{ url_for('soluciones.create_solucion') }}">Crear solución</a></li>
                                 <li><a href="{{ url_for('soluciones.calendario') }}">Calendario de lanzamientos</a></li>
                                 <li>
                                     <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -229,8 +224,8 @@
                                 <span> Authentication </span>
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
-                                <li><a target="_blank" href="{{ url_for('login.login') }}">Login</a></li>
-                                <li><a target="_blank" href="{{ url_for('login.register') }}">Register</a></li>
+                                <li><a target="_blank" href="{{ url_for('login.login_view') }}">Login</a></li>
+                                <li><a target="_blank" href="{{ url_for('login.register_view') }}">Register</a></li>
                                 <li><a target="_blank" href="#">Recover Password</a></li>
                             </ul>
                         </li>

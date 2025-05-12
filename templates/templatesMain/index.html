@@ -16,8 +16,8 @@
                     <p class="lead mb-5">Una plataforma para gestionar y desarrollar ideas innovadoras</p>
                     {% if not session.get('email') %}
                     <div class="mt-4">
-                        <a href="{{ url_for('login.login') }}" class="btn btn-primary me-2">Iniciar Sesión</a>
-                        <a href="{{ url_for('login.register') }}" class="btn btn-outline-primary">Registrarse</a>
+                        <a href="{{ url_for('login.login_view') }}" class="btn btn-primary me-2">Iniciar Sesión</a>
+                        <a href="{{ url_for('login.register_view') }}" class="btn btn-outline-primary">Registrarse</a>
                     </div>
                     {% endif %}
                 </div>
@@ -46,7 +46,7 @@
                     <h3>Oportunidades</h3>
                     <p>Identifica y aprovecha oportunidades de innovación en tu entorno.</p>
                     {% if session.get('email') %}
-                        <a href="{{ url_for('ideas.list_ideas') }}" class="btn btn-outline-success">Ver Oportunidades</a>
+                        <a href="{{ url_for('oportunidades.list_oportunidades') }}" class="btn btn-outline-success">Ver Oportunidades</a>
                     {% endif %}
                 </div>
             </div>
@@ -58,7 +58,7 @@
                     <h3>Proyectos</h3>
                     <p>Transforma las ideas en proyectos reales con el apoyo de expertos.</p>
                     {% if session.get('email') %}
-                        <a href="{{ url_for('ideas.list_ideas') }}" class="btn btn-outline-info">Ver Proyectos</a>
+                        <a href="{{ url_for('soluciones.list_soluciones') }}" class="btn btn-outline-info">Ver Proyectos</a>
                     {% endif %}
                 </div>
             </div>

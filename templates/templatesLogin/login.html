@@ -38,8 +38,28 @@
                                     {% endif %}
                                 {% endwith %}
 
-                                <form class="form-horizontal mt-4" action="{{ url_for('login.login') }}" method="post">
+                                <form class="form-horizontal mt-4" action="{{ url_for('login.login_view') }}" method="post">
                                     {{ form.csrf_token }}
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        {{ form.email(class="form-control", placeholder="Ingrese su email") }}
+                                        {% if form.email.errors %}
+                                            {% for error in form.email.errors %}
+                                                <span class="text-danger">{{ error }}</span>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="password">Contraseña</label>
+                                        {{ form.password(class="form-control", placeholder="Ingrese su contraseña") }}
+                                        {% if form.password.errors %}
+                                            {% for error in form.password.errors %}
+                                                <span class="text-danger">{{ error }}</span>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+
                                     <div class="form-group row mt-4">
                                         <div class="col-12 text-center">
                                             <button type="submit" class="btn btn-custom w-md waves-effect waves-light">Acceder al Sistema</button>
@@ -50,7 +70,7 @@
                         </div>
                     </div>
                     <div class="mt-5 text-center">
-                        <p>¿No tienes cuenta? <a href="{{ url_for('register') }}" class="text-register">Regístrate ahora</a></p>
+                        <p>¿No tienes cuenta? <a href="{{ url_for('login.register_view') }}" class="text-register">Regístrate ahora</a></p>
                         <p>© 2024 <i class="mdi mdi-heart text-danger"></i> Universidad San Buenaventura</p>
                     </div>
                 </div>
