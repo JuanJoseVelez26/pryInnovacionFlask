@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Mercado de Ideas</h2>
+    
+    <div class="row">
+        {% for idea in ideas_mercado %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if idea.imagen_url %}
+                <img src="{{ url_for('static', filename=idea.imagen_url) }}" class="card-img-top" alt="{{ idea.titulo }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ idea.titulo }}</h5>
+                    <p class="card-text">{{ idea.descripcion|truncate(150) }}</p>
+                    <div class="card-text">
+                        <small class="text-muted">
+                            Creado por: {{ idea.creador_por }}<br>
+                            Fecha: {{ idea.fecha_creacion.strftime('%d/%m/%Y') }}
+                        </small>
+                    </div>
+                    <hr>
+                    <div class="mt-2">
+                        <span class="badge bg-success">Aprobada</span>
+                        {% if idea.tipo_innovacion %}
+                        <span class="badge bg-info">{{ idea.tipo_innovacion.nombre }}</span>
+                        {% endif %}
+                        {% if idea.foco_innovacion %}
+                        <span class="badge bg-warning">{{ idea.foco_innovacion.nombre }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('ideas.detail_idea', codigo_idea=idea.codigo_idea) }}" class="btn btn-primary">Ver Detalles</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if not ideas_mercado %}
+    <div class="alert alert-info" role="alert">
+        No hay ideas disponibles en el mercado.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

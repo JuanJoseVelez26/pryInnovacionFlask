@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Ver Idea{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0 font-size-18">Detalles de la Idea</h4>
+                <div class="page-title-right">
+                    <a href="{{ url_for('ideas.list_ideas') }}" class="btn btn-secondary waves-effect waves-light">
+                        <i class="ri-arrow-left-line align-middle me-1"></i> Volver a la Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5 class="card-title mb-4">{{ idea.titulo }}</h5>
+                            <div class="mb-4">
+                                <h6 class="text-muted mb-2">Descripción</h6>
+                                <p>{{ idea.descripcion }}</p>
+                            </div>
+                            <div class="mb-4">
+                                <h6 class="text-muted mb-2">Palabras Clave</h6>
+                                <p>{{ idea.palabras_claves }}</p>
+                            </div>
+                            <div class="mb-4">
+                                <h6 class="text-muted mb-2">Recursos Requeridos</h6>
+                                <p>{{ idea.recursos_requeridos }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-muted">Información Adicional</h6>
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-2">
+                                            <strong>Autor:</strong> {{ idea.autor_nombre or 'N/A' }}
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>Tipo de Innovación:</strong> {{ idea.tipo_innovacion_nombre or 'N/A' }}
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>Foco de Innovación:</strong> {{ idea.foco_innovacion_nombre or 'N/A' }}
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>Estado:</strong>
+                                            {% if idea.estado %}
+                                                <span class="badge bg-success">Aprobado</span>
+                                            {% else %}
+                                                <span class="badge bg-warning">Pendiente</span>
+                                            {% endif %}
+                                        </li>
+                                        <li class="mb-2">
+                                            <strong>Fecha de Creación:</strong> {{ idea.fecha_creacion or 'N/A' }}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if idea.usuario_email == user_email %}
+                    <div class="mt-4">
+                        <a href="{{ url_for('ideas.update_idea', codigo_idea=idea.codigo_idea) }}" class="btn btn-primary waves-effect waves-light me-2">
+                            <i class="ri-pencil-line align-middle me-1"></i> Editar
+                        </a>
+                        <form action="{{ url_for('ideas.delete_idea', codigo_idea=idea.codigo_idea) }}" method="post" style="display: inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta idea?');">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-danger waves-effect waves-light">
+                                <i class="ri-delete-bin-line align-middle me-1"></i> Eliminar
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+
+                    {% if is_experto and not idea.estado %}
+                    <div class="mt-4">
+                        <form action="{{ url_for('ideas.confirmar_idea', codigo_idea=idea.codigo_idea) }}" method="post" style="display: inline;" onsubmit="return confirm('¿Estás seguro de que deseas confirmar esta idea y crear un proyecto?');">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-success waves-effect waves-light">
+                                <i class="ri-check-line align-middle me-1"></i> Confirmar Idea
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

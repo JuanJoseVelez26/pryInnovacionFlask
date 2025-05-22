@@ -1,190 +1,86 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from datetime import datetime
-import mysql.connector
-from werkzeug.security import generate_password_hash
-from passlib.hash import pbkdf2_sha256
 from forms.formsLogin.forms import LoginForm, RegisterForm
-from config_flask import DATABASE_CONFIG
-
-# Usar la configuración de MySQL
-db_config = DATABASE_CONFIG['mysql']
+from utils.api_client import APIClient
+from flask_login import login_user, logout_user, current_user, UserMixin
+from config_flask import API_CONFIG
 
 login_bp = Blueprint('login', __name__)
+api_client = APIClient(API_CONFIG['base_url'])
+
+class User(UserMixin):
+    def __init__(self, user_data):
+        self.id = user_data['email']
+        self.email = user_data['email']
+        self.is_active = user_data.get('is_active', True)
+        self.is_staff = user_data.get('is_staff', False)
 
 @login_bp.route('/login', methods=['GET', 'POST'])
-def login():
+def login_view():
+    # Verificar si ya hay sesión activa
+    if session.get('user_email'):
+        return redirect(url_for('dashboard.index'))
+        
     form = LoginForm()
-    if request.method == 'GET':
-        # if current_user.is_authenticated:
-        #     return redirect(url_for('auth.dashboard'))
-        return render_template('templatesLogin/login.html', form=form)
-    
     if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+
         try:
-            conn = mysql.connector.connect(**db_config)
-            cursor = conn.cursor(dictionary=True)
+            # Intentar login a través del API
+            print(f'Intentando autenticar usuario: {email}')
+            response = api_client.login(email, password)
             
-            cursor.execute("SELECT * FROM usuario WHERE email = %s", (form.email.data,))
-            user_data = cursor.fetchone()
+            if not response:
+                flash('Correo electrónico o contraseña inválidos.', 'danger')
+                return render_template('templatesLogin/login.html', form=form)
+
+            # La respuesta del API de C# puede venir en una estructura diferente
+            # Vamos a imprimir la respuesta completa para ver su estructura
+            print(f'Respuesta completa del API: {response}')
             
-            if user_data:
-                stored_password = user_data['password']
-                if stored_password.startswith('pbkdf2_sha256$'):
-                    if pbkdf2_sha256.verify(form.password.data, stored_password):
-                        cursor.execute("""
-                            SELECT p.*, u.email, u.rol 
-                            FROM perfil p 
-                            JOIN usuario u ON p.usuario_email = u.email 
-                            WHERE u.email = %s
-                        """, (form.email.data,))
-                        profile = cursor.fetchone()
-                        
-                        if not profile:
-                            flash("No se encontraron datos de perfil para el usuario.", "error")
-                            return render_template('templatesLogin/login.html', form=form)
-                        
-                        fecha_nacimiento = profile.get('fecha_nacimiento', '')
-                        if fecha_nacimiento:
-                            try:
-                                fecha_nacimiento = datetime.strptime(str(fecha_nacimiento), "%Y-%m-%d")
-                                fecha_nacimiento = fecha_nacimiento.strftime("%d/%m/%Y")
-                            except ValueError:
-                                fecha_nacimiento = None
-                        
-                        user = User(user_data)
-                        
-                        session['user_email'] = user.email
-                        session['user_name'] = profile.get('nombre', '')
-                        session['user_role'] = profile.get('rol', '')
-                        session['user_birthdate'] = fecha_nacimiento
-                        session['user_address'] = profile.get('direccion', '')
-                        session['user_description'] = profile.get('descripcion', '')
-                        session['user_area_expertise'] = profile.get('area_expertise', '')
-                        session['user_info_adicional'] = profile.get('info_adicional', '')
-                        
-                        cursor.execute("""
-                            UPDATE usuario 
-                            SET last_login = %s 
-                            WHERE email = %s
-                        """, (datetime.now(), form.email.data))
-                        conn.commit()
-                        
-                        login_user(user)
-                        flash('Has iniciado sesión exitosamente', 'success')
-                        return redirect(url_for('auth.dashboard'))
-                else:
-                    from werkzeug.security import check_password_hash
-                    if check_password_hash(stored_password, form.password.data):
-                        cursor.execute("""
-                            SELECT p.*, u.email, u.rol 
-                            FROM perfil p 
-                            JOIN usuario u ON p.usuario_email = u.email 
-                            WHERE u.email = %s
-                        """, (form.email.data,))
-                        profile = cursor.fetchone()
-                        
-                        if not profile:
-                            flash("No se encontraron datos de perfil para el usuario.", "error")
-                            return render_template('templatesLogin/login.html', form=form)
-                        
-                        fecha_nacimiento = profile.get('fecha_nacimiento', '')
-                        if fecha_nacimiento:
-                            try:
-                                fecha_nacimiento = datetime.strptime(str(fecha_nacimiento), "%Y-%m-%d")
-                                fecha_nacimiento = fecha_nacimiento.strftime("%d/%m/%Y")
-                            except ValueError:
-                                fecha_nacimiento = None
-                        
-                        user = User(user_data)
-                        
-                        session['user_email'] = user.email
-                        session['user_name'] = profile.get('nombre', '')
-                        session['user_role'] = profile.get('rol', '')
-                        session['user_birthdate'] = fecha_nacimiento
-                        session['user_address'] = profile.get('direccion', '')
-                        session['user_description'] = profile.get('descripcion', '')
-                        session['user_area_expertise'] = profile.get('area_expertise', '')
-                        session['user_info_adicional'] = profile.get('info_adicional', '')
-                        
-                        cursor.execute("""
-                            UPDATE usuario 
-                            SET last_login = %s 
-                            WHERE email = %s
-                        """, (datetime.now(), form.email.data))
-                        conn.commit()
-                        
-                        login_user(user)
-                        flash('Has iniciado sesión exitosamente', 'success')
-                        return redirect(url_for('auth.dashboard'))
+            # Almacenar datos en la sesión
+            print('Guardando datos en la sesión...')
+            session['user_email'] = email  # Guardar el email usado para el login
+            session['user_name'] = email.split('@')[0]  # Usar la parte local del email como nombre de usuario
+            print(f'Datos guardados en sesión: {dict(session)}')
             
-            flash('Correo electrónico o contraseña inválidos', 'error')
-        except mysql.connector.Error as e:
-            print(f"Error de base de datos: {e}")
-            flash('Error al conectar con la base de datos', 'error')
+            # Establecer la sesión como permanente
+            session.permanent = True
+            
+            flash('Inicio de sesión exitoso', 'success')
+            # Redirigir al dashboard
+            return redirect(url_for('dashboard.index'))
+
         except Exception as e:
-            print(f"Error en login: {e}")
-            flash('Error al intentar iniciar sesión', 'error')
-        finally:
-            if 'cursor' in locals() and cursor:
-                cursor.close()
-            if 'conn' in locals() and conn:
-                conn.close()
-    
+            flash(f'Error al iniciar sesión: {str(e)}', 'danger')
+            print(f'Error de login: {str(e)}')
+
     return render_template('templatesLogin/login.html', form=form)
 
 @login_bp.route('/register', methods=['GET', 'POST'])
-def register():
+def register_view():
     form = RegisterForm()
-    if request.method == 'GET':
-        # if current_user.is_authenticated:
-        #     return redirect(url_for('auth.dashboard'))
-        return render_template('templatesLogin/register.html', form=form)
-    
     if form.validate_on_submit():
-        try:
-            conn = mysql.connector.connect(**db_config)
-            cursor = conn.cursor(dictionary=True)
-            
-            cursor.execute("SELECT * FROM usuario WHERE email = %s", (form.email.data,))
-            if cursor.fetchone():
-                flash('El email ya está registrado', 'error')
-                return render_template('templatesLogin/register.html', form=form)
-            
-            hashed_password = generate_password_hash(form.password1.data)
-            cursor.execute("""
-                INSERT INTO usuario (email, password, is_active, is_staff)
-                VALUES (%s, %s, %s, %s)
-            """, (form.email.data, hashed_password, True, False))
-            
-            cursor.execute("""
-                INSERT INTO perfil (
-                    usuario_email, nombre, fecha_nacimiento, direccion,
-                    descripcion, area_expertise, info_adicional
-                ) VALUES (%s, %s, %s, %s, %s, %s, %s)
-            """, (
-                form.email.data, form.nombre.data, form.fecha_nacimiento.data,
-                form.direccion.data, form.descripcion.data,
-                form.area_expertise.data, form.informacion_adicional.data
-            ))
-            
-            conn.commit()
+        user_data = {
+            'nombre': form.nombre.data,
+            'apellido': form.apellido.data,
+            'email': form.email.data,
+            'password': form.password.data,
+            'perfil': form.perfil.data
+        }
+        
+        response = api_client.register(user_data)
+        if response:
             flash('Registro exitoso. Por favor inicia sesión.', 'success')
-            return redirect(url_for('login.login'))
-            
-        except Exception as e:
-            print(f"Error en registro: {e}")
-            flash('Error al registrar usuario', 'error')
-        finally:
-            if cursor:
-                cursor.close()
-            if conn:
-                conn.close()
+            return redirect(url_for('login.login_view'))
+        else:
+            flash('Error al registrar usuario. Por favor intenta nuevamente.', 'error')
     
     return render_template('templatesLogin/register.html', form=form)
 
-@login_bp.route('/logout', methods=['POST'])
+@login_bp.route('/logout')
 def logout():
-    logout_user()
     session.clear()
-    flash('Has cerrado sesión exitosamente', 'success')
-    return redirect(url_for('login.login'))
+    flash('Has cerrado sesión correctamente', 'success')
+    return redirect(url_for('login.login_view'))

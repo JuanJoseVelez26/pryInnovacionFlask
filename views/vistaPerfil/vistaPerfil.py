@@ -1,130 +1,93 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
-# from flask_login import login_required, current_user
-import mysql.connector
-from config_flask import DATABASE_CONFIG
-from forms.formsPerfil.forms import PerfilForm
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from utils.api_client import APIClient
+from config_flask import API_CONFIG
+from forms.formsPerfil.formsPerfil import PerfilForm
 
 perfil_bp = Blueprint('perfil', __name__)
+api_client = APIClient(API_CONFIG['base_url'])
 
 @perfil_bp.route('/perfil')
-# @login_required
-def mi_perfil():
+def view_perfil():
     try:
-        conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("""
-            SELECT p.*, u.email
-            FROM perfil p
-            JOIN usuario u ON p.usuario_email = u.email
-            WHERE p.usuario_email = %s
-        """, ('usuario@ejemplo.com',))  # Email temporal
-        perfil = cursor.fetchone()
-        cursor.close()
-        conn.close()
-        
-        if not perfil:
-            flash('Perfil no encontrado', 'danger')
-            return redirect(url_for('auth.dashboard'))
+        user_id = session.get('user_id')
+        if not user_id:
+            flash('Debe iniciar sesión para ver su perfil', 'error')
+            return redirect(url_for('login.login'))
             
-        return render_template('templatesPerfil/mi_perfil.html', perfil=perfil)
-    except Exception as e:
-        flash(f'Error al cargar el perfil: {str(e)}', 'danger')
-        return redirect(url_for('auth.dashboard'))
-
-@perfil_bp.route('/perfil/editar', methods=['GET', 'POST'])
-# @login_required
-def editar_perfil():
-    try:
-        conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("""
-            SELECT p.*, u.email
-            FROM perfil p
-            JOIN usuario u ON p.usuario_email = u.email
-            WHERE p.usuario_email = %s
-        """, ('usuario@ejemplo.com',))  # Email temporal
-        perfil = cursor.fetchone()
-        cursor.close()
-        conn.close()
-        
+        perfil = api_client.get_user_profile(user_id)
         if not perfil:
-            flash('Perfil no encontrado', 'danger')
-            return redirect(url_for('auth.dashboard'))
+            flash('No se pudo cargar el perfil', 'error')
+            return redirect(url_for('dashboard.index'))
+            
+        return render_template('perfil/view.html', perfil=perfil)
+    except Exception as e:
+        flash(f'Error al cargar el perfil: {str(e)}', 'error')
+        return redirect(url_for('dashboard.index'))
+
+@perfil_bp.route('/perfil/edit', methods=['GET', 'POST'])
+def edit_perfil():
+    try:
+        user_id = session.get('user_id')
+        if not user_id:
+            flash('Debe iniciar sesión para editar su perfil', 'error')
+            return redirect(url_for('login.login'))
+            
+        perfil = api_client.get_user_profile(user_id)
+        if not perfil:
+            flash('No se pudo cargar el perfil', 'error')
+            return redirect(url_for('dashboard.index'))
             
         form = PerfilForm(obj=perfil)
-        if form.validate_on_submit():
-            try:
-                conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
-                cursor = conn.cursor()
-                cursor.execute("""
-                    UPDATE perfil
-                    SET nombre = %s,
-                        fecha_nacimiento = %s,
-                        direccion = %s,
-                        descripcion = %s,
-                        area_expertise = %s,
-                        info_adicional = %s
-                    WHERE usuario_email = %s
-                """, (
-                    form.nombre.data,
-                    form.fecha_nacimiento.data,
-                    form.direccion.data,
-                    form.descripcion.data,
-                    form.area_expertise.data,
-                    form.info_adicional.data,
-                    'usuario@ejemplo.com'  # Email temporal
-                ))
-                conn.commit()
-                cursor.close()
-                conn.close()
-                
-                flash('Perfil actualizado exitosamente', 'success')
-                return redirect(url_for('perfil.mi_perfil'))
-            except Exception as e:
-                flash(f'Error al actualizar el perfil: {str(e)}', 'danger')
         
-        return render_template('templatesPerfil/editar_perfil.html', form=form, perfil=perfil)
+        if form.validate_on_submit():
+            data = {
+                'nombre': form.nombre.data,
+                'apellido': form.apellido.data,
+                'email': form.email.data,
+                'telefono': form.telefono.data,
+                'cargo': form.cargo.data,
+                'area': form.area.data
+            }
+            
+            if form.password.data:
+                data['password'] = form.password.data
+                
+            api_client.update_user_profile(user_id, data)
+            flash('Perfil actualizado exitosamente', 'success')
+            return redirect(url_for('perfil.view_perfil'))
+            
+        return render_template('perfil/edit.html', form=form, perfil=perfil)
     except Exception as e:
-        flash(f'Error al cargar el perfil: {str(e)}', 'danger')
-        return redirect(url_for('auth.dashboard'))
+        flash(f'Error al actualizar el perfil: {str(e)}', 'error')
+        return redirect(url_for('perfil.view_perfil'))
 
-@perfil_bp.route('/perfil/cambiar-password', methods=['GET', 'POST'])
-# @login_required
-def cambiar_password():
-    if request.method == 'POST':
-        try:
-            conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
-            cursor = conn.cursor(dictionary=True)
-            cursor.execute("""
-                SELECT password FROM usuario
-                WHERE email = %s
-            """, ('usuario@ejemplo.com',))  # Email temporal
-            usuario = cursor.fetchone()
+@perfil_bp.route('/perfil/change-password', methods=['GET', 'POST'])
+def change_password():
+    try:
+        user_id = session.get('user_id')
+        if not user_id:
+            flash('Debe iniciar sesión para cambiar su contraseña', 'error')
+            return redirect(url_for('login.login'))
             
-            if not usuario:
-                flash('Usuario no encontrado', 'danger')
-                return redirect(url_for('auth.dashboard'))
-                
-            if request.form['password_actual'] != usuario['password']:
-                flash('Contraseña actual incorrecta', 'danger')
-                return redirect(url_for('perfil.cambiar_password'))
-                
-            if request.form['nueva_password'] != request.form['confirmar_password']:
-                flash('Las contraseñas no coinciden', 'danger')
-                return redirect(url_for('perfil.cambiar_password'))
-                
-            cursor.execute("""
-                UPDATE usuario
-                SET password = %s
-                WHERE email = %s
-            """, (request.form['nueva_password'], 'usuario@ejemplo.com'))  # Email temporal
-            conn.commit()
-            cursor.close()
-            conn.close()
+        if request.method == 'POST':
+            current_password = request.form.get('current_password')
+            new_password = request.form.get('new_password')
+            confirm_password = request.form.get('confirm_password')
             
+            if new_password != confirm_password:
+                flash('Las contraseñas no coinciden', 'error')
+                return redirect(url_for('perfil.change_password'))
+                
+            data = {
+                'current_password': current_password,
+                'new_password': new_password
+            }
+            
+            api_client.change_password(user_id, data)
             flash('Contraseña actualizada exitosamente', 'success')
-            return redirect(url_for('perfil.mi_perfil'))
-        except Exception as e:
-            flash(f'Error al cambiar la contraseña: {str(e)}', 'danger')
-    
-    return render_template('templatesPerfil/cambiar_password.html')
+            return redirect(url_for('perfil.view_perfil'))
+            
+        return render_template('perfil/change_password.html')
+    except Exception as e:
+        flash(f'Error al cambiar la contraseña: {str(e)}', 'error')
+        return redirect(url_for('perfil.view_perfil'))

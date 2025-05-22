@@ -62,3 +62,34 @@ class SolucionesForm(FlaskForm):
         super(SolucionesForm, self).__init__(*args, **kwargs)
         self.id_foco_innovacion.choices = obtener_focos_innovacion()
         self.id_tipo_innovacion.choices = obtener_tipos_innovacion()
+
+class SolucionForm(FlaskForm):
+    titulo = StringField('Título', validators=[
+        DataRequired(message='El título es requerido'),
+        Length(min=3, max=100, message='El título debe tener entre 3 y 100 caracteres')
+    ])
+    
+    descripcion = TextAreaField('Descripción', validators=[
+        DataRequired(message='La descripción es requerida'),
+        Length(min=10, max=1000, message='La descripción debe tener entre 10 y 1000 caracteres')
+    ])
+    
+    palabras_claves = StringField('Palabras Clave', validators=[
+        DataRequired(message='Las palabras clave son requeridas'),
+        Length(max=200, message='Las palabras clave no deben exceder los 200 caracteres')
+    ])
+    
+    recursos_requeridos = TextAreaField('Recursos Requeridos', validators=[
+        DataRequired(message='Los recursos requeridos son necesarios'),
+        Length(max=500, message='Los recursos requeridos no deben exceder los 500 caracteres')
+    ])
+    
+    tipo_innovacion = SelectField('Tipo de Innovación', coerce=int, validators=[
+        DataRequired(message='Debe seleccionar un tipo de innovación')
+    ])
+    
+    foco_innovacion = SelectField('Foco de Innovación', coerce=int, validators=[
+        DataRequired(message='Debe seleccionar un foco de innovación')
+    ])
+    
+    submit = SubmitField('Guardar')
