@@ -9,12 +9,12 @@ api_client = APIClient(API_CONFIG['base_url'])
 @perfil_bp.route('/perfil')
 def view_perfil():
     try:
-        user_id = session.get('user_id')
-        if not user_id:
+        user_email = session.get('user_email')
+        if not user_email:
             flash('Debe iniciar sesión para ver su perfil', 'error')
-            return redirect(url_for('login.login'))
+            return redirect(url_for('login.login_view'))
             
-        perfil = api_client.get_user_profile(user_id)
+        perfil = api_client.get_user_info(user_email)
         if not perfil:
             flash('No se pudo cargar el perfil', 'error')
             return redirect(url_for('dashboard.index'))
@@ -27,12 +27,12 @@ def view_perfil():
 @perfil_bp.route('/perfil/edit', methods=['GET', 'POST'])
 def edit_perfil():
     try:
-        user_id = session.get('user_id')
-        if not user_id:
+        user_email = session.get('user_email')
+        if not user_email:
             flash('Debe iniciar sesión para editar su perfil', 'error')
-            return redirect(url_for('login.login'))
+            return redirect(url_for('login.login_view'))
             
-        perfil = api_client.get_user_profile(user_id)
+        perfil = api_client.get_user_info(user_email)
         if not perfil:
             flash('No se pudo cargar el perfil', 'error')
             return redirect(url_for('dashboard.index'))
@@ -52,7 +52,7 @@ def edit_perfil():
             if form.password.data:
                 data['password'] = form.password.data
                 
-            api_client.update_user_profile(user_id, data)
+            api_client.update_user_profile(user_email, data)
             flash('Perfil actualizado exitosamente', 'success')
             return redirect(url_for('perfil.view_perfil'))
             
@@ -64,10 +64,10 @@ def edit_perfil():
 @perfil_bp.route('/perfil/change-password', methods=['GET', 'POST'])
 def change_password():
     try:
-        user_id = session.get('user_id')
-        if not user_id:
+        user_email = session.get('user_email')
+        if not user_email:
             flash('Debe iniciar sesión para cambiar su contraseña', 'error')
-            return redirect(url_for('login.login'))
+            return redirect(url_for('login.login_view'))
             
         if request.method == 'POST':
             current_password = request.form.get('current_password')
@@ -83,7 +83,7 @@ def change_password():
                 'new_password': new_password
             }
             
-            api_client.change_password(user_id, data)
+            api_client.change_password(user_email, data)
             flash('Contraseña actualizada exitosamente', 'success')
             return redirect(url_for('perfil.view_perfil'))
             

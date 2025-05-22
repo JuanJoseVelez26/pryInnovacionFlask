@@ -8,6 +8,10 @@ api_client = APIClient(API_CONFIG['base_url'])
 
 @oportunidades_bp.route('/oportunidades')
 def list_oportunidades():
+    # Verificar si hay sesión activa
+    if not session.get('user_email'):
+        flash('Debe iniciar sesión para ver las oportunidades', 'error')
+        return redirect(url_for('login.login_view'))
     try:
         user_email = session.get('user_email')
         if not user_email:
@@ -33,6 +37,10 @@ def list_oportunidades():
 
 @oportunidades_bp.route('/oportunidades/<int:oportunidad_id>')
 def view_oportunidad(oportunidad_id):
+    # Verificar si hay sesión activa
+    if not session.get('user_email'):
+        flash('Debe iniciar sesión para ver la oportunidad', 'error')
+        return redirect(url_for('login.login_view'))
     try:
         user_email = session.get('user_email')
         if not user_email:
@@ -60,6 +68,10 @@ def view_oportunidad(oportunidad_id):
 
 @oportunidades_bp.route('/oportunidades/create', methods=['GET', 'POST'])
 def create_oportunidad():
+    # Verificar si hay sesión activa
+    if not session.get('user_email'):
+        flash('Debe iniciar sesión para crear una oportunidad', 'error')
+        return redirect(url_for('login.login_view'))
     try:
         user_email = session.get('user_email')
         if not user_email:
@@ -99,6 +111,10 @@ def create_oportunidad():
 
 @oportunidades_bp.route('/oportunidades/<int:oportunidad_id>/edit', methods=['GET', 'POST'])
 def update_oportunidad(oportunidad_id):
+    # Verificar si hay sesión activa
+    if not session.get('user_email'):
+        flash('Debe iniciar sesión para editar la oportunidad', 'error')
+        return redirect(url_for('login.login_view'))
     try:
         user_email = session.get('user_email')
         if not user_email:
@@ -142,6 +158,10 @@ def update_oportunidad(oportunidad_id):
 
 @oportunidades_bp.route('/oportunidades/<int:oportunidad_id>/delete', methods=['POST'])
 def delete_oportunidad(oportunidad_id):
+    # Verificar si hay sesión activa
+    if not session.get('user_email'):
+        flash('Debe iniciar sesión para eliminar la oportunidad', 'error')
+        return redirect(url_for('login.login_view'))
     try:
         user_email = session.get('user_email')
         if not user_email:
@@ -161,6 +181,10 @@ def delete_oportunidad(oportunidad_id):
 
 @oportunidades_bp.route('/oportunidades/<int:oportunidad_id>/confirmar', methods=['POST'])
 def confirmar_oportunidad(oportunidad_id):
+    # Verificar si hay sesión activa
+    if not session.get('user_email'):
+        flash('Debe iniciar sesión para confirmar la oportunidad', 'error')
+        return redirect(url_for('login.login_view'))
     try:
         user_email = session.get('user_email')
         if not user_email:
