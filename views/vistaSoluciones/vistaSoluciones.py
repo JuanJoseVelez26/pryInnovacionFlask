@@ -3,10 +3,8 @@ from utils.api_client import APIClient
 from config_flask import API_CONFIG
 from forms.formsSoluciones.formsSoluciones import SolucionForm
 
-
 soluciones_bp = Blueprint('soluciones', __name__)
 api_client = APIClient(API_CONFIG['base_url'])
-
 
 @soluciones_bp.route('/soluciones')
 def list_soluciones():
@@ -20,15 +18,15 @@ def list_soluciones():
         tipo_solucion = request.args.get('tipo_solucion')
         estado = request.args.get('estado')
         
-        # Obtener todas las soluciones
-        cursor.execute("""
-            SELECT s.*, u.email as creador_email 
-            FROM solucion s 
-            LEFT JOIN usuario u ON s.creador_por = u.email
-        """)
-        soluciones = cursor.fetchall()
+        # Obtener datos
+        soluciones = api_client.get_soluciones(tipo_solucion, estado)
+        tipos = api_client.get_tipos_solucion()
+        estados = api_client.get_estados()
         
-        return render_template('templatesSoluciones/list_soluciones.html', soluciones=soluciones)
+        return render_template('templatesSoluciones/list.html', 
+                             soluciones=soluciones,
+                             tipos=tipos,
+                             estados=estados)
     except Exception as e:
         flash(f'Error al cargar las soluciones: {str(e)}', 'error')
         return redirect(url_for('dashboard.index'))
@@ -170,9 +168,12 @@ def confirmar_solucion(solucion_id):
 @soluciones_bp.route('/soluciones/calendario')
 def calendario():
     try:
-        conn = mysql.connector.connect(**DATABASE_CONFIG['mysql'])
-        cursor = conn.cursor(dictionary=True)        
-        return render_template('calendar.html')
+        user_id = session.get('user_id')
+        if not user_id:
+            flash('Debe iniciar sesión para ver el calendario', 'error')
+            return redirect(url_for('login.login_view'))
+            
+        return render_template('templatesSoluciones/calendario.html')
     except Exception as e:
         flash(f'Error al cargar el calendario: {str(e)}', 'error')
         return redirect(url_for('soluciones.list_soluciones'))
@@ -189,8 +190,6 @@ def ultimos_lanzamientos():
     except Exception as e:
         flash(f'Error al cargar los últimos lanzamientos: {str(e)}', 'error')
         return redirect(url_for('soluciones.list_soluciones'))
-
-
 
 @soluciones_bp.route('/soluciones/proximos-lanzamientos')
 def proximos_lanzamientos():
