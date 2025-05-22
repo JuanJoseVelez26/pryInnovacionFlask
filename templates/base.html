@@ -101,22 +101,17 @@
                                 alt="Header Avatar">
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            {% if session.get('email') %}
+                            {% if session.get('user_email') %}
                                 <a class="dropdown-item" href="{{ url_for('dashboard.index') }}">  
-                                    <i class="mdi mdi-account-circle font-size-17 text-muted align-middle mr-1"></i> Perfil
-                                </a>
-                                <a class="dropdown-item" href="{{ url_for('dashboard.index') }}">
                                     <i class="mdi mdi-view-dashboard font-size-17 text-muted align-middle mr-1"></i> Dashboard
                                 </a>
-
-
+                                <a class="dropdown-item" href="{{ url_for('perfil.view_perfil') }}">
+                                    <i class="mdi mdi-account-circle font-size-17 text-muted align-middle mr-1"></i> Perfil
+                                </a>
                                 <div class="dropdown-divider"></div>
-                                <form action="{{ url_for('login.logout') }}" method="post" style="display: inline;">
-                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                    <button type="submit" class="dropdown-item text-danger" style="background: none; border: none; padding: 0;">
-                                        <i class="mdi mdi-power font-size-17 text-muted align-middle mr-1 text-danger"></i> Salir
-                                    </button>
-                                </form>
+                                <a class="dropdown-item text-danger" href="{{ url_for('login.logout') }}">
+                                    <i class="mdi mdi-power font-size-17 text-muted align-middle mr-1 text-danger"></i> Cerrar Sesión
+                                </a>
                             {% else %}
                                 <a class="dropdown-item" href="{{ url_for('login.login_view') }}">
                                     <i class="mdi mdi-login font-size-17 text-muted align-middle mr-1"></i> Iniciar sesión
