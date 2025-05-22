@@ -1,3 +1,3 @@
-from .formsSoluciones import SolucionesForm
+from .formsSoluciones import SolucionForm
 
-__all__ = ['SolucionesForm'] 
+__all__ = ['SolucionForm'] 

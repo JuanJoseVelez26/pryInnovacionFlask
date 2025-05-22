@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from flask_login import login_required, current_user
 from datetime import datetime
 from models.AuthenticationModel import DatabaseModel, AuthenticationModel
-from models.ideaModel import IdeaModel
+from models.Idea import Idea
 
 auth_bp = Blueprint('auth', __name__)
 

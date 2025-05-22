@@ -1,3 +1,3 @@
-from .vistaSoluciones import vistaSoluciones
+from .vistaSoluciones import soluciones_bp
 
-__all__ = ['vistaSoluciones'] 
+__all__ = ['soluciones_bp'] 

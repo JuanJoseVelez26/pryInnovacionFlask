@@ -81,7 +81,7 @@ def create_solucion():
             else:
                 flash('Error al crear la solución', 'error')
                 
-        return render_template('templatesSoluciones/create.html', form=form)
+        return render_template('templatesSoluciones/create_soluciones.html', form=form)
     except Exception as e:
         flash(f'Error al crear la solución: {str(e)}', 'error')
         return redirect(url_for('soluciones.list_soluciones'))
