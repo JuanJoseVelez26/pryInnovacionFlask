@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Título de la página -->
+<div class="row">
+    <div class="col-sm-6">
+        <div class="page-title-box">
+            <h4>Oportunidades</h4>
+        </div>
+    </div>
+</div>
+
+<!-- Formulario de confirmación de eliminación -->
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Eliminar Oportunidad</h4>
+
+                <form method="POST">
+                    {{ csrf_field() }}
+
+                    <p>¿Está seguro de que desea eliminar esta oportunidad?</p>
+                    <p>
+                        Oportunidad: <b>{{ oportunidad.titulo }}</b>
+                    </p>
+
+                    {% if is_experto %}
+                    <div class="form-group">
+                        <label for="mensaje_experto">Mensaje del experto (opcional)</label>
+                        <textarea class="form-control" id="mensaje_experto" name="mensaje_experto" rows="3" placeholder="Escriba un mensaje aquí (opcional)"></textarea>
+                    </div>
+                    {% endif %}
+
+                    <div class="form-group mb-0">
+                        <div>
+                            <button type="submit" class="btn btn-danger float-right">Eliminar</button>
+                            <a href="{{ url_for('list_oportunidad') }}" class="btn btn-light">Regresar</a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

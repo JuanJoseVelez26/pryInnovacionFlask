@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <link href="{{ url_for('static', filename='libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('static', filename='libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4>Detalle de la Oportunidad</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="table" class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th>Código de la oportunidad</th>
+                                <td>{{ oportunidad.codigo_oportunidad }}</td>
+                            </tr>
+                            <tr>
+                                <th>Descripción</th>
+                                <td>{{ oportunidad.descripcion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fecha de creación</th>
+                                <td>{{ oportunidad.fecha_creacion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Palabras clave</th>
+                                <td>{{ oportunidad.palabras_claves }}</td>
+                            </tr>
+                            <tr>
+                                <th>Recursos requeridos</th>
+                                <td>{{ oportunidad.recursos_requeridos }}</td>
+                            </tr>
+                            <tr>
+                                <th>Archivo multimedia</th>
+                                <td>
+                                    {% if oportunidad.archivo_multimedia %}
+                                        <a href="{{ oportunidad.archivo_multimedia_url }}" target="_blank">Ver archivo</a>
+                                    {% else %}
+                                        No disponible
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Tipo de Innovación</th>
+                                <td>{{ tipo_innovacion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Foco de Innovación</th>
+                                <td>{{ foco_innovacion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Creado por</th>
+                                <td>{{ oportunidad.creador_por }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('list_oportunidad') }}" class="btn btn-primary">Regresar a Oportunidades</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ url_for('static', filename='libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        $('#table').DataTable();
+    });
+</script>
+{% endblock %}
+
+

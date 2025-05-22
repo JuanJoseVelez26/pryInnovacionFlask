@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <link href="{{ url_for('static', filename='libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script>
+        $(function(){
+            $("#fecha_creacion").datepicker({
+                autoclose: true,
+                format: 'yyyy-mm-dd',
+                todayHighlight: true,
+                orientation: "bottom left"
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4>Crear Nueva Oportunidad</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Registrar Oportunidad</h4>
+                <p class="card-title-desc">Ingrese la información para la nueva oportunidad</p>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+
+                    <div class="form-group">
+                        {{ form.titulo.label }} {{ form.titulo(class="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.descripcion.label }} {{ form.descripcion(class="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.palabras_claves.label }} {{ form.palabras_claves(class="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.recursos_requeridos.label }} {{ form.recursos_requeridos(class="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.fecha_creacion.label }} {{ form.fecha_creacion(class="form-control", id="fecha_creacion") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.archivo_multimedia.label }} {{ form.archivo_multimedia() }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.id_foco_innovacion.label }} {{ form.id_foco_innovacion(class="form-control") }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.id_tipo_innovacion.label }} {{ form.id_tipo_innovacion(class="form-control") }}
+                    </div>
+
+                    <div class="form-group mb-0">
+                        <button type="submit" class="btn btn-primary float-right">Guardar Oportunidad</button>
+                        <a href="{{ url_for('list_oportunidad') }}" class="btn btn-light">Regresar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
