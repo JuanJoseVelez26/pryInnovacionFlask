@@ -112,6 +112,22 @@ class APIClient:
         }
         return self._make_request('GET', '/SGV/procedures/execute', params=params)
         
+    def get_procedures(self):
+        """Get all procedures"""
+        return self._make_request('GET', 'procedures')
+
+    def get_ideas(self):
+        """Get all ideas"""
+        return self._make_request('GET', '/api/InnovacionUSB/Idea')
+
+    def get_oportunidades(self):
+        """Get all opportunities"""
+        return self._make_request('GET', '/api/innovacionusb/oportunidad')
+
+    def get_soluciones(self):
+        """Get all solutions"""
+        return self._make_request('GET', '/api/innovacionusb/solucion')
+
     def create_procedure(self, data):
         """Crea un nuevo procedimiento"""
         return self._make_request('POST', '/SGV/procedures/execute', data=data)
