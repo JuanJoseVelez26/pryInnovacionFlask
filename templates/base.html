@@ -155,7 +155,7 @@
                         </li>
         
                         <li id="proyectos_li">
-                            <a href="#" class="waves-effect" id="proyectos_anchor">
+                            <a href="{{ url_for('proyectos.list_proyectos') }}" class="waves-effect" id="proyectos_anchor">
                                 <i class="mdi mdi-briefcase"></i>
                                 <span>Proyectos</span>
                             </a>
@@ -193,18 +193,11 @@
         
                         <li>
                             <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="fas fa-cogs"></i>
-                                <span>Modulo Soluciones</span>
+                                <i class="mdi mdi-buffer"></i>
+                                <span>Módulo Soluciones</span>
                             </a>
                             <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="{{ url_for('soluciones.create_solucion') }}">Crear solución</a></li>
-                                <li><a href="{{ url_for('soluciones.calendario') }}">Calendario de lanzamientos</a></li>
-                                <li>
-                                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                        <span>Lanzamientos</span>
-                                    </a>
-                                    <ul class="sub-menu" aria-expanded="false">
-                                        <li><a href="{{ url_for('soluciones.ultimos_lanzamientos') }}">Últimos Lanzamientos</a></li>
+                                <li><a href="{{ url_for('soluciones.list_soluciones') }}">Lista de Soluciones</a></li>
                                         <li><a href="{{ url_for('soluciones.proximos_lanzamientos') }}">Próximos Lanzamientos</a></li>
                                     </ul>
                                 </li>

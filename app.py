@@ -12,6 +12,7 @@ from views.vistaSoluciones.vistaSoluciones import soluciones_bp
 from views.vistaPerfil.vistaPerfil import perfil_bp
 from views.vistaDashboard.vistaDashboard import dashboard_bp
 from views.vistaMain.vistaMain import main_bp
+from views.vistaProyectos.vistaProyectos import proyectos_bp
 from utils.api_client import APIClient
 
 # Cargar variables de entorno
@@ -43,6 +44,7 @@ app.register_blueprint(soluciones_bp)
 app.register_blueprint(perfil_bp)
 app.register_blueprint(dashboard_bp)
 app.register_blueprint(main_bp)
+app.register_blueprint(proyectos_bp)
 
 @app.route('/')
 def index():

@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Proyectos{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between">
+                <h4 class="mb-0">Proyectos</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
+
+    <!-- Contadores -->
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-sm flex-shrink-0">
+                            <span class="avatar-title bg-soft-primary rounded">
+                                <i class="mdi mdi-lightbulb-outline text-primary font-size-24"></i>
+                            </span>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="text-muted mb-2">Ideas</p>
+                            <h4 class="mb-0">{{ total_ideas }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-sm flex-shrink-0">
+                            <span class="avatar-title bg-soft-success rounded">
+                                <i class="mdi mdi-target text-success font-size-24"></i>
+                            </span>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="text-muted mb-2">Oportunidades</p>
+                            <h4 class="mb-0">{{ total_oportunidades }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-sm flex-shrink-0">
+                            <span class="avatar-title bg-soft-info rounded">
+                                <i class="mdi mdi-rocket text-info font-size-24"></i>
+                            </span>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="text-muted mb-2">Soluciones</p>
+                            <h4 class="mb-0">{{ total_soluciones }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Proyectos -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-centered table-nowrap mb-0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Tipo</th>
+                                    <th scope="col">Título</th>
+                                    <th scope="col">Descripción</th>
+                                    <th scope="col">Estado</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for proyecto in proyectos %}
+                                <tr>
+                                    <td>
+                                        {% if proyecto.tipo == 'Idea' %}
+                                            <span class="badge bg-soft-primary text-primary">{{ proyecto.tipo }}</span>
+                                        {% elif proyecto.tipo == 'Oportunidad' %}
+                                            <span class="badge bg-soft-success text-success">{{ proyecto.tipo }}</span>
+                                        {% else %}
+                                            <span class="badge bg-soft-info text-info">{{ proyecto.tipo }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td><strong>{{ proyecto.titulo }}</strong></td>
+                                    <td>{{ proyecto.descripcion[:150] + '...' if proyecto.descripcion|length > 150 else proyecto.descripcion }}</td>
+                                    <td>
+                                        {% if proyecto.estado == 'Pendiente' %}
+                                            <span class="badge bg-soft-warning text-warning">{{ proyecto.estado }}</span>
+                                        {% elif proyecto.estado == 'En Progreso' %}
+                                            <span class="badge bg-soft-info text-info">{{ proyecto.estado }}</span>
+                                        {% elif proyecto.estado == 'Completado' %}
+                                            <span class="badge bg-soft-success text-success">{{ proyecto.estado }}</span>
+                                        {% else %}
+                                            <span class="badge bg-soft-secondary text-secondary">{{ proyecto.estado }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ proyecto.fecha.split('T')[0] if proyecto.fecha else 'N/A' }}</td>
+                                    <td>
+                                        <a href="{{ proyecto.url }}" class="btn btn-soft-primary btn-sm waves-effect waves-light">
+                                            <i class="mdi mdi-eye font-size-16 align-middle"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
