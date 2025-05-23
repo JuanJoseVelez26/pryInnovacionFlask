@@ -1,143 +1,242 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard{% endblock %}
+{% block head %}
+<link href="{{ url_for('static', filename='libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ url_for('static', filename='libs/animate.css/animate.min.css') }}" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/chart.js" rel="stylesheet">
+<link rel="shortcut icon" href="{{ url_for('static', filename='img/icono.ico') }}">
+<title>{% block title %}Panel de Control{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/dashboard.css') }}">
+
+{% endblock head %}
 
 {% block content %}
+<!-- Header del Dashboard -->
+<div class="dashboard-header">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-12">
+                <h2 class="mb-0">Panel de Control</h2>
+                <p class="mb-0 opacity-75">Última actualización: {{ now }}</p>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container-fluid">
-    <!-- start page title -->
+    <!-- Tarjetas de Estadísticas -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card border-0 shadow-sm animate__animated animate__fadeInUp">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h6 class="text-uppercase text-primary mb-2">Ideas</h6>
+                            <h2 class="mb-0">{{ ideas_count }}</h2>
+                            <div class="metric-trend trend-up">
+                                <i class="fas fa-arrow-up"></i> +5% vs mes anterior
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-lightbulb text-primary stat-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card border-0 shadow-sm animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h6 class="text-uppercase text-info mb-2">Oportunidades</h6>
+                            <h2 class="mb-0">{{ oportunidades_count }}</h2>
+                            <div class="metric-trend trend-up">
+                                <i class="fas fa-arrow-up"></i> +8% vs mes anterior
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-line text-info stat-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card border-0 shadow-sm animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h6 class="text-uppercase text-warning mb-2">Soluciones</h6>
+                            <h2 class="mb-0">{{ solucion_count }}</h2>
+                            <div class="metric-trend trend-down">
+                                <i class="fas fa-arrow-down"></i> -2% vs mes anterior
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-puzzle-piece text-warning stat-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card stat-card border-0 shadow-sm animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h6 class="text-uppercase text-success mb-2">Usuarios</h6>
+                            <h2 class="mb-0">12</h2>
+                            <div class="metric-trend trend-up">
+                                <i class="fas fa-arrow-up"></i> +3 nuevos este mes
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users text-success stat-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row">
+        <div class="col-xl-8 mb-4">
+            <div class="chart-container">
+                <h5 class="mb-4">Tendencia de Actividades</h5>
+                <canvas id="activityChart"></canvas>
+            </div>
+        </div>
+        <div class="col-xl-4 mb-4">
+            <div class="chart-container">
+                <h5 class="mb-4">Distribución</h5>
+                <canvas id="distributionChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progreso y Metas -->
     <div class="row">
         <div class="col-12">
-            <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h4 class="mb-0 font-size-18">Dashboard</h4>
-                <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item active">Dashboard</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end page title -->
-
-    <div class="row">
-        <div class="col-xl-4">
-            <div class="card">
+            <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <h4 class="card-title mb-4">Ideas</h4>
-                    <div class="text-center">
-                        <div class="avatar-sm mx-auto">
-                            <span class="avatar-title rounded-circle bg-light text-primary font-size-24">
-                                <i class="ri-lightbulb-line"></i>
-                            </span>
+                    <h5 class="mb-4">Progreso hacia Objetivos</h5>
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <p class="mb-2">Ideas Generadas</p>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+                            </div>
                         </div>
-                        <div class="mt-4">
-                            <h5>Total de Ideas</h5>
-                            <p class="text-muted mb-2">Ideas registradas en el sistema</p>
-                            <h5 class="mb-0">{{ total_ideas }}</h5>
+                        <div class="col-md-4">
+                            <p class="mb-2">Oportunidades Identificadas</p>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">60%</div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title mb-4">Oportunidades</h4>
-                    <div class="text-center">
-                        <div class="avatar-sm mx-auto">
-                            <span class="avatar-title rounded-circle bg-light text-success font-size-24">
-                                <i class="ri-briefcase-line"></i>
-                            </span>
+                        <div class="col-md-4">
+                            <p class="mb-2">Soluciones Implementadas</p>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">45%</div>
+                            </div>
                         </div>
-                        <div class="mt-4">
-                            <h5>Total de Oportunidades</h5>
-                            <p class="text-muted mb-2">Oportunidades identificadas</p>
-                            <h5 class="mb-0">{{ total_opportunities }}</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title mb-4">Proyectos</h4>
-                    <div class="text-center">
-                        <div class="avatar-sm mx-auto">
-                            <span class="avatar-title rounded-circle bg-light text-info font-size-24">
-                                <i class="ri-folder-line"></i>
-                            </span>
-                        </div>
-                        <div class="mt-4">
-                            <h5>Total de Proyectos</h5>
-                            <p class="text-muted mb-2">Proyectos en desarrollo</p>
-                            <h5 class="mb-0">{{ total_projects }}</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xl-8">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title mb-4">Actividad Reciente</h4>
-                    <div class="table-responsive">
-                        <table class="table table-centered table-nowrap mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Fecha</th>
-                                    <th>Usuario</th>
-                                    <th>Acción</th>
-                                    <th>Detalles</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for activity in recent_activities %}
-                                <tr>
-                                    <td>{{ activity.date }}</td>
-                                    <td>{{ activity.user }}</td>
-                                    <td>{{ activity.action }}</td>
-                                    <td>{{ activity.details }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title mb-4">Acciones Rápidas</h4>
-                    <div class="d-grid gap-2">
-                        <a href="{{ url_for('create_idea') }}" class="btn btn-primary waves-effect waves-light">
-                            <i class="ri-add-line align-middle me-1"></i> Nueva Idea
-                        </a>
-                        <a href="{{ url_for('create_opportunity') }}" class="btn btn-success waves-effect waves-light">
-                            <i class="ri-add-line align-middle me-1"></i> Nueva Oportunidad
-                        </a>
-                        <a href="{{ url_for('listar_proyectos') }}" class="btn btn-info waves-effect waves-light">
-                            <i class="ri-folder-line align-middle me-1"></i> Ver Proyectos
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
 
-{% block scripts %}
+<div id="dashboard-data" 
+    data-ideas="{{ ideas_count|default(0) }}" 
+    data-oportunidades="{{ oportunidades_count|default(0) }}" 
+    data-soluciones="{{ solucion_count|default(0) }}"
+    style="display: none;"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    $(document).ready(function() {
-        // Aquí puedes agregar cualquier JavaScript específico para el dashboard
+document.addEventListener('DOMContentLoaded', function() {
+    var dataElement = document.getElementById('dashboard-data');
+    var dashboardData = {
+        ideas: parseInt(dataElement.dataset.ideas),
+        oportunidades: parseInt(dataElement.dataset.oportunidades),
+        soluciones: parseInt(dataElement.dataset.soluciones)
+    };
+    // Gráfico de Actividades
+    var activityCtx = document.getElementById('activityChart').getContext('2d');
+    var activityChart = new Chart(activityCtx, {
+        type: 'line',
+        data: {
+            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Ideas',
+                data: [65, 59, 80, 81, 56, dashboardData.ideas],
+                borderColor: '#4e73df',
+                tension: 0.4,
+                fill: false
+            }, {
+                label: 'Oportunidades',
+                data: [28, 48, 40, 19, 86, dashboardData.oportunidades],
+                borderColor: '#17a2b8',
+                tension: 0.4,
+                fill: false
+            }, {
+                label: 'Soluciones',
+                data: [35, 40, 45, 50, 55, dashboardData.soluciones],
+                borderColor: '#ffc107',
+                tension: 0.4,
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        drawBorder: false
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
     });
+
+    // Gráfico de Distribución
+    var distributionCtx = document.getElementById('distributionChart').getContext('2d');
+    var distributionChart = new Chart(distributionCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Ideas', 'Oportunidades', 'Soluciones'],
+            datasets: [{
+                data: [dashboardData.ideas, dashboardData.oportunidades, dashboardData.soluciones],
+                backgroundColor: ['#4e73df', '#17a2b8', '#ffc107'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            },
+            cutout: '70%'
+        }
+    });
+});
 </script>
-{% endblock %} 
+{% endblock content %}

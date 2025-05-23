@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Crear Proyecto{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Crear Nuevo Proyecto</h4>
+                
+                <form action="{{ url_for('auth.crear_proyecto') }}" method="POST">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre del Proyecto</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="idea_id" class="form-label">Idea Asociada (Opcional)</label>
+                        <select class="form-select" id="idea_id" name="idea_id">
+                            <option value="">Seleccionar Idea</option>
+                            {% for idea in ideas %}
+                            <option value="{{ idea.id }}">{{ idea.titulo }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="oportunidad_id" class="form-label">Oportunidad Asociada (Opcional)</label>
+                        <select class="form-select" id="oportunidad_id" name="oportunidad_id">
+                            <option value="">Seleccionar Oportunidad</option>
+                            {% for oportunidad in oportunidades %}
+                            <option value="{{ oportunidad.id }}">{{ oportunidad.titulo }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Crear Proyecto</button>
+                        <a href="{{ url_for('auth.listar_proyectos') }}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

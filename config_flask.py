@@ -4,39 +4,28 @@ from pathlib import Path
 # Directorio base del proyecto
 BASE_DIR = Path(__file__).resolve().parent
 
-# Configuración de seguridad
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-#1!vjo3l)hf!zh+kzob43t2-f)ssp9z3k-b2@j(@&w9+@6l21@')
-DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
-
-# Configuración de la base de datos
-# Puedes elegir entre SQLite, PostgreSQL o MySQL
-DATABASE_CONFIG = {
-    # Configuración para SQLite (más simple para desarrollo)
-    'sqlite': {
-        'SQLALCHEMY_DATABASE_URI': f'sqlite:///{BASE_DIR}/db.sqlite3',
-        'SQLALCHEMY_TRACK_MODIFICATIONS': False
-    },
-    
-    # Configuración para PostgreSQL
-    'postgresql': {
-        'SQLALCHEMY_DATABASE_URI': 'postgresql://postgres:@localhost:5432/bdinnovacion',
-        'SQLALCHEMY_TRACK_MODIFICATIONS': False
-    },
-    
-    # Configuración para MySQL
-    'mysql': {
-        'host': 'localhost',
-        'user': 'root',
-        'password': '',
-        'database': 'innovacion_db',
-        'SQLALCHEMY_DATABASE_URI': 'mysql://root:@localhost/innovacion_db',
-        'SQLALCHEMY_TRACK_MODIFICATIONS': False
-    }
+# Configuración de Flask
+FLASK_CONFIG = {
+    'SECRET_KEY': os.environ.get('SECRET_KEY', 'dev'),
+    'DEBUG': True,
+    'SESSION_COOKIE_SECURE': False,
+    'SESSION_COOKIE_HTTPONLY': True,
+    'PERMANENT_SESSION_LIFETIME': 3600  # 1 hora
 }
 
-# Selecciona la configuración de base de datos a usar
-# Cambia 'sqlite' por 'postgresql' o 'mysql' según prefieras
-DATABASE_TYPE = 'postgresql'  # Mantenemos PostgreSQL como predeterminado
+# Configuración de seguridad
+SECRET_KEY = FLASK_CONFIG['SECRET_KEY']
+DEBUG = FLASK_CONFIG['DEBUG']
+
+# Configuración de la API
+API_CONFIG = {
+    'base_url': os.environ.get('API_BASE_URL', 'http://localhost:5186/api'),  # En C# la URL base debe incluir /api
+    'timeout': 30,  # segundos
+    'headers': {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
+}
 
 # Configuración de archivos estáticos y multimedia
 STATIC_URL = '/static/'
@@ -45,9 +34,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# Configuración de la API
-API_URL = os.environ.get('API_URL', "http://190.217.58.246:5186/api/SGV/procedures/execute")
 
 # Configuración de sesiones
 SESSION_TYPE = 'filesystem'  # Opciones: 'filesystem', 'redis', 'memcached', etc.
@@ -76,3 +62,33 @@ MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER', 'noreply@example.com
 # Configuración de carga de archivos
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
 MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB max-limit 
+
+# Configuración de la aplicación Flask
+class Config:
+    SECRET_KEY = SECRET_KEY
+    UPLOAD_FOLDER = UPLOAD_FOLDER
+    MAX_CONTENT_LENGTH = MAX_CONTENT_LENGTH
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'pdf', 'doc', 'docx'}
+
+# Configuración de desarrollo
+class DevelopmentConfig(Config):
+    DEBUG = True
+    TESTING = False
+
+# Configuración de pruebas
+class TestingConfig(Config):
+    DEBUG = False
+    TESTING = True
+
+# Configuración de producción
+class ProductionConfig(Config):
+    DEBUG = False
+    TESTING = False
+
+# Diccionario con las configuraciones disponibles
+config = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'production': ProductionConfig,
+    'default': DevelopmentConfig
+} 

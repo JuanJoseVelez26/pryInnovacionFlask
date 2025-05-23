@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Retos de Innovación</h2>
+    
+    <div class="row">
+        {% for reto in retos %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if reto.imagen_url %}
+                <img src="{{ url_for('static', filename=reto.imagen_url) }}" class="card-img-top" alt="{{ reto.titulo }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ reto.titulo }}</h5>
+                    <p class="card-text">{{ reto.descripcion|truncate(150) }}</p>
+                    <div class="card-text">
+                        <small class="text-muted">
+                            Creado el: {{ reto.fecha_creacion.strftime('%d/%m/%Y') }}
+                        </small>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('ideas.detail_idea', codigo_idea=reto.codigo_idea) }}" class="btn btn-primary">Ver Detalles</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if not retos %}
+    <div class="alert alert-info" role="alert">
+        No hay retos disponibles en este momento.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

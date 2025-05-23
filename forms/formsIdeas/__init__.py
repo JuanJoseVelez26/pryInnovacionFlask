@@ -1,0 +1,1 @@
+# Este archivo permite que el directorio formsIdeas sea reconocido como un paquete de Python 

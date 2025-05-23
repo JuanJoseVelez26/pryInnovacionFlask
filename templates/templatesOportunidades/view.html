@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4>Detalles de la Oportunidad</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="card-title">Oportunidad</h4>
+                    <div class="btn-group" role="group">
+                        <a href="{{ url_for('oportunidades.update_oportunidad', oportunidad_id=oportunidad.id) }}" class="btn btn-warning" title="Editar">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <button type="button" class="btn btn-danger" title="Eliminar" data-delete-url="{{ url_for('oportunidades.delete_oportunidad', oportunidad_id=oportunidad.id) }}"><i class="fas fa-trash"></i> Eliminar</button>
+                        {% if oportunidad.estado != 'Confirmada' %}
+                        <button type="button" class="btn btn-success" title="Confirmar" data-confirm-url="{{ url_for('oportunidades.confirmar_oportunidad', oportunidad_id=oportunidad.id) }}"><i class="fas fa-check"></i> Confirmar</button>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th style="width: 200px;">Título</th>
+                                <td>{{ oportunidad.titulo }}</td>
+                            </tr>
+                            <tr>
+                                <th>Descripción</th>
+                                <td>{{ oportunidad.descripcion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Palabras Clave</th>
+                                <td>{{ oportunidad.palabras_claves }}</td>
+                            </tr>
+                            <tr>
+                                <th>Recursos Requeridos</th>
+                                <td>{{ oportunidad.recursos_requeridos }}</td>
+                            </tr>
+                            <tr>
+                                <th>Tipo de Mercado</th>
+                                <td>{{ dict(form.tipo_mercado.choices).get(oportunidad.tipo_mercado) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Estado</th>
+                                <td>{{ dict(form.estado.choices).get(oportunidad.estado) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fecha de Creación</th>
+                                <td>{{ oportunidad.fecha_creacion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Creado por</th>
+                                <td>{{ oportunidad.usuario_email }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-3">
+                    <a href="{{ url_for('oportunidades.list_oportunidades') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver a la Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    // Manejar clics en botones de eliminar
+    $('.btn-danger').on('click', function() {
+        const url = $(this).data('delete-url');
+        confirmarEliminacion(url);
+    });
+
+    // Manejar clics en botones de confirmar
+    $('.btn-success').on('click', function() {
+        const url = $(this).data('confirm-url');
+        confirmarOportunidad(url);
+    });
+});
+
+function confirmarEliminacion(url) {
+    if (confirm('¿Está seguro que desea eliminar esta oportunidad?')) {
+        const headers = {
+            'X-CSRFToken': '{{ csrf_token() }}',
+            'Content-Type': 'application/json',
+        };
+        fetch(url, { method: 'POST', headers })
+            .then((response) => {
+                if (response.ok) {
+                    window.location.href = "{{ url_for('oportunidades.list_oportunidades') }}";
+                } else {
+                    alert('Error al eliminar la oportunidad');
+                }
+            })
+            .catch(() => {
+                alert('Error al eliminar la oportunidad');
+            });
+    }
+}
+
+function confirmarOportunidad(url) {
+    if (confirm('¿Está seguro que desea confirmar esta oportunidad?')) {
+        const headers = {
+            'X-CSRFToken': '{{ csrf_token() }}',
+            'Content-Type': 'application/json',
+        };
+        fetch(url, { method: 'POST', headers })
+            .then((response) => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Error al confirmar la oportunidad');
+                }
+            })
+            .catch(() => {
+                alert('Error al confirmar la oportunidad');
+            });
+    }
+}
+</script>
+{% endblock %}

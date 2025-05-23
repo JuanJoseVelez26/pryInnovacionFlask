@@ -1,0 +1,219 @@
+2025-05-08 16:42:14,514 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-05-08 16:42:14,514 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-05-08 16:42:14,515 - werkzeug - INFO -  * Restarting with stat
+2025-05-08 16:42:15,332 - werkzeug - WARNING -  * Debugger is active!
+2025-05-08 16:42:15,335 - werkzeug - INFO -  * Debugger PIN: 211-838-584
+2025-05-08 16:42:35,712 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-05-08 16:42:35,712 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-05-08 16:42:35,714 - werkzeug - INFO -  * Restarting with stat
+2025-05-08 16:42:36,528 - werkzeug - WARNING -  * Debugger is active!
+2025-05-08 16:42:36,532 - werkzeug - INFO -  * Debugger PIN: 211-838-584
+2025-05-08 16:42:57,934 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-05-08 16:42:57,934 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-05-08 16:42:57,935 - werkzeug - INFO -  * Restarting with stat
+2025-05-08 16:42:58,721 - werkzeug - WARNING -  * Debugger is active!
+2025-05-08 16:42:58,724 - werkzeug - INFO -  * Debugger PIN: 211-838-584
+2025-05-08 16:43:37,088 - werkzeug - INFO -  * Detected change in 'C:\\Users\\Usuario\\Desktop\\NuevoProyectInnovacion\\app.py', reloading
+2025-05-08 16:43:37,190 - werkzeug - INFO -  * Restarting with stat
+2025-05-08 16:43:38,049 - werkzeug - WARNING -  * Debugger is active!
+2025-05-08 16:43:38,052 - werkzeug - INFO -  * Debugger PIN: 211-838-584
+2025-05-08 16:43:41,230 - werkzeug - INFO -  * Detected change in 'C:\\Users\\Usuario\\Desktop\\NuevoProyectInnovacion\\app.py', reloading
+2025-05-08 16:43:41,371 - werkzeug - INFO -  * Restarting with stat
+2025-05-08 16:43:42,277 - werkzeug - WARNING -  * Debugger is active!
+2025-05-08 16:43:42,280 - werkzeug - INFO -  * Debugger PIN: 211-838-584
+2025-05-08 16:43:46,819 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-05-08 16:43:46,819 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-05-08 16:43:46,820 - werkzeug - INFO -  * Restarting with stat
+2025-05-08 16:43:47,666 - werkzeug - WARNING -  * Debugger is active!
+2025-05-08 16:43:47,669 - werkzeug - INFO -  * Debugger PIN: 211-838-584
+2025-05-08 16:43:56,369 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "GET / HTTP/1.1" 200 -
+2025-05-08 16:43:56,588 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/css/icons.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,592 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/libs/jquery/jquery.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,592 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,594 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/css/app.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,602 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/libs/bootstrap/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,605 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/libs/metismenu/metisMenu.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,606 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/libs/simplebar/simplebar.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,609 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/styles/logo.css HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,615 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/libs/node-waves/waves.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,615 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/libs/jquery-sparkline/jquery.sparkline.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,617 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,619 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/images/users/user.png HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,621 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/img/MALLA.png HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,631 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/img/ideas.png HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,635 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/img/oportunidad.png HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,637 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/img/soluciones1.png HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,639 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/img/logo-usb-medellin.png HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,639 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/images/layouts/layout-1.jpg HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,655 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/images/layouts/layout-2.jpg HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,711 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/fonts/materialdesignicons-webfont.woff2?v=4.4.95 HTTP/1.1[0m" 304 -
+2025-05-08 16:43:56,712 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:56] "[36mGET /static/fonts/fa-solid-900.woff2 HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,150 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "GET /ideas HTTP/1.1" 200 -
+2025-05-08 16:43:59,197 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,197 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/css/icons.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,197 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,200 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/styles/logo.css HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,204 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,204 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/css/app.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,234 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/libs/jquery/jquery.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,253 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/images/users/user.png HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,254 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/libs/bootstrap/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,255 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/img/MALLA.png HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,255 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/images/layouts/layout-1.jpg HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,256 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/libs/metismenu/metisMenu.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,289 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/libs/simplebar/simplebar.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,289 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/libs/node-waves/waves.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,293 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,293 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/libs/datatables.net/js/jquery.dataTables.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,294 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/libs/jquery-sparkline/jquery.sparkline.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,297 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,305 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,308 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/images/layouts/layout-2.jpg HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,309 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/libs/datatables.net-responsive/js/dataTables.responsive.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,312 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/fonts/fa-solid-900.woff2 HTTP/1.1[0m" 304 -
+2025-05-08 16:43:59,313 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:43:59] "[36mGET /static/fonts/materialdesignicons-webfont.woff2?v=4.4.95 HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,623 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[32mGET /auth/dashboard HTTP/1.1[0m" 302 -
+2025-05-08 16:44:04,640 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "GET / HTTP/1.1" 200 -
+2025-05-08 16:44:04,725 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,758 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/styles/logo.css HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,759 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/css/app.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,759 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/img/MALLA.png HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,759 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/css/icons.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,761 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/images/users/user.png HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,791 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/img/soluciones1.png HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,826 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/img/ideas.png HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,829 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/img/logo-usb-medellin.png HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,829 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/libs/jquery/jquery.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,829 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/libs/metismenu/metisMenu.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,831 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/img/oportunidad.png HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,832 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/libs/bootstrap/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,846 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/libs/simplebar/simplebar.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,853 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/images/layouts/layout-2.jpg HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,854 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/libs/node-waves/waves.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,855 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,855 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/libs/jquery-sparkline/jquery.sparkline.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,857 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/images/layouts/layout-1.jpg HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,864 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/fonts/materialdesignicons-webfont.woff2?v=4.4.95 HTTP/1.1[0m" 304 -
+2025-05-08 16:44:04,876 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:44:04] "[36mGET /static/fonts/fa-solid-900.woff2 HTTP/1.1[0m" 304 -
+2025-05-08 16:44:24,349 - werkzeug - INFO -  * Detected change in 'C:\\Users\\Usuario\\Desktop\\NuevoProyectInnovacion\\app.py', reloading
+2025-05-08 16:44:24,470 - werkzeug - INFO -  * Restarting with stat
+2025-05-08 16:44:25,408 - werkzeug - WARNING -  * Debugger is active!
+2025-05-08 16:44:25,411 - werkzeug - INFO -  * Debugger PIN: 211-838-584
+2025-05-08 16:46:03,429 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-05-08 16:46:03,429 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-05-08 16:46:03,430 - werkzeug - INFO -  * Restarting with stat
+2025-05-08 16:46:04,223 - werkzeug - WARNING -  * Debugger is active!
+2025-05-08 16:46:04,226 - werkzeug - INFO -  * Debugger PIN: 211-838-584
+2025-05-08 16:46:08,685 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "GET / HTTP/1.1" 200 -
+2025-05-08 16:46:08,846 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,849 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/css/icons.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,854 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/styles/logo.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,857 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/css/app.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,866 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/images/users/user.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,866 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/img/MALLA.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,874 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/libs/bootstrap/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,875 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/libs/jquery/jquery.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,879 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/libs/simplebar/simplebar.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,879 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/libs/metismenu/metisMenu.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,880 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/libs/node-waves/waves.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,888 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/libs/jquery-sparkline/jquery.sparkline.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,890 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,894 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/img/ideas.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,895 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/img/oportunidad.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,901 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/img/logo-usb-medellin.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,901 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/img/soluciones1.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,903 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/images/layouts/layout-2.jpg HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,904 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/images/layouts/layout-1.jpg HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,961 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/fonts/materialdesignicons-webfont.woff2?v=4.4.95 HTTP/1.1[0m" 304 -
+2025-05-08 16:46:08,962 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:08] "[36mGET /static/fonts/fa-solid-900.woff2 HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,257 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "GET /ideas HTTP/1.1" 200 -
+2025-05-08 16:46:14,300 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,302 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/styles/logo.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,303 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/css/icons.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,304 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/css/app.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,307 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,310 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/libs/jquery/jquery.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,312 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,353 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/img/MALLA.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,353 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/images/layouts/layout-1.jpg HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,354 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/images/users/user.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,364 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/libs/simplebar/simplebar.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,364 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/libs/bootstrap/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,364 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/libs/metismenu/metisMenu.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,406 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/libs/node-waves/waves.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,410 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,410 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/libs/jquery-sparkline/jquery.sparkline.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,416 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/libs/datatables.net-responsive/js/dataTables.responsive.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,419 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,421 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/images/layouts/layout-2.jpg HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,423 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,424 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/libs/datatables.net/js/jquery.dataTables.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,435 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/fonts/fa-solid-900.woff2 HTTP/1.1[0m" 304 -
+2025-05-08 16:46:14,437 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:14] "[36mGET /static/fonts/materialdesignicons-webfont.woff2?v=4.4.95 HTTP/1.1[0m" 304 -
+2025-05-08 16:46:30,370 - werkzeug - INFO -  * Detected change in 'C:\\Users\\Usuario\\Desktop\\NuevoProyectInnovacion\\config_flask.py', reloading
+2025-05-08 16:46:30,476 - werkzeug - INFO -  * Restarting with stat
+2025-05-08 16:46:31,306 - werkzeug - WARNING -  * Debugger is active!
+2025-05-08 16:46:31,309 - werkzeug - INFO -  * Debugger PIN: 211-838-584
+2025-05-08 16:46:35,516 - werkzeug - INFO -  * Detected change in 'C:\\Users\\Usuario\\Desktop\\NuevoProyectInnovacion\\app.py', reloading
+2025-05-08 16:46:35,644 - werkzeug - INFO -  * Restarting with stat
+2025-05-08 16:46:36,607 - werkzeug - WARNING -  * Debugger is active!
+2025-05-08 16:46:36,610 - werkzeug - INFO -  * Debugger PIN: 211-838-584
+2025-05-08 16:46:38,739 - werkzeug - INFO -  * Detected change in 'C:\\Users\\Usuario\\Desktop\\NuevoProyectInnovacion\\config_flask.py', reloading
+2025-05-08 16:46:38,880 - werkzeug - INFO -  * Restarting with stat
+2025-05-08 16:46:39,854 - werkzeug - WARNING -  * Debugger is active!
+2025-05-08 16:46:39,856 - werkzeug - INFO -  * Debugger PIN: 211-838-584
+2025-05-08 16:46:40,809 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:40] "GET / HTTP/1.1" 200 -
+2025-05-08 16:46:41,019 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/styles/logo.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,021 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/img/MALLA.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,038 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,038 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/css/icons.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,042 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/libs/jquery/jquery.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,043 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/libs/bootstrap/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,045 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/images/users/user.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,048 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/css/app.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,058 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/libs/metismenu/metisMenu.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,058 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/libs/simplebar/simplebar.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,059 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/libs/node-waves/waves.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,063 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/libs/jquery-sparkline/jquery.sparkline.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,063 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,065 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/img/ideas.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,074 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/img/oportunidad.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,075 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/img/soluciones1.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,079 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/img/logo-usb-medellin.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,082 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/images/layouts/layout-1.jpg HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,083 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/images/layouts/layout-2.jpg HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,149 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/fonts/materialdesignicons-webfont.woff2?v=4.4.95 HTTP/1.1[0m" 304 -
+2025-05-08 16:46:41,149 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:41] "[36mGET /static/fonts/fa-solid-900.woff2 HTTP/1.1[0m" 304 -
+2025-05-08 16:46:45,171 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:45] "GET /ideas HTTP/1.1" 200 -
+2025-05-08 16:46:45,173 - werkzeug - INFO -  * Detected change in 'C:\\Users\\Usuario\\Desktop\\NuevoProyectInnovacion\\test_sqlalchemy_connection.py', reloading
+2025-05-08 16:46:45,361 - werkzeug - INFO -  * Restarting with stat
+2025-05-08 16:46:46,263 - werkzeug - WARNING -  * Debugger is active!
+2025-05-08 16:46:46,267 - werkzeug - INFO -  * Debugger PIN: 211-838-584
+2025-05-08 16:46:46,444 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/styles/logo.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,444 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,445 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/css/bootstrap.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,476 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/img/MALLA.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,476 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/images/users/user.png HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,477 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/libs/jquery/jquery.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,479 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/css/app.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,484 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,485 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/css/icons.min.css HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,493 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/images/layouts/layout-1.jpg HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,495 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/libs/simplebar/simplebar.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,495 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/libs/bootstrap/js/bootstrap.bundle.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,496 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/libs/node-waves/waves.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,497 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/libs/metismenu/metisMenu.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,501 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/libs/jquery-sparkline/jquery.sparkline.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,513 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,515 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/libs/datatables.net/js/jquery.dataTables.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,519 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,520 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/libs/datatables.net-responsive/js/dataTables.responsive.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,523 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/images/layouts/layout-2.jpg HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,525 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,528 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/fonts/materialdesignicons-webfont.woff2?v=4.4.95 HTTP/1.1[0m" 304 -
+2025-05-08 16:46:46,529 - werkzeug - INFO - 127.0.0.1 - - [08/May/2025 16:46:46] "[36mGET /static/fonts/fa-solid-900.woff2 HTTP/1.1[0m" 304 -
